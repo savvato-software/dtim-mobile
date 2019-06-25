@@ -1,9 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>new-user</ion-title>
+    <ion-title>New User</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+	In the DTIM, we our goal is to help you prepare for your next big tech interview. 
+	<br/><br/>
+	If you log in when you attend, we can track where you rock, and where you need a push to get rollin'.<br/>
+	<br/>
+	Absolutely not required, but we think you will find the insights very valuable.<br/>
+	<br/>
+	<hr>
+	<ion-item>
+	  <ion-label position="floating">Name</ion-label>
+	  <ion-input data-test="name-input" (ionChange)="onNameChange($event)" [value]="getName()" required></ion-input>
+	</ion-item>
+	<br/><br/>{{getName()}}
+	<ion-item>
+	  <ion-label position="floating">Phone</ion-label>
+	  <ion-input data-test="name-input" (ionChange)="onEmailChange($event)" [value]="getName()" required></ion-input>
+	</ion-item>
+	<br/><br/>{{getEmail()}}
+	<ion-item>
+	  <ion-label position="floating">Email</ion-label>
+	  <ion-input data-test="name-input" (ionChange)="onPhoneChange($event)" [value]="getName()" required></ion-input>
+	</ion-item>
+	<br/><br/>{{getPhone()}}
 
+	<ion-button class="" (click)="onSaveBtnClicked()">Sign Me Up!</ion-button>
 </ion-content>

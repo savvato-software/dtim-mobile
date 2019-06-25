@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,15 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+	constructor(private _router: Router) {
 
+	}
+
+	onNewUserBtnClicked() {
+		this._router.navigate(['/new-user']);
+	}
+
+	onReturningUserBtnClicked() {
+		this._router.navigate(['/returning-user']);
+	}
 }
