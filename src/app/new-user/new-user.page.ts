@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
+import { AlertService } from '../_services/alert.service';
+import { UserService } from '../_services/user.service';
+
 @Component({
   selector: 'app-new-user',
   templateUrl: './new-user.page.html',
@@ -12,7 +15,9 @@ export class NewUserPage implements OnInit {
   	phone = undefined;
   	email = undefined;
 
-    constructor(private _location: Location ) {
+    constructor(private _location: Location,
+    			private _userService: UserService,
+    			private _alertService: AlertService ) {
 
     }
 
@@ -44,8 +49,36 @@ export class NewUserPage implements OnInit {
 		return this.email;
 	}
 
+	isSaveBtnEnabled() {
+		return this.name && this.name.length > 3
+				&& ((this.phone && this.phone.length == 10) || (
+					this.email && this.email.length >= 6));
+	}
+
 	onSaveBtnClicked() {
 		console.log("Save Btn Clicked!");
+    	
+    	let self = this;
+
+    	self._userService.createNewUser(this.name, this.phone, this.email).then((candidate) => {
+			self._userService.markUserAsAttending(candidate["id"]).then(() => {
+				self._alertService.show({
+					header: 'You\'re in!',
+					message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
+					buttons: [
+						{
+							text: 'OK', role: 'cancel', handler: () => {
+								this._location.back();
+							}
+						}
+					]
+				})
+			})
+    	})
+	}
+
+	onCancelBtnClicked() {
+		console.log("Cancel Btn Clicked!");
     	this._location.back();		
 	}
 }

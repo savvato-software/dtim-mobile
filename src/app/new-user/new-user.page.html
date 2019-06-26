@@ -1,32 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>New User</ion-title>
+    <ion-title>Welcome!</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-	In the DTIM, we our goal is to help you prepare for your next big tech interview. 
-	<br/><br/>
-	If you log in when you attend, we can track where you rock, and where you need a push to get rollin'.<br/>
-	<br/>
-	Absolutely not required, but we think you will find the insights very valuable.<br/>
-	<br/>
-	<hr>
-	<ion-item>
-	  <ion-label position="floating">Name</ion-label>
-	  <ion-input data-test="name-input" (ionChange)="onNameChange($event)" [value]="getName()" required></ion-input>
-	</ion-item>
-	<br/><br/>{{getName()}}
-	<ion-item>
-	  <ion-label position="floating">Phone</ion-label>
-	  <ion-input data-test="name-input" (ionChange)="onEmailChange($event)" [value]="getName()" required></ion-input>
-	</ion-item>
-	<br/><br/>{{getEmail()}}
-	<ion-item>
-	  <ion-label position="floating">Email</ion-label>
-	  <ion-input data-test="name-input" (ionChange)="onPhoneChange($event)" [value]="getName()" required></ion-input>
-	</ion-item>
-	<br/><br/>{{getPhone()}}
+	<ion-card>
+		<ion-card-header>
+		   	<!-- ion-card-subtitle>Card Subtitle</ion-card-subtitle -->
+		    <ion-card-title>Let's Get Started!</ion-card-title>
+		</ion-card-header>
 
-	<ion-button class="" (click)="onSaveBtnClicked()">Sign Me Up!</ion-button>
+		<ion-card-content>
+			In the DTIM, our goal is to help you prepare for your next big tech interview. 
+			<br/><br/>
+			If you log in when you attend, we can track where you rock, and where you need a push to get rollin'.<br/>
+			<br/>
+			Absolutely not required, but we think you will find the insights very valuable.<br/>
+			<br/>
+
+			<ion-item>
+			  <ion-label position="floating">Name</ion-label>
+			  <ion-input data-test="name-input" (ionChange)="onNameChange($event)" [value]="getName()" required></ion-input>
+			</ion-item>
+			<ion-item>
+			  <ion-label position="floating">Phone</ion-label>
+			  <ion-input data-test="name-input" (ionChange)="onPhoneChange($event)" [value]="getPhone()" required></ion-input>
+			</ion-item>
+			<ion-item>
+			  <ion-label position="floating">Email</ion-label>
+			  <ion-input data-test="name-input" (ionChange)="onEmailChange($event)" [value]="getEmail()" required></ion-input>
+			</ion-item>
+			<br/><br/>
+			<ion-button class="" [disabled]="!isSaveBtnEnabled()" (click)="onSaveBtnClicked()">Sign Me Up!</ion-button>
+			<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+	  </ion-card-content>
+	</ion-card>
 </ion-content>
