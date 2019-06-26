@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { AlertService } from '../_services/alert.service';
@@ -16,6 +17,8 @@ export class NewUserPage implements OnInit {
   	email = undefined;
 
     constructor(private _location: Location,
+			    private _router: Router,
+			    private _route: ActivatedRoute,
     			private _userService: UserService,
     			private _alertService: AlertService ) {
 
@@ -68,7 +71,7 @@ export class NewUserPage implements OnInit {
 					buttons: [
 						{
 							text: 'OK', role: 'cancel', handler: () => {
-								this._location.back();
+								self._router.navigate(['/home']);
 							}
 						}
 					]
@@ -79,6 +82,6 @@ export class NewUserPage implements OnInit {
 
 	onCancelBtnClicked() {
 		console.log("Cancel Btn Clicked!");
-    	this._location.back();		
+    	this._router.navigate(['/home']);
 	}
 }

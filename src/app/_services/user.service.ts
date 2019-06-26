@@ -61,4 +61,23 @@ export class UserService {
 	return rtn;
   }
 
+  getCandidateByEmailOrPhone(query) {
+  	let url = environment.apiUrl + "/api/candidate?q=" + query;
+
+	let rtn = new Promise(
+		(resolve, reject) => {
+			this._apiService.getUnsecuredAPI(url).subscribe(
+				(data) => { 
+					console.log("Candidate query call returned");
+					console.log(data);
+
+					resolve(data);
+				}, (err) => {
+					reject(err);
+				});
+		});
+
+	return rtn;
+  }
+
 }

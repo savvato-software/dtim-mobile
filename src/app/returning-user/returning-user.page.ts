@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
+
+import { AlertService } from '../_services/alert.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-returning-user',
@@ -7,9 +12,70 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReturningUserPage implements OnInit {
 
-  constructor() { }
+	query = undefined;
 
-  ngOnInit() {
-  }
+    constructor(private _location: Location,
+			    private _router: Router,
+			    private _route: ActivatedRoute,
+    			private _userService: UserService,
+    			private _alertService: AlertService ) {
 
+    }
+
+	ngOnInit() {
+	
+	}
+
+	onQueryChange($event) {
+		this.query = $event.currentTarget.value;
+	}
+
+	getQuery() {
+		return this.query;
+	}
+
+	isSearchBtnEnabled() {
+		return this.query && this.query.length >= 3;
+	}
+
+	onSearchBtnClicked() {
+		let self = this;
+
+		self._userService.getCandidateByEmailOrPhone(self.query).then((candidate) => {
+			
+			if (candidate) {
+				self._userService.markUserAsAttending(candidate["id"]).then(() => {
+					self._alertService.show({
+						header: 'Found you!',
+						message: "We found your previous info. Sweet! Please hand the tablet to the next person. Thanks!",
+						buttons: [
+							{
+								text: 'OK', role: 'cancel', handler: () => {
+									this._location.back();
+								}
+							}
+						]
+					})
+				})
+			} else {
+				self._alertService.show({
+					header: 'Hmmm...',
+					message: "Sorry, we couldn't find a profile with that info...\n\nDo you want to create one?",
+					buttons: [{
+						text: "No, nevermind.",
+						role: 'cancel'
+					}, {
+						text: 'Yes!',
+						handler: () => {
+					  		this._router.navigate(['/new-user']);
+						}
+					}]
+				})
+			}
+		})			
+	}
+
+	onCancelBtnClicked() {
+		this._router.navigate(['/home']);
+	}
 }

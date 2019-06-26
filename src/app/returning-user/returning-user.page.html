@@ -1,9 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>returning-user</ion-title>
+    <ion-title>Welcome!</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+	<ion-card>
+		<ion-card-header>
+		   	<!-- ion-card-subtitle>Card Subtitle</ion-card-subtitle -->
+		    <ion-card-title>Let's Get Started!</ion-card-title>
+		</ion-card-header>
 
+		<ion-card-content>
+			In the DTIM, our goal is to help you prepare for your next big tech interview. 
+			<br/><br/>
+
+			<ion-item>
+			  <ion-label position="floating">Phone or Email</ion-label>
+			  <ion-input data-test="query-input" (ionChange)="onQueryChange($event)" [value]="getQuery()" required></ion-input>
+			</ion-item>
+
+			<ion-button class="" [disabled]="!isSearchBtnEnabled()" (click)="onSearchBtnClicked()">Find Me</ion-button>
+			<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+	  </ion-card-content>
+	</ion-card>
 </ion-content>
