@@ -9,8 +9,10 @@
 <ion-content>
   <div class="ion-padding">
     Welcome to the Denver Tech Interview Meetup!<br/><br/><br/>
-    <ion-button class="" (click)="onNewUserBtnClicked()">I'm New Here</ion-button>
+    <ion-button class="" [disabled]="!isSessionActive()" (click)="onNewUserBtnClicked()">I'm New Here</ion-button>
     <br/><br/><br/>
-    <ion-button class="" (click)="onReturningUserBtnClicked()">I'm Back For More!</ion-button>
+    <ion-button class="" [disabled]="!isSessionActive()" (click)="onReturningUserBtnClicked()">I'm Back For More!</ion-button>
+    <br/><br/><br/>
+    <ion-button class="" (click)="onAdminBtnClicked()">I'm the Admin!</ion-button>
   </div>
 </ion-content>
