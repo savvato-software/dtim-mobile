@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>line-item-level-content-page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+	<div *ngFor="let q of getQuestions()" (click)="onQuestionClicked(q)">
+		<span>{{q.text}}</span>
+	</div>
+
+	<br/><br/>
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
+</ion-content>

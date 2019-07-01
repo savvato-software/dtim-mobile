@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>user-tech-profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+		<ion-card-header>
+		    <ion-card-title>Here's the user tech profile:</ion-card-title>
+		</ion-card-header>
+		<ion-card-content>
+			<table *ngIf="isTechProfileAvailable()">
+				<tr class="tech-profile-level">
+					<td>
+						{{getTechProfile()["name"]}}
+						<tr class="tech-profile-topic-level" *ngFor="let topic of getTechProfileTopics()">
+							<td>
+								{{topic.name}}
+								<tr class="tech-profile-line-item-level" *ngFor="let lineItem of getTechProfileLineItemsByTopic(topic['id'])">
+									<td>{{getScore(lineItem.id)}}</td>
+									<td>{{lineItem.name}}</td>
+									<td (click)="onLxDescriptionClick(lineItem.id, 0)">{{lineItem.l0Description}}</td>
+									<td (click)="onLxDescriptionClick(lineItem.id, 1)">{{lineItem.l1Description}}</td>
+									<td (click)="onLxDescriptionClick(lineItem.id, 2)">{{lineItem.l2Description}}</td>
+									<td (click)="onLxDescriptionClick(lineItem.id, 3)">{{lineItem.l3Description}}</td>
+								</tr>
+							</td>							
+						</tr>
+					</td>
+				</tr>
+			</table>
+		</ion-card-content>
+		<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>		
+	</ion-card>
+</ion-content>
