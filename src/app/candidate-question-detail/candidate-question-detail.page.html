@@ -8,5 +8,10 @@
 	This is the candidate detail page for candidate {{getCandidateId()}} and question {{getQuestionId()}}.
 
 	<br/>
-	Eventually, we will list the history, each time this candidate was given this question, and what their score was, along with any comments.
+	This is a list of the history of this candidate and the given question. TODO, be able to set
+	the grade for this question in the current session: TODO: be able to add comments when setting a grade. TODO: be able to view comments.
+	<div *ngFor="let cqg of getCandidateHistoryForQuestion()">
+		<span>Current Session is #{{getCurrentSessionNumber()}}</span>
+		<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span>
+	</div>
 </ion-content>

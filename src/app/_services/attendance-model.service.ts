@@ -7,6 +7,7 @@ import { AttendanceAPIService } from './attendance-api.service';
 })
 export class AttendanceModelService {
 
+	currentSession = undefined;
 	sessionActive = undefined;
 
 	constructor(private _attendanceAPIService: AttendanceAPIService) {
@@ -27,13 +28,25 @@ export class AttendanceModelService {
 		return self.sessionActive;
 	}
 
+	getCurrentSessionNumber() {
+		let rtn = undefined;
+
+		if (this.currentSession) {
+			rtn = this.currentSession.id;
+		}
+
+		return rtn;
+	}
+
 	startNewSession() {
 		let self = this;
 
 		let rtn = new Promise((reject, resolve) => {
 			self._attendanceAPIService.startNewSession().then((data) => {
-				if (data)
+				if (data) {
+					self.currentSession = data;
 					self.resetActiveSessionFlag();
+				}
 			}, (err) => {
 				reject(err);
 			})
@@ -41,6 +54,8 @@ export class AttendanceModelService {
 
 		return rtn;
 	}
+
+
 
 	resetActiveSessionFlag() {
 		this.sessionActive = undefined;

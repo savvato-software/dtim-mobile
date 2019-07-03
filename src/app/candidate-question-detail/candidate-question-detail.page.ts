@@ -14,6 +14,8 @@ export class CandidateQuestionDetailPage implements OnInit {
 	candidateId = undefined;
 	questionId = undefined;
 
+	cqgList = undefined;
+
     constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
@@ -28,7 +30,7 @@ export class CandidateQuestionDetailPage implements OnInit {
 			self.questionId = params['questionId'] * 1;
 
 			self._questionService.getCandidateHistoryForQuestion(self.candidateId, self.questionId).then((data) => {
-			
+				self.cqgList = data;
 			})
 		});
 
@@ -40,5 +42,13 @@ export class CandidateQuestionDetailPage implements OnInit {
 
 	getQuestionId() {
 		return this.questionId;
+	}
+
+	getCurrentSessionNumber() {
+		
+	}
+
+	getCandidateHistoryForQuestion() {
+		return this.cqgList;
 	}
 }
