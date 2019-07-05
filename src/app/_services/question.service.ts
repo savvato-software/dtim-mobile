@@ -46,9 +46,12 @@ export class QuestionService {
       return rtn;
 	}
 
-  setSessionScore(candidateId, questionId, sessionId, score) {
+  setSessionScore(candidateId, questionId, sessionId, dataObj) {
       let url = environment.apiUrl + "/api/candidate/" + candidateId + "/question/" + questionId + "/history";
-      let data = "sessionId=" + sessionId + "&score=" + score;
+      let data = "sessionId=" + sessionId + "&score=" + dataObj["score"];
+
+      if (dataObj["comment"]) 
+        data += "&comment=" + dataObj["comment"];
 
       let rtn = new Promise(
         (resolve, reject) => {

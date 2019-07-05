@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { AttendanceModelService } from '../_services/attendance-model.service';
 import { QuestionService } from '../_services/question.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-candidate-question-detail',
@@ -14,8 +15,10 @@ export class CandidateQuestionDetailPage implements OnInit {
 
 	dirty = false;
 	candidateId = undefined;
+	candidate = undefined;
 	questionId = undefined;
 	currentSessionScore = undefined;
+	currentSessionComment = undefined;
 
 	cqgList = undefined;
 
@@ -23,6 +26,7 @@ export class CandidateQuestionDetailPage implements OnInit {
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
+			    private _userService: UserService,
 			    private _attendanceModelService: AttendanceModelService) {
 
 	}
@@ -45,10 +49,15 @@ export class CandidateQuestionDetailPage implements OnInit {
 					self.cqgList.forEach((score) => {
 						if (score["sessionId"] === sessionNumber) {
 							self.currentSessionScore = ''+score["grade"];
+							self.currentSessionComment = score["comment"];
 						}
 					})
 				})
 			}
+
+			self._userService.getCandidateById(self.candidateId).then((data) => {
+				self.candidate = data;
+			})
 		});
 
 	}
@@ -61,12 +70,16 @@ export class CandidateQuestionDetailPage implements OnInit {
 		this.dirty = true;
 	}
 
-	getCandidateId() {
-		return this.candidateId;
+	getCandidateName() {
+		return this.candidate && this.candidate["name"];
 	}
 
 	getQuestionId() {
 		return this.questionId;
+	}
+
+	getCurrentSessionQuestionComment() {
+		return this.currentSessionComment;
 	}
 
 	getCurrentSessionNumber() {
@@ -82,7 +95,9 @@ export class CandidateQuestionDetailPage implements OnInit {
 		console.log("current sesison score: " + self.currentSessionScore);
 
 		if (self.isDirty()) {
-			self._questionService.setSessionScore(self.candidateId, self.questionId, self.getCurrentSessionNumber(), self.currentSessionScore).then(() =>{
+			let obj = {score: self.currentSessionScore, comment: self.currentSessionComment};
+
+			self._questionService.setSessionScore(self.candidateId, self.questionId, self.getCurrentSessionNumber(), obj).then(() =>{
 				self._location.back();
 			});
 		} else {
@@ -101,7 +116,7 @@ export class CandidateQuestionDetailPage implements OnInit {
 		return rtn;
 	}
 
-	onCurrentSessionScoreChanged($evt) {
+	onSomethingChanged($evt) {
 		this.setDirty();
 	}
 }

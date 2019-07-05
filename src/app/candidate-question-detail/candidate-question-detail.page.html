@@ -5,26 +5,38 @@
 </ion-header>
 
 <ion-content>
-	This is the candidate detail page for candidate {{getCandidateId()}} and question {{getQuestionId()}}.
+	<ion-card>
+		<ion-card-content>
+	This is the candidate detail page for candidate {{getCandidateName()}} and question {{getQuestionId()}}.
 
 	<br/>
 	This is a list of the history of this candidate and the given question. TODO, be able to set
 	the grade for this question in the current session: TODO: be able to add comments when setting a grade. TODO: be able to view comments.
-		<br/><br/><span>Current Session is #{{getCurrentSessionNumber()}}</span><br/><br/>	
+		<br/><br/><span>Current Session is #{{getCurrentSessionNumber()}}</span><br/><br/>
 	<div *ngFor="let cqg of getCandidateHistoryForQuestion()">
-		<div *ngIf="!cqgObjectIsForCurrentSession(cqg)">
-			<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span>
-		</div>
+		<ion-card *ngIf="!cqgObjectIsForCurrentSession(cqg)">
+			<ion-card-content>
+				<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span><br/><br/>
+				<span class="commentLabel">Comment:</span><br/>
+				<span class="commentText">{{cqg.comment}}</span><br/><br/>
+			</ion-card-content>
+		</ion-card>
 	</div>
 
 	<ion-item>
 		<ion-label>Current Session Score</ion-label>
-		<ion-select [(ngModel)]="currentSessionScore" (ionChange)="onCurrentSessionScoreChanged($evt)" placeholder="Select One">
+		<ion-select [(ngModel)]="currentSessionScore" (ionChange)="setDirty()" placeholder="Select...">
 		  <ion-select-option value="0">0</ion-select-option>
 		  <ion-select-option value="1">1</ion-select-option>
 		  <ion-select-option value="2">2</ion-select-option>
 		</ion-select>
 	</ion-item>	
+	<ion-item>
+	  <ion-label position="floating">Comment</ion-label>
+	  <ion-input data-test="candidate-question-detail-current-comment" [(ngModel)]="currentSessionComment" (ionChange)="setDirty()"></ion-input>
+	</ion-item>
+</ion-card-content>
+</ion-card>
 
 	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>	
 </ion-content>

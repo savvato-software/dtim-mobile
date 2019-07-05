@@ -80,4 +80,24 @@ export class UserService {
 	return rtn;
   }
 
+  getCandidateById(id) {
+  	let url = environment.apiUrl + "/api/candidate/" + id;
+
+	let rtn = new Promise(
+		(resolve, reject) => {
+			this._apiService.getUnsecuredAPI(url).subscribe(
+				(data) => { 
+					console.log("Candidate by id call returned");
+					console.log(data);
+
+					resolve(data);
+				}, (err) => {
+					reject(err);
+				});
+		});
+
+	return rtn;
+
+  }
+
 }
