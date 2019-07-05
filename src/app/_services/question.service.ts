@@ -12,8 +12,8 @@ export class QuestionService {
 
 	}
 
-	getByLineItemAndLevel(lineItemId, levelIdx) {
-  		let url = environment.apiUrl + "/api/question/" + lineItemId + "/" + levelIdx;
+  getQuestionById(id) {
+      let url = environment.apiUrl + "/api/question/" + id;
 
       let rtn = new Promise(
         (resolve, reject) => {
@@ -27,7 +27,24 @@ export class QuestionService {
       );
 
       return rtn;
-	}
+  }
+
+  getByLineItemAndLevel(lineItemId, levelIdx) {
+      let url = environment.apiUrl + "/api/question/" + lineItemId + "/" + levelIdx;
+
+      let rtn = new Promise(
+        (resolve, reject) => {
+        this._apiService.getUnsecuredAPI(url).subscribe(
+          (data) => {
+            resolve(data);
+          }, (err) => {
+            reject(err);
+          });
+        }
+      );
+
+      return rtn;
+  }
 
 	getCandidateHistoryForQuestion(candidateId, questionId) {
       let url = environment.apiUrl + "/api/candidate/" + candidateId + "/question/" + questionId + "/history";

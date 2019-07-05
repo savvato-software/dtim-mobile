@@ -16,6 +16,7 @@ export class CandidateQuestionDetailPage implements OnInit {
 	dirty = false;
 	candidateId = undefined;
 	candidate = undefined;
+	question = undefined;
 	questionId = undefined;
 	currentSessionScore = undefined;
 	currentSessionComment = undefined;
@@ -58,6 +59,10 @@ export class CandidateQuestionDetailPage implements OnInit {
 			self._userService.getCandidateById(self.candidateId).then((data) => {
 				self.candidate = data;
 			})
+
+			self._questionService.getQuestionById(self.questionId).then((data) => {
+				self.question = data;
+			})
 		});
 
 	}
@@ -74,6 +79,10 @@ export class CandidateQuestionDetailPage implements OnInit {
 		return this.candidate && this.candidate["name"];
 	}
 
+	getQuestionText() {
+		return this.question && this.question["text"];
+	}
+
 	getQuestionId() {
 		return this.questionId;
 	}
@@ -84,6 +93,10 @@ export class CandidateQuestionDetailPage implements OnInit {
 
 	getCurrentSessionNumber() {
 		return this._attendanceModelService.getCurrentSessionNumber();
+	}
+
+	getCandidateHasHistoryForQuestion() {
+		return !!this.cqgList;
 	}
 
 	getCandidateHistoryForQuestion() {

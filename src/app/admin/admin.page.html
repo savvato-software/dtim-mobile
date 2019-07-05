@@ -25,6 +25,8 @@
 			</div>
 			<div *ngIf="!isSessionActive()">
 				There is not an active session!<br/><br/>
+
+				<!-- The last session was session#{{getLastSessionIndex()}} from {{getLastSessionStartTime()}} to {{getLastSessionEndTime()}}.-->
 			</div>
 
 			<ion-button class="" (click)="onHomeBtnClicked()">Go Home</ion-button>
