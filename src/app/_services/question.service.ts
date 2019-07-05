@@ -45,4 +45,25 @@ export class QuestionService {
 
       return rtn;
 	}
+
+  setSessionScore(candidateId, questionId, sessionId, score) {
+      let url = environment.apiUrl + "/api/candidate/" + candidateId + "/question/" + questionId + "/history";
+      let data = "sessionId=" + sessionId + "&score=" + score;
+
+      let rtn = new Promise(
+        (resolve, reject) => {
+        this._apiService.postUnsecuredAPI(url, data).subscribe(
+          (data) => { 
+            console.log("Question Session Score Updated!");
+            console.log(data);
+
+            resolve(data);
+          }, (err) => {
+            reject(err);
+          });
+      });
+
+      return rtn;
+  }
+
 }

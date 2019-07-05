@@ -10,8 +10,21 @@
 	<br/>
 	This is a list of the history of this candidate and the given question. TODO, be able to set
 	the grade for this question in the current session: TODO: be able to add comments when setting a grade. TODO: be able to view comments.
+		<br/><br/><span>Current Session is #{{getCurrentSessionNumber()}}</span><br/><br/>	
 	<div *ngFor="let cqg of getCandidateHistoryForQuestion()">
-		<span>Current Session is #{{getCurrentSessionNumber()}}</span>
-		<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span>
+		<div *ngIf="!cqgObjectIsForCurrentSession(cqg)">
+			<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span>
+		</div>
 	</div>
+
+	<ion-item>
+		<ion-label>Current Session Score</ion-label>
+		<ion-select [(ngModel)]="currentSessionScore" (ionChange)="onCurrentSessionScoreChanged($evt)" placeholder="Select One">
+		  <ion-select-option value="0">0</ion-select-option>
+		  <ion-select-option value="1">1</ion-select-option>
+		  <ion-select-option value="2">2</ion-select-option>
+		</ion-select>
+	</ion-item>	
+
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>	
 </ion-content>

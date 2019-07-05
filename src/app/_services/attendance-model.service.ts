@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { AttendanceAPIService } from './attendance-api.service';
 
+import * as moment from 'moment'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,8 +22,10 @@ export class AttendanceModelService {
 			self.sessionActive = null;
 
 			self._attendanceAPIService.getLastSession().then((data) => {
-				if (data)
+				if (data && moment(data["timestamp"]) > moment(new Date().getTime() - (1000*60*60*3))) {
+				  self.currentSession = data;
 				  self.sessionActive = true;
+				}
 			})
 		}
 
@@ -31,7 +35,7 @@ export class AttendanceModelService {
 	getCurrentSessionNumber() {
 		let rtn = undefined;
 
-		if (this.currentSession) {
+		if (this.isSessionActive()) {
 			rtn = this.currentSession.id;
 		}
 
@@ -54,8 +58,6 @@ export class AttendanceModelService {
 
 		return rtn;
 	}
-
-
 
 	resetActiveSessionFlag() {
 		this.sessionActive = undefined;
