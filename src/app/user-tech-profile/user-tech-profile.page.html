@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>user-tech-profile</ion-title>
+    <ion-title>{{getCandidateName()}} - Tech Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 	<ion-card>
-		<ion-card-header>
+		<!-- ion-card-header>
 		    <ion-card-title>Here's the user tech profile:</ion-card-title>
-		</ion-card-header>
+		</ion-card-header -->
 		<ion-card-content>
 			<table *ngIf="isTechProfileAvailable()">
 				<tr class="tech-profile-level">

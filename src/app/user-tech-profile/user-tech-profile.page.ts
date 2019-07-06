@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { AlertService } from '../_services/alert.service';
 import { TechProfileAPIService } from '../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-user-tech-profile',
@@ -14,6 +15,7 @@ import { UserTechProfileModelService } from '../_services/user-tech-profile-mode
 export class UserTechProfilePage implements OnInit {
 
   	candidateId = undefined;
+  	candidate = undefined;
   	techProfile = undefined;
   	candidateScores = undefined;
 
@@ -22,7 +24,8 @@ export class UserTechProfilePage implements OnInit {
 		    private _route: ActivatedRoute,
 			private _techProfileService: TechProfileAPIService,
 			private _userTechProfileModel: UserTechProfileModelService,
-			private _alertService: AlertService ) {
+		    private _userService: UserService,
+		    private _alertService: AlertService ) {
 
 	}
 
@@ -33,7 +36,15 @@ export class UserTechProfilePage implements OnInit {
 			console.log("candidateId ==> " + self.candidateId);
 
 			self._userTechProfileModel.init(self.candidateId);
+
+			self._userService.getCandidateById(self.candidateId).then((data) => {
+				self.candidate = data;
+			})
 		})
+	}
+
+	getCandidateName() {
+		return this.candidate && this.candidate["name"];
 	}
 
 	isTechProfileAvailable() {
