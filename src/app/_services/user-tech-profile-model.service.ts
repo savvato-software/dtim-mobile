@@ -54,7 +54,7 @@ export class UserTechProfileModelService {
 	}
 
 	getTechProfileTopics() {
-		return this.techProfile["topics"];
+		return this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
 	}
 
 	getTechProfileLineItemsByTopic(topicId) {
@@ -62,7 +62,17 @@ export class UserTechProfileModelService {
 		let topic = this.techProfile["topics"].find((t) => { return t["id"] === topicId; });
 
 		if (topic) {
-			rtn = topic["lineItems"];
+			rtn = topic["lineItems"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+		}
+
+		return rtn;
+	}
+
+	getTechProfileLineItemById(id) {
+		let rtn = undefined;
+
+		for (var x=0; this.techProfile && !rtn && x < this.techProfile["topics"].length; x++) {
+			rtn = this.techProfile["topics"][x]["lineItems"].find((li) => { return li["id"] === id; });
 		}
 
 		return rtn;

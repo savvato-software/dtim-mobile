@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../_services/question.service'
+import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service'
 
 @Component({
   selector: 'app-line-item-level-content-page',
@@ -14,13 +15,15 @@ export class LineItemLevelContentPagePage implements OnInit {
 	
 	candidateId = undefined;
 	lineItemId = undefined;
+	lineItem = undefined;
 	idx = undefined;
 	questions = undefined;
 
     constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
-				private _questionService: QuestionService) {
+				private _questionService: QuestionService,
+				private _userTechProfileModelService: UserTechProfileModelService) {
 
 	}
 
@@ -34,6 +37,8 @@ export class LineItemLevelContentPagePage implements OnInit {
 			self._questionService.getByLineItemAndLevel(self.lineItemId, self.idx).then((data) => {
 				self.questions = data;
 			})
+
+			self.lineItem = self._userTechProfileModelService.getTechProfileLineItemById(self.lineItemId);
 		});
 	}
 
@@ -51,5 +56,17 @@ export class LineItemLevelContentPagePage implements OnInit {
 
 	onQuestionClicked(q) {
 		this._router.navigate(['/candidate-question-detail/' + this.candidateId + '/' + q.id])
+	}
+
+	getLineItemLevel() {
+		return this.idx;
+	}
+
+	getLineItemShortDescription() {
+		return this.lineItem && this.lineItem["l"+this.idx+"Description"].substring(0, 25);
+	}
+
+	getLineItem() {
+		return this.lineItem || {id: ''};
 	}
 }
