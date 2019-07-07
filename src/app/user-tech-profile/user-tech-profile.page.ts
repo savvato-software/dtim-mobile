@@ -17,7 +17,6 @@ export class UserTechProfilePage implements OnInit {
   	candidateId = undefined;
   	candidate = undefined;
   	techProfile = undefined;
-  	candidateScores = undefined;
 
 	constructor(private _location: Location,
 		    private _router: Router,
@@ -88,5 +87,13 @@ export class UserTechProfilePage implements OnInit {
 		this._userTechProfileModel.save().then(() => {
 			this._location.back();
 		});
+	}
+
+	getBackgroundColor(id, idx) {
+		let score = this.getScore(id);
+
+		if (score == 0) return "white";
+
+		if (score >= idx) return "lightblue"; else return "white";
 	}
 }
