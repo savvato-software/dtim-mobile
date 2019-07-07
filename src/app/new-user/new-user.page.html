@@ -18,7 +18,7 @@
 			Absolutely not required, but we think you will find the insights very valuable.<br/>
 			<br/>
 
-			<ion-item>
+			<!-- ion-item>
 			  <ion-label position="floating">Name</ion-label>
 			  <ion-input data-test="name-input" (ionChange)="onNameChange($event)" [value]="getName()" required></ion-input>
 			</ion-item>
@@ -28,11 +28,58 @@
 			</ion-item>
 			<ion-item>
 			  <ion-label position="floating">Email</ion-label>
-			  <ion-input data-test="name-input" (ionChange)="onEmailChange($event)" [value]="getEmail()" required></ion-input>
-			</ion-item>
-			<br/><br/>
-			<ion-button class="" [disabled]="!isSaveBtnEnabled()" (click)="onSaveBtnClicked()">Sign Me Up!</ion-button>
-			<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+			  <ion-input data-test="name-input" (ionChange)="onEmailChange($event)" [value]="getEmail()" required pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"></ion-input>
+			</ion-item -->
+
+		    <form [formGroup]="validations_form"  (ngSubmit)="onSaveBtnClicked(validations_form.value)">
+			    <ion-item>
+			      <ion-label position="floating" color="primary">Name</ion-label>
+			      <ion-input data-test="name-input" type="text" formControlName="name" (ionChange)="onNameChange($event)" [value]="getName()" required></ion-input>
+			    </ion-item>
+			    <div class="validation-errors">
+			      <ng-container *ngFor="let validation of validation_messages.name">
+			        <div class="error-message" *ngIf="validations_form.get('name').hasError(validation.type) && (validations_form.get('name').dirty || validations_form.get('name').touched)">
+			          <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			        </div>
+			      </ng-container>
+			    </div>
+
+			    <ion-item>
+			      <ion-label position="floating" color="primary">Email</ion-label>
+			      <ion-input data-test="name-input" type="text" formControlName="email" (ionChange)="onEmailChange($event)" [value]="getEmail()" required></ion-input>
+			    </ion-item>
+			    <div class="validation-errors">
+			      <ng-container *ngFor="let validation of validation_messages.email">
+			        <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+			          <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			        </div>
+			      </ng-container>
+			    </div>
+
+			    <div formGroupName="country_phone">
+			      <!-- ion-item>
+			        <ion-label position="floating" color="primary">Country</ion-label>
+			        <ion-select formControlName="country" cancelText="Cancel" okText="OK">
+			          <ion-select-option *ngFor="let item of countries" [value]="item">{{item.name}}</ion-select-option>
+			        </ion-select>
+			      </ion-item -->
+			      <ion-item>
+			        <ion-label position="floating" color="primary">Phone</ion-label>
+					<ion-input data-test="name-input" type="text" formControlName="phone" (ionChange)="onPhoneChange($event)" [value]="getPhone()" required placeholder="{{ validations_form.value.country_phone.country.sample_phone }}"></ion-input>
+			      </ion-item>
+			      <div class="validation-errors">
+			        <ng-container *ngFor="let validation of validation_messages.phone">
+			          <div class="error-message" *ngIf="validations_form.get('country_phone').get('phone').hasError(validation.type) && (validations_form.get('country_phone').get('phone').dirty || validations_form.get('country_phone').get('phone').touched)">
+			            <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			          </div>
+			        </ng-container>
+			      </div>
+			    </div>
+				<br/><br/>
+				<ion-button class="submit-btn" type="submit" [disabled]="!isSaveBtnEnabled() && !validations_form.valid">Sign Me Up!</ion-button>
+				<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+			</form>
+
 	  </ion-card-content>
 	</ion-card>
 </ion-content>
