@@ -61,4 +61,8 @@ export class AdminPage implements OnInit {
   onHomeBtnClicked() {
     this._router.navigate(['/home']);
   }
+
+  onQuestionsBtnClicked() {
+    this._router.navigate(['/question-list']);
+  }
 }

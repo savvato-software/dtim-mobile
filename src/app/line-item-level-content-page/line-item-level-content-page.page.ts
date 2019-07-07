@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../_services/question.service'
-import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service'
+import { TechProfileModelService } from '../_services/tech-profile-model.service'
 
 @Component({
   selector: 'app-line-item-level-content-page',
@@ -23,7 +23,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 				private _questionService: QuestionService,
-				private _userTechProfileModelService: UserTechProfileModelService) {
+				private _techProfileModelService: TechProfileModelService) {
 
 	}
 
@@ -38,7 +38,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 				self.questions = data;
 			})
 
-			self.lineItem = self._userTechProfileModelService.getTechProfileLineItemById(self.lineItemId);
+			self.lineItem = self._techProfileModelService.getTechProfileLineItemById(self.lineItemId);
 		});
 	}
 

@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
 
+import { TechProfileModelService } from './tech-profile-model.service'
 import { TechProfileAPIService } from './tech-profile-api.service'
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserTechProfileModelService {
+export class UserTechProfileModelService extends TechProfileModelService {
 
-	techProfile = undefined;
 	candidateScores = undefined;
 	candidateId = undefined;
-	dirty = false;
+	dirty = false;	
 
-	constructor(private _techProfileAPI: TechProfileAPIService) { }
+	constructor(protected _techProfileAPI: TechProfileAPIService) {
+		super(_techProfileAPI);
+	}
 
 	init(candidateId) {
+		super._init();
+
 		let self = this;
-		
+
 		if (candidateId !== self.candidateId) {
 
 			self.candidateId = candidateId;
-
-			self._techProfileAPI.get(1).then((tp) => {
-				self.techProfile = tp;
-			})
 
 			self._techProfileAPI.getScores(candidateId).then((scores) => {
 				self.candidateScores = scores;
@@ -42,40 +42,11 @@ export class UserTechProfileModelService {
 	}
 
 	isTechProfileAvailable() {
-		return !!this.techProfile;
+		return super.isTechProfileAvailable();
 	}
 
 	isCandidateScoresAvailable() {
 		return !!this.candidateScores;
-	}
-
-	getTechProfile() {
-		return this.techProfile;
-	}
-
-	getTechProfileTopics() {
-		return this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
-	}
-
-	getTechProfileLineItemsByTopic(topicId) {
-		let rtn = undefined;
-		let topic = this.techProfile["topics"].find((t) => { return t["id"] === topicId; });
-
-		if (topic) {
-			rtn = topic["lineItems"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
-		}
-
-		return rtn;
-	}
-
-	getTechProfileLineItemById(id) {
-		let rtn = undefined;
-
-		for (var x=0; this.techProfile && !rtn && x < this.techProfile["topics"].length; x++) {
-			rtn = this.techProfile["topics"][x]["lineItems"].find((li) => { return li["id"] === id; });
-		}
-
-		return rtn;
 	}
 
 	getScore(lineItemId) {

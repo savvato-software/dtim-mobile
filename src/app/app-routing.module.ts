@@ -17,7 +17,16 @@ const routes: Routes = [
       loadChildren: './line-item-action-page/line-item-action-page.module#LineItemActionPagePageModule' },
   { path: 'line-item-level-content-page/:candidateId/:lineItemId/:idx', 
       loadChildren: './line-item-level-content-page/line-item-level-content-page.module#LineItemLevelContentPagePageModule' },
-  { path: 'candidate-question-detail/:candidateId/:questionId', loadChildren: './candidate-question-detail/candidate-question-detail.module#CandidateQuestionDetailPageModule' },
+  { path: 'candidate-question-detail/:candidateId/:questionId', 
+      loadChildren: './candidate-question-detail/candidate-question-detail.module#CandidateQuestionDetailPageModule' },
+  { path: 'question-list', 
+      loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
+  { path: 'question-display/:questionId',
+      loadChildren: './admin/question-display/question-display.module#QuestionDisplayPageModule' },
+  { path: 'question-edit/new', 
+      loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
+  { path: 'question-edit/:questionId', 
+      loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
 ];
 
 @NgModule({

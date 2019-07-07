@@ -12,6 +12,40 @@ export class QuestionService {
 
 	}
 
+  getLineItemLevelAssociations(questionId) {
+    let url = environment.apiUrl + "/api/question/" + questionId + "/lineitem/levels";
+
+    let rtn = new Promise(
+      (resolve, reject) => {
+      this._apiService.getUnsecuredAPI(url).subscribe(
+        (data) => {
+          resolve(data);
+        }, (err) => {
+          reject(err);
+        });
+      }
+    );
+
+    return rtn;
+  }
+
+  getAll() {
+      let url = environment.apiUrl + "/api/question/all";
+
+      let rtn = new Promise(
+        (resolve, reject) => {
+        this._apiService.getUnsecuredAPI(url).subscribe(
+          (data) => {
+            resolve(data);
+          }, (err) => {
+            reject(err);
+          });
+        }
+      );
+
+      return rtn;
+  }
+
   getQuestionById(id) {
       let url = environment.apiUrl + "/api/question/" + id;
 
