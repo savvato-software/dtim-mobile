@@ -16,6 +16,8 @@ export class QuestionEditPage implements OnInit {
 	question = undefined;
 	lilvassociations = undefined;
 	associatedLineItems = undefined;
+	addedAssociatedLineItems = undefined;
+	isAddingLILV = false;
 
 	constructor(private _location: Location,
 			    private _router: Router,
@@ -43,12 +45,15 @@ export class QuestionEditPage implements OnInit {
 
 					self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
 						self.lilvassociations = data;
-						self.associatedLineItems = [];
+						let associatedLineItems = [];
+						self.addedAssociatedLineItems = undefined;
 
 						data.forEach((elem) => {
 							let li = self._techProfileModelService.getTechProfileLineItemById(elem[0]);
-							self.associatedLineItems.push(li);
+							associatedLineItems.push(li);
 						})
+
+						self.associatedLineItems = associatedLineItems;
 					})
 				}
 			}
@@ -71,13 +76,19 @@ export class QuestionEditPage implements OnInit {
 		return this.associatedLineItems;
 	}
 
-	onAddTopicLineItemPair() {
+	getUnassociatedLineItems() {
+	
+	}
 
+	isAddingLineItemLevelAssociation() {
+		return this.isAddingLILV;
+	}
+
+	onAddLineItemLevelAssociationBtnClicked() {
+		this.isAddingLILV = true;
 	}
 
 	getScore(lineItemId) {
-		// TODO: make this return the level index for this question on this line item
-
 		let assoc = this.lilvassociations.find((elem) => { return elem[0] === lineItemId; });
 
 		return assoc[1];
@@ -92,5 +103,9 @@ export class QuestionEditPage implements OnInit {
 		let assoc = this.lilvassociations.find((elem) => { return elem[0] === lineItemId; });
 		assoc[1] = idx;
 	}
+
+
+	// WILO.. Next, add new li/lv associations.. Click on the add button, should see a list of all the line items that are not currently associated with this question. I select one, and it adds the id to a collection. Displays it normally, the next step is select the level. then implement saving.
+
 
 }

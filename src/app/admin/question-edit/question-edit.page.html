@@ -10,7 +10,9 @@
 		<ion-input data-test="question-edit-input" (ionChange)="onQuestionChange($event)" [value]="getQuestionText()" required></ion-input>
 	</ion-item>
 	<ion-button class="" (click)="onAddLineItemLevelAssociationBtnClicked()">Add LI/LV Assoc.</ion-button>
-	
+	<div *ngIf="isAddingLineItemLevelAssociation()">
+		A list of LILVs will go here.
+	</div>
 	<div *ngIf="hasLineItemLevelAssociations()">
 
 					<table class="lineItemTable" *ngFor="let lineItem of getLineItemLevelAssociations()">

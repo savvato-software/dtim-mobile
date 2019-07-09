@@ -7,6 +7,8 @@ import { TechProfileAPIService } from '../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service';
 import { UserService } from '../_services/user.service';
 
+import { TechProfileComponent } from '../tech-profile/tech-profile.component';
+
 @Component({
   selector: 'app-user-tech-profile',
   templateUrl: './user-tech-profile.page.html',
@@ -56,21 +58,6 @@ export class UserTechProfilePage implements OnInit {
 		return self._userTechProfileModel.isCandidateScoresAvailable();
 	}
 
-	getTechProfile() {
-		let self = this;
-		return self._userTechProfileModel.getTechProfile();
-	}
-
-	getTechProfileTopics() {
-		let self = this;
-		return self._userTechProfileModel.getTechProfileTopics();
-	}
-
-	getTechProfileLineItemsByTopic(topicId) {
-		let self = this;
-		return self._userTechProfileModel.getTechProfileLineItemsByTopic(topicId);
-	}
-
 	getScore(lineItemId) {
 		let self = this;
 		return self._userTechProfileModel.getScore(lineItemId);
@@ -89,11 +76,17 @@ export class UserTechProfilePage implements OnInit {
 		});
 	}
 
-	getBackgroundColor(id, idx) {
-		let score = this.getScore(id);
-
-		if (score == 0) return "white";
-
-		if (score >= idx) return "lightblue"; else return "white";
+	getParams() {
+		let self = this;
+		return {
+			getBackgroundColor: (id, idx) => {
+				let score = self.getScore(id);
+				if (score == 0) return "white";
+				if (score >= idx) return "lightblue"; else return "white";
+			},
+			onLxDescriptionClick: (id, idx) => {
+				self._router.navigate(['/line-item-action-page/' + self.candidateId + '/' + id + '/' + idx]);
+			}
+		};
 	}
 }

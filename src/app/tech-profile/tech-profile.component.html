@@ -1,0 +1,23 @@
+<table *ngIf="_model.isTechProfileAvailable()">
+	<tr class="tech-profile-level">
+		{{_model.getTechProfile()["name"]}}
+	</tr>
+	<table class="tech-profile-topic-level" *ngFor="let topic of _model.getTechProfileTopics()">
+		<tr class="tech-profile-topic">
+			{{topic.name}}
+		</tr>
+		<table class="lineItemTable" *ngFor="let lineItem of _model.getTechProfileLineItemsByTopic(topic['id'])">
+			<tr class="tech-profile-line-item-level-header" >
+				<td colspan="9">{{lineItem.name}}</td>
+			</tr>
+			<tr class="tech-profile-line-item-level">
+				<td [ngStyle]="{'background-color':getBackgroundColor(lineItem.id, 0)}" (click)="onLxDescriptionClick(lineItem.id, 0)"><span class="tech-profile-line-item-level-element">{{lineItem.l0Description}}</span></td>
+				<td [ngStyle]="{'background-color':getBackgroundColor(lineItem.id, 1)}" (click)="onLxDescriptionClick(lineItem.id, 1)"><span class="tech-profile-line-item-level-element">{{lineItem.l1Description}}</span></td>
+				<td [ngStyle]="{'background-color':getBackgroundColor(lineItem.id, 2)}" (click)="onLxDescriptionClick(lineItem.id, 2)"><span class="tech-profile-line-item-level-element">{{lineItem.l2Description}}</span></td>
+				<td [ngStyle]="{'background-color':getBackgroundColor(lineItem.id, 3)}" (click)="onLxDescriptionClick(lineItem.id, 3)"><span class="tech-profile-line-item-level-element">{{lineItem.l3Description}}</span></td>
+			</tr>
+		</table>
+	</table>
+</table>
+
+<div *ngIf="!_model.isTechProfileAvailable()"> Not available! </div>
