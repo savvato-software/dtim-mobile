@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { QuestionDisplayPage } from './question-display.page';
 
+import { TechProfileModule } from '../../tech-profile/tech-profile.module';
+
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
+    ,TechProfileModule
   ],
   declarations: [QuestionDisplayPage]
 })

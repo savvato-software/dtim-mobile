@@ -48,26 +48,9 @@ export class UserTechProfilePage implements OnInit {
 		return this.candidate && this.candidate["name"];
 	}
 
-	isTechProfileAvailable() {
-		let self = this;
-		return self._userTechProfileModel.isTechProfileAvailable();
-	}
-
-	isCandidateScoresAvailable() {
-		let self = this;
-		return self._userTechProfileModel.isCandidateScoresAvailable();
-	}
-
 	getScore(lineItemId) {
 		let self = this;
 		return self._userTechProfileModel.getScore(lineItemId);
-	}
-
-	onLxDescriptionClick(lineItemId, idx) {
-		// this._userTechProfileModel.setLineItemScore(lineItemId, idx);
-
-		let self = this;
-		self._router.navigate(['/line-item-action-page/' + self.candidateId + '/' + lineItemId + '/' + idx]);
 	}
 
 	onBackBtnClicked() {

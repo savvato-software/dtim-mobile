@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
+import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
+
 @Component({
   selector: 'app-question-edit',
   templateUrl: './question-edit.page.html',
@@ -15,9 +17,6 @@ export class QuestionEditPage implements OnInit {
 	questionId = undefined;
 	question = undefined;
 	lilvassociations = undefined;
-	associatedLineItems = undefined;
-	addedAssociatedLineItems = undefined;
-	isAddingLILV = false;
 
 	constructor(private _location: Location,
 			    private _router: Router,
@@ -45,15 +44,6 @@ export class QuestionEditPage implements OnInit {
 
 					self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
 						self.lilvassociations = data;
-						let associatedLineItems = [];
-						self.addedAssociatedLineItems = undefined;
-
-						data.forEach((elem) => {
-							let li = self._techProfileModelService.getTechProfileLineItemById(elem[0]);
-							associatedLineItems.push(li);
-						})
-
-						self.associatedLineItems = associatedLineItems;
 					})
 				}
 			}
@@ -64,48 +54,47 @@ export class QuestionEditPage implements OnInit {
 		return this.question && this.question["text"];
 	}
 
-	onSaveBtnPressed() {
-		console.log("Question Edit Save btn pressed!");
+	onQuestionChange(evt) {
+		this.question["text"] = evt.currentTarget.value;
 	}
 
-	hasLineItemLevelAssociations() {
-		return this.associatedLineItems && this.associatedLineItems.length > 0;
-	}
-
-	getLineItemLevelAssociations() {
-		return this.associatedLineItems;
-	}
-
-	getUnassociatedLineItems() {
-	
-	}
-
-	isAddingLineItemLevelAssociation() {
-		return this.isAddingLILV;
-	}
-
-	onAddLineItemLevelAssociationBtnClicked() {
-		this.isAddingLILV = true;
+	onBackBtnClicked() {
+		this._questionService.setLineItemLevelAssociations(this.question["id"], this.lilvassociations).then(() => {
+			this._location.back();
+		});
 	}
 
 	getScore(lineItemId) {
-		let assoc = this.lilvassociations.find((elem) => { return elem[0] === lineItemId; });
+		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
 
-		return assoc[1];
+		return assoc ? assoc[1] : -1;
 	}
 
-	getBackgroundColor(lineItemId, idx) {
-		let score = this.getScore(lineItemId);
-		if (score === idx) return "lightblue"; else return "white";
+	getParams() {
+		let self = this;
+		return {
+			getBackgroundColor: (id, idx) => {
+				if (self.getScore(id) === idx) {
+					return "lightblue";
+				} else {
+					return "white";
+				}
+			},
+			onLxDescriptionClick: (id, idx) => {
+				// TODO think we could do better than O(2n)?
+				let association = self.lilvassociations.find((element) => { return element[0] === id; });
+
+				if (association) {
+					if (idx === association[1]) {
+						let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
+						self.lilvassociations = l;
+					} else {
+						association[1] = idx
+					}
+				} else {
+					self.lilvassociations.push([id, idx]);
+				}
+			}
+		}
 	}
-
-	onLxDescriptionClick(lineItemId, idx) {
-		let assoc = this.lilvassociations.find((elem) => { return elem[0] === lineItemId; });
-		assoc[1] = idx;
-	}
-
-
-	// WILO.. Next, add new li/lv associations.. Click on the add button, should see a list of all the line items that are not currently associated with this question. I select one, and it adds the id to a collection. Displays it normally, the next step is select the level. then implement saving.
-
-
 }

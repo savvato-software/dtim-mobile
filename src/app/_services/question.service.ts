@@ -29,6 +29,34 @@ export class QuestionService {
     return rtn;
   }
 
+  setLineItemLevelAssociations(questionId, lilvassociations) {
+    let url = environment.apiUrl + "/api/question/" + questionId + "/lineitem/levels";
+
+    let data = '';
+
+    for (var x=0; x < lilvassociations.length; x++) {
+      if (x > 0) data += '&';
+
+      data += 'liId' + x + '=' + lilvassociations[x][0] + '&liVal' + x + '=' + lilvassociations[x][1];
+    }
+
+    if (data.length > 0)
+      data += '&count=' + lilvassociations.length;
+
+    let rtn = new Promise(
+      (resolve, reject) => {
+      this._apiService.postUnsecuredAPI(url, data).subscribe(
+        (data) => {
+          resolve(data);
+        }, (err) => {
+          reject(err);
+        });
+      }
+    );
+
+    return rtn;
+  }
+
   getAll() {
       let url = environment.apiUrl + "/api/question/all";
 

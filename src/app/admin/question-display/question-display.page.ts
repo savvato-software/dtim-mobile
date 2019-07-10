@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../../_services/question.service';
+import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
 
 @Component({
   selector: 'app-question-display',
@@ -26,9 +27,15 @@ export class QuestionDisplayPage implements OnInit {
 		self._route.params.subscribe((params) => {
 			self.questionId = params['questionId'];
 
-			self._questionService.getQuestionById(self.questionId).then((q) => {
-				self.question = q[0];
-			})
+			if (self.questionId) {
+				self._questionService.getQuestionById(self.questionId).then((q) => {
+					self.question = q[0];
+				});
+
+				self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
+					self.lilvassociations = data;
+				})
+			}
 		});
 	}
 
@@ -43,4 +50,27 @@ export class QuestionDisplayPage implements OnInit {
 	onBackBtnClicked() {
 		this._location.back();
 	}
+
+	getScore(lineItemId) {
+		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
+
+		return assoc ? assoc[1] : -1;
+	}
+
+	getParams() {
+		let self = this;
+		return {
+			getBackgroundColor: (id, idx) => {
+				if (self.getScore(id) === idx) {
+					return "lightblue";
+				} else {
+					return "white";
+				}
+			},
+			onLxDescriptionClick: (id, idx) => {
+				// do nothing... read only.
+			}
+		}
+	}
+
 }
