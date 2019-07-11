@@ -10,6 +10,9 @@ import { AttendanceModelService } from '../_services/attendance-model.service';
 })
 export class HomePage {
 
+	showAdminBtn = false;
+	bannerClickCount = 0;
+
 	constructor(private _router: Router,
   				private _attendanceModelService: AttendanceModelService) {
 
@@ -24,10 +27,24 @@ export class HomePage {
 	}
 
 	onAdminBtnClicked() {
+		this.showAdminBtn = false;
 		this._router.navigate(['/admin']);
 	}
 
 	isSessionActive() {
 		return this._attendanceModelService.isSessionActive();
+	}
+
+	onBannerClick() {
+		this.bannerClickCount++;
+
+		if (this.bannerClickCount === 7) {
+			this.bannerClickCount = 0;
+			this.showAdminBtn = true;
+		}
+	}
+
+	isAdminBtnHidden() {
+		return !this.showAdminBtn;
 	}
 }

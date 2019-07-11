@@ -14,6 +14,7 @@ export class QuestionDisplayPage implements OnInit {
 
 	questionId = undefined;
 	question = undefined;
+	lilvassociations = undefined;
 
 	constructor(private _location: Location,
 			    private _router: Router,

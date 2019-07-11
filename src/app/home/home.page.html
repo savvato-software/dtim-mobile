@@ -1,18 +1,20 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Denver Tech Interview Onboarding App v0.1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
   <div class="ion-padding">
-    Welcome to the Denver Tech Interview Meetup!<br/><br/><br/>
-    <ion-button class="" [disabled]="!isSessionActive()" (click)="onNewUserBtnClicked()">I'm New Here</ion-button>
+    <ion-row>
+      <ion-col>
+        <img src="assets/img/dtim-bannner.jpg" (click)="onBannerClick()"/>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="centered" [disabled]="!isSessionActive()" (click)="onNewUserBtnClicked()">I'm New Here</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button class="centered" [disabled]="!isSessionActive()" (click)="onReturningUserBtnClicked()">I'm Back For More!</ion-button>
+      </ion-col>
+    </ion-row>
     <br/><br/><br/>
-    <ion-button class="" [disabled]="!isSessionActive()" (click)="onReturningUserBtnClicked()">I'm Back For More!</ion-button>
-    <br/><br/><br/>
-    <ion-button class="" (click)="onAdminBtnClicked()">I'm the Admin!</ion-button>
+    <ion-button [hidden]="isAdminBtnHidden()" class="centered" (click)="onAdminBtnClicked()">I'm the Admin!</ion-button>
   </div>
 </ion-content>
