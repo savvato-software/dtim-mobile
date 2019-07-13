@@ -93,9 +93,17 @@ export class TechProfileAPIService {
   }
 
   addLineItem(topicId, name) {
+  	return this.addLineItemWithDescriptions(topicId, name, "level 0 desc", "level 1 desc", "level 2 desc", "level 3 desc");
+  }
+
+  addLineItemWithDescriptions(topicId, name, l0description, l1description, l2description, l3description) {
   	let url = environment.apiUrl + "/api/techprofile/topics/" + topicId + "/lineitem/new"
 
   	let data = "lineItemName="+name
+  		+"&l0description="+l0description
+  		+"&l1description="+l1description
+  		+"&l2description="+l2description
+  		+"&l3description="+l3description;
 
   	let rtn = new Promise(
   		(resolve, reject) => {

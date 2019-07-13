@@ -6,5 +6,6 @@
 
 <ion-content>
 	<ion-button class="" (click)="onNewTopicBtnClicked()">New Topic</ion-button>
+	<ion-button class="" [disabled]="!isNewLineItemBtnAvailable()" (click)="onNewLineItemBtnClicked()">New Line Item</ion-button>
 	<tech-profile [params]="getParams()"></tech-profile>
 </ion-content>

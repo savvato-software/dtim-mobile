@@ -25,6 +25,7 @@ export class TechProfileEditPage implements OnInit {
 
 	selectedTopicIDs = [];
 	selectedLineItemIDs = [];
+	allowMultiSelect = false;
 
 	ngOnInit() {
 
@@ -47,10 +48,22 @@ export class TechProfileEditPage implements OnInit {
 					return undefined;
 			},
 			onTopicClick: (thisId) => {
-				if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
-					self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
-				} else {
+				if (self.selectedTopicIDs.length === 0) {
 					self.selectedTopicIDs.push(thisId);
+				} else {
+					if (self.allowMultiSelect) {
+						if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
+								self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
+						} else {
+							self.selectedTopicIDs.push(thisId);
+						}
+					} else {
+						if (self.selectedTopicIDs[0] === thisId) {
+							self.selectedTopicIDs = [];
+						} else {
+							self.selectedTopicIDs[0] = thisId;
+						}
+					}
 				}
 			},
 			getLineItemBackgroundColor: (thisId) => {
@@ -60,10 +73,22 @@ export class TechProfileEditPage implements OnInit {
 					return undefined;
 			},
 			onLineItemClick: (thisId) => {
-				if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
-					self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
-				} else {
+				if (self.selectedLineItemIDs.length === 0) {
 					self.selectedLineItemIDs.push(thisId);
+				} else {
+					if (self.allowMultiSelect) {
+						if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
+							self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
+						} else {
+							self.selectedLineItemIDs.push(thisId);
+						}
+					} else {
+						if (self.selectedLineItemIDs[0] === thisId) {
+							self.selectedLineItemIDs = [];
+						} else {
+							self.selectedLineItemIDs[0] = thisId;
+						}
+					}
 				}
 			}
 		};
@@ -89,6 +114,41 @@ export class TechProfileEditPage implements OnInit {
 				handler: (data) => {
 					if (data.topicName && data.topicName.length >= 2) {
 						self._techProfileService.addTopic(data.topicName).then((data) => {
+							self.tpc.init(true);
+						})
+					} else {
+						return false; // disable the button
+					}
+				}
+			}
+			]
+		})
+	}
+
+	isNewLineItemBtnAvailable() {
+		return this.selectedTopicIDs.length > 0
+	}
+
+	onNewLineItemBtnClicked() {
+		let self = this;
+		self._alertService.show({
+			header: 'New Line Item!',
+			message: "Enter the new Line Item name:",
+			inputs: [{
+			  name: 'lineItemName',
+			  placeholder: '....',
+			  type: 'text'
+			}],			
+			buttons: [{
+				text: 'Cancel', 
+				handler: (data) => {
+					// do nothing.. ?
+				}
+			},{
+				text: 'OK', 
+				handler: (data) => {
+					if (data.lineItemName && data.lineItemName.length >= 2) {
+						self._techProfileService.addLineItem(self.selectedTopicIDs[0], data.lineItemName).then((data) => {
 							self.tpc.init(true);
 						})
 					} else {
