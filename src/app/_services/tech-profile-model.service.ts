@@ -11,10 +11,10 @@ export class TechProfileModelService {
 
 	constructor(protected _techProfileAPI: TechProfileAPIService) { }
 
-	_init() {
+	_init(force?: boolean) {
 		let self = this;
 
-		if (self.techProfile === undefined) {
+		if (force || self.techProfile === undefined) {
 			self.techProfile = null;
 
 			self._techProfileAPI.get(1).then((tp) => {
@@ -54,6 +54,11 @@ export class TechProfileModelService {
 		}
 
 		return rtn;
+	}
+
+	addTopic(name) {
+		let self = this;
+		return self._techProfileAPI.addTopic(name);
 	}
 
 }

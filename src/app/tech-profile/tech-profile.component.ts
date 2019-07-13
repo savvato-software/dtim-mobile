@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Injectable, Input } from '@angular/core';
 
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
+@Injectable({
+    providedIn: 'root'
+})
 @Component({
   selector: 'tech-profile',
   templateUrl: './tech-profile.component.html',
@@ -9,15 +12,18 @@ import { TechProfileModelService } from '../_services/tech-profile-model.service
 })
 export class TechProfileComponent implements OnInit {
 
-//  @Input selectedTechProfileLineItemIds;
   @Input() params: any;
 
   constructor(private _model: TechProfileModelService) { }
 
   ngOnInit() {
-  	if (!this._model.isTechProfileAvailable()) {
-  		this._model._init();
-  	}
+    if (!this._model.isTechProfileAvailable()) {
+      this.init();
+    }
+  }
+
+  init(force = false) {
+    this._model._init(force);
   }
 
   getBackgroundColor(id, idx) {

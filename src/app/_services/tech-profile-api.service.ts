@@ -71,6 +71,48 @@ export class TechProfileAPIService {
 	return rtn;  
   }
 
+  addTopic(name) {
+  	let url = environment.apiUrl + "/api/techprofile/topics/new"
+
+  	let data = "topicName="+name
+
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  				(data) => {
+  					console.log("POST addTopic [" + name + "] API call returned")
+  					console.log(data)
+
+  					resolve(data)
+  				}, (err) => {
+  					reject(err)
+  				});
+  		});
+
+  	return rtn;
+  }
+
+  addLineItem(topicId, name) {
+  	let url = environment.apiUrl + "/api/techprofile/topics/" + topicId + "/lineitem/new"
+
+  	let data = "lineItemName="+name
+
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  				(data) => {
+  					console.log("POST addLineItem [" + name + "] API call returned")
+  					console.log(data)
+
+  					resolve(data)
+  				}, (err) => {
+  					reject(err)
+  				});
+  		});
+
+  	return rtn;
+  }
+
 	JSON_to_URLEncoded(scores){
 		var list = '';
 	
