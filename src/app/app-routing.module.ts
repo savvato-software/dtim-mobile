@@ -27,6 +27,7 @@ const routes: Routes = [
       loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
   { path: 'question-edit/:questionId', 
       loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
+  { path: 'tech-profile-edit', loadChildren: './tech-profile-edit/tech-profile-edit.module#TechProfileEditPageModule' },
 ];
 
 @NgModule({
