@@ -27,17 +27,45 @@ export class TechProfileComponent implements OnInit {
   }
 
   getBackgroundColor(id, idx) {
-  	if (this.params && this.params["getBackgroundColor"]) {
-  		return this.params["getBackgroundColor"](id, idx);
-  	} else {
-  		return "white";
-  	}
+    if (this.params && this.params["getBackgroundColor"]) {
+      return this.params["getBackgroundColor"](id, idx);
+    } else {
+      return "white";
+    }
+  }
+
+  getLineItemBackgroundColor(id) {
+    if (this.params && this.params["getLineItemBackgroundColor"]) {
+      return this.params["getLineItemBackgroundColor"](id);
+    } else {
+      return "white";
+    }
+  }
+
+  getTopicBackgroundColor(id, idx) {
+    if (this.params && this.params["getTopicBackgroundColor"]) {
+      return this.params["getTopicBackgroundColor"](id);
+    } else {
+      return "white";
+    }
   }
 
   onLxDescriptionClick(id, idx) {
   	if (this.params && this.params["onLxDescriptionClick"]) {
   		return this.params["onLxDescriptionClick"](id, idx);
   	} 
+  }
+
+  onLineItemNameClick(id) {
+    if (this.params && this.params["onLineItemClick"]) {
+      return this.params["onLineItemClick"](id);
+    }
+  }
+
+  onTopicNameClick(id) {
+    if (this.params && this.params["onTopicClick"]) {
+      return this.params["onTopicClick"](id);
+    }
   }
 
 }

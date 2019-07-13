@@ -3,11 +3,11 @@
 		{{_model.getTechProfile()["name"]}}
 	</tr>
 	<table class="tech-profile-topic-level" *ngFor="let topic of _model.getTechProfileTopics()">
-		<tr class="tech-profile-topic">
+		<tr class="tech-profile-topic" [ngStyle]="{'background-color':getTopicBackgroundColor(topic.id)}" (click)="onTopicNameClick(topic.id)">
 			{{topic.name}}
 		</tr>
 		<table class="lineItemTable" *ngFor="let lineItem of _model.getTechProfileLineItemsByTopic(topic['id'])">
-			<tr class="tech-profile-line-item-level-header" >
+			<tr class="tech-profile-line-item-level-header" [ngStyle]="{'background-color':getLineItemBackgroundColor(lineItem.id)}" (click)="onLineItemNameClick(lineItem.id)">
 				<td colspan="9">{{lineItem.name}}</td>
 			</tr>
 			<tr class="tech-profile-line-item-level">

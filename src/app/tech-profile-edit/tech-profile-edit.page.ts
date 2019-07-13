@@ -23,18 +23,48 @@ export class TechProfileEditPage implements OnInit {
 
 	}
 
+	selectedTopicIDs = [];
+	selectedLineItemIDs = [];
+
 	ngOnInit() {
 
 	}
 
 	getParams() {
 		let self = this;
+
 		return {
 			getBackgroundColor: (id, idx) => {
 				return "white";
 			},
 			onLxDescriptionClick: (id, idx) => {
 				console.log("LxDescriptionClick!")
+			},
+			getTopicBackgroundColor: (thisId) => {
+				if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
+					return "red"; 
+				else 
+					return undefined;
+			},
+			onTopicClick: (thisId) => {
+				if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
+					self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
+				} else {
+					self.selectedTopicIDs.push(thisId);
+				}
+			},
+			getLineItemBackgroundColor: (thisId) => {
+				if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
+					return "red"; 
+				else 
+					return undefined;
+			},
+			onLineItemClick: (thisId) => {
+				if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
+					self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
+				} else {
+					self.selectedLineItemIDs.push(thisId);
+				}
 			}
 		};
 	}
