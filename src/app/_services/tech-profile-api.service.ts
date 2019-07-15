@@ -121,6 +121,31 @@ export class TechProfileAPIService {
   	return rtn;
   }
 
+  updateLineItemWithDescriptions(lineItem) {
+  	let url = environment.apiUrl + "/api/techprofile/lineitem/" + lineItem["id"];
+
+  	let data = "lineItemName="+lineItem["name"]
+  		+"&l0description="+lineItem["l0description"]
+  		+"&l1description="+lineItem["l1description"]
+  		+"&l2description="+lineItem["l2description"]
+  		+"&l3description="+lineItem["l3description"];
+
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  				(data) => {
+  					console.log("POST updateLineItem [" + lineItem['id'] + "] API call returned")
+  					console.log(data)
+
+  					resolve(data)
+  				}, (err) => {
+  					reject(err)
+  				});
+  		});
+
+  	return rtn;
+  }
+
 	JSON_to_URLEncoded(scores){
 		var list = '';
 	

@@ -159,4 +159,13 @@ export class TechProfileEditPage implements OnInit {
 			]
 		})
 	}
+
+	isEditLineItemBtnAvailable() {
+		return this.selectedLineItemIDs.length > 0;
+	}
+
+	onEditLineItemBtnClicked() {
+		console.log(this.selectedLineItemIDs)
+		this._router.navigate(['/tech-profile-line-item-edit/' + this.selectedLineItemIDs[0]]);
+	}
 }

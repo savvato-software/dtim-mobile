@@ -23,6 +23,23 @@ export class TechProfileModelService {
 		}
 	}
 
+	waitingPromise() {
+		let self = this;
+		return new Promise((resolve, reject) => {
+
+			function to() {
+				setTimeout(() => {
+					if (self.isTechProfileAvailable())
+						resolve();
+					else
+						to();
+				}, 600);
+			}
+
+			to();
+		})
+	}
+
 	isTechProfileAvailable() {
 		return this.techProfile && this.techProfile != null;
 	}
@@ -54,6 +71,15 @@ export class TechProfileModelService {
 		}
 
 		return rtn;
+	}
+
+	updateTechProfileLineItem(lineItem) {
+		let self = this;
+		if (lineItem.id !== -1) {
+			return self._techProfileAPI.updateLineItemWithDescriptions(lineItem);
+		} else {
+			console.error("A lineItem with no backend id was passed to updateTechProfileLineItem.");
+		}
 	}
 
 	addTopic(name) {
