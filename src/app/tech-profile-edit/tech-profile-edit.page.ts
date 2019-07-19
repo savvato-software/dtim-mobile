@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { AlertService } from '../_services/alert.service';
-import { TechProfileAPIService } from '../_services/tech-profile-api.service';
+import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
 import { TechProfileComponent } from '../tech-profile/tech-profile.component';
 
@@ -17,7 +17,7 @@ export class TechProfileEditPage implements OnInit {
 	constructor(private _location: Location,
 		    private _router: Router,
 		    private _route: ActivatedRoute,
-			private _techProfileService: TechProfileAPIService,
+			private _techProfileModelService: TechProfileModelService,
 			private _alertService: AlertService,
 			private tpc: TechProfileComponent) {
 
@@ -113,7 +113,7 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.topicName && data.topicName.length >= 2) {
-						self._techProfileService.addTopic(data.topicName).then((data) => {
+						self._techProfileModelService.addTopic(data.topicName).then((data) => {
 							self.tpc.init(true);
 						})
 					} else {
@@ -148,7 +148,7 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.lineItemName && data.lineItemName.length >= 2) {
-						self._techProfileService.addLineItem(self.selectedTopicIDs[0], data.lineItemName).then((data) => {
+						self._techProfileModelService.addLineItem(self.selectedTopicIDs[0], data.lineItemName).then((data) => {
 							self.tpc.init(true);
 						})
 					} else {
@@ -160,6 +160,46 @@ export class TechProfileEditPage implements OnInit {
 		})
 	}
 
+	isSelectedTopicAbleToMoveUp() {
+		return this._techProfileModelService.isTopicAbleToMoveUp(this.selectedTopicIDs[0]);
+	}
+
+	onMoveTopicUpClicked() {
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDs[0], -1)
+	}
+
+	isSelectedTopicAbleToMoveDown() {
+		return this._techProfileModelService.isTopicAbleToMoveDown(this.selectedTopicIDs[0]);
+	}
+
+	onMoveTopicDownClicked() {
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDs[0], 1)
+	}
+
+	isSelectedLineItemAbleToMoveUp() {
+		return this._techProfileModelService.isLineItemAbleToMoveUp(this.selectedTopicIDs[0], this.selectedLineItemIDs[0]);
+	}
+
+	onMoveLineItemUpClicked() {
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDs[0], this.selectedLineItemIDs[0], -1)	
+	}
+
+	isSelectedLineItemAbleToMoveDown() {
+		return this._techProfileModelService.isLineItemAbleToMoveDown(this.selectedTopicIDs[0], this.selectedLineItemIDs[0]);
+	}
+
+	onMoveLineItemDownClicked() {
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDs[0], this.selectedLineItemIDs[0], 1)
+	}
+
+	isEditTopicBtnAvailable() {
+		return this.selectedTopicIDs.length > 0;
+	}
+
+	onEditTopicBtnClicked() {
+		this._router.navigate(['/tech-profile-topic-edit/' + this.selectedTopicIDs[0]]);
+	}
+
 	isEditLineItemBtnAvailable() {
 		return this.selectedLineItemIDs.length > 0;
 	}
@@ -167,5 +207,11 @@ export class TechProfileEditPage implements OnInit {
 	onEditLineItemBtnClicked() {
 		console.log(this.selectedLineItemIDs)
 		this._router.navigate(['/tech-profile-line-item-edit/' + this.selectedLineItemIDs[0]]);
+	}
+
+	onBackBtnClicked() {
+		this._techProfileModelService.saveSequenceInfo().then((data) => {
+			this._location.back();
+		})
 	}
 }

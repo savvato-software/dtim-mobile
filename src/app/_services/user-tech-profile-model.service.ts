@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { TechProfileModelService } from './tech-profile-model.service'
 import { TechProfileAPIService } from './tech-profile-api.service'
 
+// IMPORTED HERE UNDER PROTEST! Why does the child need to supply instances of each service a parent might use?
+//  Doesn't that break encapsulation? WTF?!
+import { SequenceService } from './sequence.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +16,9 @@ export class UserTechProfileModelService extends TechProfileModelService {
 	candidateId = undefined;
 	dirty = false;	
 
-	constructor(protected _techProfileAPI: TechProfileAPIService) {
-		super(_techProfileAPI);
+	constructor(protected _techProfileAPI: TechProfileAPIService,
+				protected _sequenceService: SequenceService) {
+		super(_techProfileAPI, _sequenceService);
 	}
 
 	init(candidateId) {

@@ -34,20 +34,20 @@ export class TechProfileAPIService {
   getScores(candidateId) {
   	let url = environment.apiUrl + "/api/candidate/" + candidateId + "/techprofile/scores";
 
-	let rtn = new Promise(
-		(resolve, reject) => {
-			this._apiService.getUnsecuredAPI(url).subscribe(
-				(data) => { 
-					console.log("get TechProfile scores for [" + candidateId + "] API call returned");
-					console.log(data);
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.getUnsecuredAPI(url).subscribe(
+  				(data) => { 
+  					console.log("get TechProfile scores for [" + candidateId + "] API call returned");
+  					console.log(data);
 
-					resolve(data);
-				}, (err) => {
-					reject(err);
-				});
-		});
+  					resolve(data);
+  				}, (err) => {
+  					reject(err);
+  				});
+  		});
 
-	return rtn;  
+  	return rtn;  
   }
 
   saveScores(candidateId, scores) {
@@ -55,20 +55,20 @@ export class TechProfileAPIService {
 
   	let data = this.JSON_to_URLEncoded(scores);
 
-	let rtn = new Promise(
-		(resolve, reject) => {
-			this._apiService.postUnsecuredAPI(url, data).subscribe(
-				(data) => { 
-					console.log("POST TechProfile scores for [" + candidateId + "] API call returned");
-					console.log(data);
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  				(data) => { 
+  					console.log("POST TechProfile scores for [" + candidateId + "] API call returned");
+  					console.log(data);
 
-					resolve(data);
-				}, (err) => {
-					reject(err);
-				});
-		});
+  					resolve(data);
+  				}, (err) => {
+  					reject(err);
+  				});
+  		});
 
-	return rtn;  
+  	return rtn;  
   }
 
   addTopic(name) {
@@ -123,27 +123,70 @@ export class TechProfileAPIService {
 
   updateLineItemWithDescriptions(lineItem) {
   	let url = environment.apiUrl + "/api/techprofile/lineitem/" + lineItem["id"];
+    let rtn = new Promise((resolve, reject) => { reject("invalid data") });
 
-  	let data = "lineItemName="+lineItem["name"]
-  		+"&l0description="+lineItem["l0description"]
-  		+"&l1description="+lineItem["l1description"]
-  		+"&l2description="+lineItem["l2description"]
-  		+"&l3description="+lineItem["l3description"];
+  	if (lineItem["name"] !== undefined 
+        && lineItem["l0Description"] !== undefined
+        && lineItem["l1Description"] !== undefined
+        && lineItem["l2Description"] !== undefined
+        && lineItem["l3Description"] !== undefined) {
 
-  	let rtn = new Promise(
-  		(resolve, reject) => {
-  			this._apiService.postUnsecuredAPI(url, data).subscribe(
-  				(data) => {
-  					console.log("POST updateLineItem [" + lineItem['id'] + "] API call returned")
-  					console.log(data)
+        	rtn = new Promise(
+        		(resolve, reject) => {
+        			this._apiService.postUnsecuredAPI2(url, {lineItem: lineItem}).subscribe(
+        				(data) => {
+        					console.log("POST updateLineItem [" + lineItem['id'] + "] API call returned")
+        					console.log(data)
 
-  					resolve(data)
-  				}, (err) => {
-  					reject(err)
-  				});
-  		});
+        					resolve(data)
+        				}, (err) => {
+        					reject(err)
+        				});
+        		});
+        }
 
   	return rtn;
+  }
+
+  updateTopic(topic) {
+    let url = environment.apiUrl + "/api/techprofile/topic/" + topic["id"]
+    let rtn = new Promise((resolve, reject) => { reject("invalid data") })
+
+    if (topic['name'] !== undefined) {
+      rtn = new Promise(
+        (resolve, reject) => {
+              this._apiService.postUnsecuredAPI2(url, {topic: topic}).subscribe(
+                (data) => {
+                  console.log("POST updateTopic [" + topic['id'] + "] API call returned")
+                  console.log(data)
+
+                  resolve(data)
+                }, (err) => {
+                  reject(err)
+                });
+            });
+        }
+
+    return rtn;
+  }
+
+  saveSequenceInfo(arr) {
+    let url = environment.apiUrl + "/api/techprofile/sequences"
+    let rtn = new Promise(
+      (resolve, reject) => {
+        this._apiService.postUnsecuredAPI2(url, {arr: arr}).subscribe(
+          (data) => {
+            console.log("POST sequence info API call returned")
+            console.log(data)
+            resolve(data)
+          }, (err) => {
+            reject(err);
+          }
+        )
+      }
+    )
+
+    return rtn
   }
 
 	JSON_to_URLEncoded(scores){

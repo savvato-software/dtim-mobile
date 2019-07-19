@@ -70,7 +70,14 @@ export class ApiService {
 
 		return this._http.post(url + "?" + data, data, { headers: httpHeaders});
 	}
+	
+	postUnsecuredAPI2(url: string, data: any) {
+		let httpHeaders: HttpHeaders = new HttpHeaders({}); 
+		httpHeaders.set("Content-Type", "application/x-www-form-urlencoded");
 
+		return this._http.post(url, data, { headers: httpHeaders});
+	}
+	
 	delete(url: string) {
 		let user = this.currentUser;
 

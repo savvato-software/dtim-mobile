@@ -31,6 +31,8 @@ const routes: Routes = [
       loadChildren: './tech-profile-edit/tech-profile-edit.module#TechProfileEditPageModule' },
   { path: 'tech-profile-line-item-edit/:lineItemId', 
       loadChildren: './tech-profile-line-item-edit/tech-profile-line-item-edit.module#TechProfileLineItemEditPageModule' },
+  { path: 'tech-profile-topic-edit/:topicId',
+      loadChildren: './tech-profile-topic-edit/tech-profile-topic-edit.module#TechProfileTopicEditPageModule' },
 ];
 
 @NgModule({
