@@ -32,8 +32,6 @@ export class TechProfileTopicEditPage implements OnInit {
 			if (topicId) {
 				self._techProfileModelService.waitingPromise().then(() => {
 					self.topic = self._techProfileModelService.getTechProfileTopicById(topicId)
-					console.log("!!!!!!!!!!!!!")
-					console.log(self.topic)
 				})
 			}
 		})
