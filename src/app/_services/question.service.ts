@@ -148,4 +148,21 @@ export class QuestionService {
       return rtn;
   }
 
+  save(question, lilvassociations) {
+    let url = environment.apiUrl + "/api/question/save";
+
+    return new Promise(
+      (resolve, reject) => {
+        this._apiService.postUnsecuredAPI2(url, {question: question, lilvassociations: lilvassociations}).subscribe(
+          (data) => {
+            console.log("POST QuestionService::save API call returned")
+            console.log(data)
+
+            resolve(data)
+          }, (err) => {
+            reject(err)
+          });
+      });
+  }
+
 }

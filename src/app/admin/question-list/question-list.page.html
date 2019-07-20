@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-	<ion-button class="" (click)="onNewQuestionBtnClicked()">New Question</ion-button>	
+	<ion-button class="" (click)="onNewQuestionBtnClicked()">New Question</ion-button>
 	<div *ngFor="let q of getAllQuestions()" class="question-list-item" (click)="onDisplayQuestionBtnClicked(q)">
 		<span>{{q.text}}</span>
 	</div>

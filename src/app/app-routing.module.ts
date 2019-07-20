@@ -19,6 +19,8 @@ const routes: Routes = [
       loadChildren: './line-item-level-content-page/line-item-level-content-page.module#LineItemLevelContentPagePageModule' },
   { path: 'candidate-question-detail/:candidateId/:questionId', 
       loadChildren: './candidate-question-detail/candidate-question-detail.module#CandidateQuestionDetailPageModule' },
+  { path: 'question-list/:lineItemId/:level', 
+      loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
   { path: 'question-list', 
       loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
   { path: 'question-display/:questionId',
@@ -33,6 +35,8 @@ const routes: Routes = [
       loadChildren: './tech-profile-line-item-edit/tech-profile-line-item-edit.module#TechProfileLineItemEditPageModule' },
   { path: 'tech-profile-topic-edit/:topicId',
       loadChildren: './tech-profile-topic-edit/tech-profile-topic-edit.module#TechProfileTopicEditPageModule' },
+  { path: 'tech-profile-question',
+      loadChildren: './tech-profile-question/tech-profile-question.module#TechProfileQuestionPageModule' }
 ];
 
 @NgModule({

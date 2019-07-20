@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
+import { QuestionEditService } from '../_services/question-edit.service';
+
 import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
 
 @Component({
@@ -14,14 +16,17 @@ import { TechProfileComponent } from '../../tech-profile/tech-profile.component'
 })
 export class QuestionEditPage implements OnInit {
 
+	dirty = false;
 	questionId = undefined;
 	question = undefined;
 	lilvassociations = undefined;
+	isNew = true;
 
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
+			    private _questionEditService: QuestionEditService,
 			    private _techProfileModelService: TechProfileModelService) {
 
 	}
@@ -34,20 +39,32 @@ export class QuestionEditPage implements OnInit {
 		self._route.params.subscribe((params) => {
 			self.questionId = params['questionId'];
 
-			if (self.questionId) {
-				if (self.questionId === 'new') {
-					self.question = {id: -1, text: ''};
-				} else {
-					self._questionService.getQuestionById(self.questionId).then((q) => {
-						self.question = q[0];
-					});
+			self.question = {id: -1, text: ''};
 
-					self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
-						self.lilvassociations = data;
-					})
-				}
+			let tmp = self._questionEditService.getSetupFunc()();
+			if (tmp) {
+				self.lilvassociations = [tmp['lineItemId'], tmp['levelNumber']];
+			}
+
+			if (self.questionId) {
+				self._questionService.getQuestionById(self.questionId).then((q) => {
+					self.question = q[0];
+					self.isNew = false;
+				});
+
+				self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
+					self.lilvassociations = data;
+				})
 			}
 		});
+	}
+
+	isDirty() {
+		return this.dirty;
+	}
+
+	setDirty() {
+		this.dirty = true;
 	}
 
 	getQuestionText() {
@@ -56,12 +73,17 @@ export class QuestionEditPage implements OnInit {
 
 	onQuestionChange(evt) {
 		this.question["text"] = evt.currentTarget.value;
+		this.setDirty();
 	}
 
 	onBackBtnClicked() {
-		this._questionService.setLineItemLevelAssociations(this.question["id"], this.lilvassociations).then(() => {
+		if (this.isDirty()) {
+			this._questionService.save(this.question, this.lilvassociations).then(() => {
+				this._location.back();
+			});
+		} else {
 			this._location.back();
-		});
+		}
 	}
 
 	getScore(lineItemId) {
@@ -94,6 +116,8 @@ export class QuestionEditPage implements OnInit {
 				} else {
 					self.lilvassociations.push([id, idx]);
 				}
+
+				self.setDirty();
 			}
 		}
 	}

@@ -63,7 +63,7 @@ export class AdminPage implements OnInit {
   }
 
   onQuestionsBtnClicked() {
-    this._router.navigate(['/question-list']);
+    this._router.navigate(['/tech-profile-question']);
   }
 
   onTechProfileEditBtnClicked() {
