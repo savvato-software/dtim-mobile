@@ -47,7 +47,7 @@ export class ReturningUserPage implements OnInit {
 				self._userService.markUserAsAttending(candidate["id"]).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
-						message: "We found your previous info. Sweet! Please hand the tablet to the next person. Thanks!",
+						message: "We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!",
 						buttons: [
 							{
 								text: 'OK', role: 'cancel', handler: () => {
@@ -60,7 +60,7 @@ export class ReturningUserPage implements OnInit {
 			} else {
 				self._alertService.show({
 					header: 'Hmmm...',
-					message: "Sorry, we couldn't find a profile with that info...\n\nDo you want to create one?",
+					message: "Sorry, we couldn't find a profile with that info...<br/><br/>Do you want to create one?",
 					buttons: [{
 						text: "No, nevermind.",
 						role: 'cancel'
