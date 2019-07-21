@@ -21,7 +21,6 @@ export class LineItemActionPagePage implements OnInit {
 				private _userTechProfileModel: UserTechProfileModelService
 			    ) {
 
-
 	}
 
 	ngOnInit() {
@@ -49,6 +48,12 @@ export class LineItemActionPagePage implements OnInit {
 
 		// which shows a list of the sessions in which that question was given for this candidate
 		// in which you can click on a session, go to a session detail page, and see the per-question comments for this candidate's mock interview
+	}
+
+	onClearThisLevelBtnClicked() {
+		let self = this;
+		self._userTechProfileModel.clearScore(self.lineItemId);
+		self._location.back();
 	}
 
 	onCancelBtnClicked() {

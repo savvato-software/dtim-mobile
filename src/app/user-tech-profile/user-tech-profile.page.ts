@@ -64,7 +64,7 @@ export class UserTechProfilePage implements OnInit {
 		return {
 			getBackgroundColor: (id, idx) => {
 				let score = self.getScore(id);
-				if (score == 0) return "white";
+				if (score == undefined) return "white";
 				if (score >= idx) return "lightblue"; else return "white";
 			},
 			onLxDescriptionClick: (id, idx) => {

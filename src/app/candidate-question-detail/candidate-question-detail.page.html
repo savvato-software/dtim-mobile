@@ -33,7 +33,7 @@
 
 			<ion-item>
 				<ion-label>Current Session Score</ion-label>
-				<ion-select [(ngModel)]="currentSessionScore" (ionChange)="setDirty()" placeholder="Select...">
+				<ion-select [disabled]="!isSessionActive()" [(ngModel)]="currentSessionScore" (ionChange)="setDirty()" placeholder="Select...">
 				  <ion-select-option value="0">0</ion-select-option>
 				  <ion-select-option value="1">1</ion-select-option>
 				  <ion-select-option value="2">2</ion-select-option>
@@ -41,7 +41,7 @@
 			</ion-item>	
 			<ion-item>
 			  <ion-label position="floating">Comment</ion-label>
-			  <ion-input data-test="candidate-question-detail-current-comment" [(ngModel)]="currentSessionComment" (ionChange)="setDirty()"></ion-input>
+			  <ion-input data-test="candidate-question-detail-current-comment" [disabled]="!isSessionActive()" [(ngModel)]="currentSessionComment" (ionChange)="setDirty()"></ion-input>
 			</ion-item>
 		</ion-card-content>
 	</ion-card>

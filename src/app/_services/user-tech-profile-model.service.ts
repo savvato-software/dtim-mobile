@@ -55,15 +55,19 @@ export class UserTechProfileModelService extends TechProfileModelService {
 	}
 
 	getScore(lineItemId) {
-		let rtn = 0;
+		let rtn = undefined;
 
 		if (this.candidateScores) {
 			let score = this.candidateScores.find((s) => { return s["techProfileLineItemId"] === lineItemId; });
 
-			rtn = !!score ? score["techProfileLineItemScore"] : 0;
+			rtn = !!score ? score["techProfileLineItemScore"] : undefined;
 		}
 
 		return rtn;
+	}
+
+	clearScore(lineItemId) {
+		this.candidateScores = this.candidateScores.filter((s) => { return s["techProfileLineItemId"] !== lineItemId; });
 	}
 
 	setLineItemScore(lineItemId, idx) {

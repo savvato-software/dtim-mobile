@@ -12,23 +12,26 @@
 
 		<ion-card-content>
 			
-			<ion-button *ngIf="!isSessionActive()" class="" (click)="onSessionBtnClicked()">Create New Session</ion-button>
-			<ion-button *ngIf="isSessionActive()" [disabled]="true" class="">Create New Session</ion-button>
+			<!-- ion-button [disabled]="!isSessionActive()" (click)="onSessionBtnClicked()" class="">Create New Session</ion-button -->
+			<ion-button (click)="onSessionBtnClicked()" class="">Create New Session</ion-button>
 
 			<div *ngIf="isSessionActive()">
 				Session is active.<br/><br/>
 				This is the list of people who checked in..<br/><br/>
 
-				<span *ngFor="let item of getListOfCandidatesInAttendance()" (click)="onCandidateClick(item)">
-					{{item.name}}
-				</span>
+				<ion-card *ngFor="let item of getListOfCandidatesInAttendance()">
+					<span class="candidateName" (click)="onCandidateClick(item)">
+						{{item.name}}
+					</span>
+				</ion-card>
 			</div>
 			<div *ngIf="!isSessionActive()">
 				There is not an active session!<br/><br/>
 
 				<!-- The last session was session#{{getLastSessionIndex()}} from {{getLastSessionStartTime()}} to {{getLastSessionEndTime()}}.-->
 			</div>
-
+			
+			<br/><br/>
 			<ion-button class="" (click)="onQuestionsBtnClicked()">Questions</ion-button>
 			<ion-button class="" (click)="onTechProfileEditBtnClicked()">Tech Profile Edit</ion-button>
 			<ion-button class="" (click)="onHomeBtnClicked()">Go Home</ion-button>			

@@ -38,23 +38,22 @@ export class CandidateQuestionDetailPage implements OnInit {
 			self.candidateId = params['candidateId'];
 			self.questionId = params['questionId'] * 1;
 
-			if (self._attendanceModelService.isSessionActive()) {
-				self._questionService.getCandidateHistoryForQuestion(self.candidateId, self.questionId).then((data) => {
-					console.log("candidate history for question " + self.questionId)
-					console.log(data)
+			self._questionService.getCandidateHistoryForQuestion(self.candidateId, self.questionId).then((data) => {
+				console.log("candidate history for question " + self.questionId)
+				console.log(data)
 
-					self.cqgList = data;
-					
-					let sessionNumber = self.getCurrentSessionNumber();
+				self.cqgList = data;
+				
+				let sessionNumber = self.getCurrentSessionNumber();
 
-					self.cqgList.forEach((score) => {
-						if (score["sessionId"] === sessionNumber) {
-							self.currentSessionScore = ''+score["grade"];
-							self.currentSessionComment = score["comment"];
-						}
-					})
+				self.cqgList.forEach((score) => {
+					if (score["sessionId"] === sessionNumber) {
+						self.currentSessionScore = ''+score["grade"];
+						self.currentSessionComment = score["comment"];
+					}
 				})
-			}
+			})
+
 
 			self._userService.getCandidateById(self.candidateId).then((data) => {
 				self.candidate = data;
@@ -85,6 +84,10 @@ export class CandidateQuestionDetailPage implements OnInit {
 
 	getQuestionId() {
 		return this.questionId;
+	}
+
+	isSessionActive() {
+		return !!this.getCurrentSessionNumber()
 	}
 
 	getCurrentSessionQuestionComment() {
