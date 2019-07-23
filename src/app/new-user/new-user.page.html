@@ -46,7 +46,7 @@
 
 			    <ion-item>
 			      <ion-label position="floating" color="primary">Email</ion-label>
-			      <ion-input data-test="name-input" type="text" formControlName="email" (ionChange)="onEmailChange($event)" [value]="getEmail()" required></ion-input>
+			      <ion-input data-test="email-input" type="text" formControlName="email" (ionChange)="onEmailChange($event)" [value]="getEmail()" ></ion-input>
 			    </ion-item>
 			    <div class="validation-errors">
 			      <ng-container *ngFor="let validation of validation_messages.email">
@@ -57,15 +57,9 @@
 			    </div>
 
 			    <div formGroupName="country_phone">
-			      <!-- ion-item>
-			        <ion-label position="floating" color="primary">Country</ion-label>
-			        <ion-select formControlName="country" cancelText="Cancel" okText="OK">
-			          <ion-select-option *ngFor="let item of countries" [value]="item">{{item.name}}</ion-select-option>
-			        </ion-select>
-			      </ion-item -->
 			      <ion-item>
 			        <ion-label position="floating" color="primary">Phone</ion-label>
-					<ion-input data-test="name-input" type="text" formControlName="phone" (ionChange)="onPhoneChange($event)" [value]="getPhone()" required placeholder="{{ validations_form.value.country_phone.country.sample_phone }}"></ion-input>
+					<ion-input data-test="phone-input" type="text" formControlName="phone" (ionChange)="onPhoneChange($event)" [value]="getPhone()" placeholder="{{ validations_form.value.country_phone.country.sample_phone }}"></ion-input>
 			      </ion-item>
 			      <div class="validation-errors">
 			        <ng-container *ngFor="let validation of validation_messages.phone">
