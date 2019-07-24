@@ -10,5 +10,6 @@
 		<ion-input data-test="question-edit-input" (ionChange)="onQuestionChange($event)" [value]="getQuestionText()" required></ion-input>
 	</ion-item>
 	<tech-profile [params]="getParams()"></tech-profile>
-	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
+	<ion-button class="" [disabled]="!isSaveBtnAvailable()" (click)="onSaveBtnClicked()">Save & Go Back</ion-button>
+	<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
 </ion-content>

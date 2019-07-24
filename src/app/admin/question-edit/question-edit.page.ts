@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../../_services/question.service';
+import { AlertService } from '../../_services/alert.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
 import { QuestionEditService } from '../_services/question-edit.service';
@@ -27,6 +28,7 @@ export class QuestionEditPage implements OnInit {
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
 			    private _questionEditService: QuestionEditService,
+    			private _alertService: AlertService,
 			    private _techProfileModelService: TechProfileModelService) {
 
 	}
@@ -40,10 +42,11 @@ export class QuestionEditPage implements OnInit {
 			self.questionId = params['questionId'];
 
 			self.question = {id: -1, text: ''};
+			self.lilvassociations = []
 
 			let tmp = self._questionEditService.getSetupFunc()();
 			if (tmp) {
-				self.lilvassociations = [tmp['lineItemId'], tmp['levelNumber']];
+				self.lilvassociations.push([tmp['lineItemId'], tmp['levelNumber']]);
 			}
 
 			if (self.questionId) {
@@ -76,11 +79,39 @@ export class QuestionEditPage implements OnInit {
 		this.setDirty();
 	}
 
-	onBackBtnClicked() {
-		if (this.isDirty()) {
+	isSaveBtnAvailable() {
+		return this.isDirty() && this.question && this.question['text'] && this.lilvassociations && this.lilvassociations.length > 0
+	}
+
+	onSaveBtnClicked() {
+		if (this.isDirty() && this.question && this.lilvassociations) {
 			this._questionService.save(this.question, this.lilvassociations).then(() => {
 				this._location.back();
 			});
+		} else {
+			this._location.back();
+		}
+	}
+
+	onCancelBtnClicked() {
+		let self = this;
+		if (this.question['text'] && this.question['text'].length > 0 && this.isDirty()) {
+			self._alertService.show({
+				header: 'Save Changes?',
+				message: "You made changes. Save 'em?",
+				buttons: [
+					{
+						text: 'No', role: 'cancel', handler: () => {
+							this._location.back();
+						}
+					}, {
+						text: 'Yes', handler: () => {
+							self.onSaveBtnClicked();
+						}
+					}
+				]
+			})
+
 		} else {
 			this._location.back();
 		}
@@ -108,12 +139,15 @@ export class QuestionEditPage implements OnInit {
 
 				if (association) {
 					if (idx === association[1]) {
+						// remove the association
 						let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
 						self.lilvassociations = l;
 					} else {
+						// update the association
 						association[1] = idx
 					}
 				} else {
+					// add a new association
 					self.lilvassociations.push([id, idx]);
 				}
 
