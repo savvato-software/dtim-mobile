@@ -30,7 +30,7 @@ export class QuestionDisplayPage implements OnInit {
 
 			if (self.questionId) {
 				self._questionService.getQuestionById(self.questionId).then((q) => {
-					self.question = q[0];
+					self.question = q;
 				});
 
 				self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
