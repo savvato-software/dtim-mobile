@@ -51,7 +51,7 @@ export class QuestionEditPage implements OnInit {
 
 			if (self.questionId) {
 				self._questionService.getQuestionById(self.questionId).then((q) => {
-					self.question = q[0];
+					self.question = q;
 					self.isNew = false;
 				});
 

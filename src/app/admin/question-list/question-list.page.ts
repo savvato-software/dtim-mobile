@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../../_services/question.service';
+import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
 import { QuestionEditService } from '../_services/question-edit.service';
 
@@ -13,6 +14,7 @@ import { QuestionEditService } from '../_services/question-edit.service';
 })
 export class QuestionListPage implements OnInit {
 
+	lineItem = undefined
 	lineItemId = undefined
 	levelNumber = undefined
   	questions = undefined;
@@ -21,6 +23,7 @@ export class QuestionListPage implements OnInit {
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
+			    private _techProfileModelService: TechProfileModelService,
 			    private _questionEditService: QuestionEditService) {
 
   }
@@ -40,6 +43,9 @@ export class QuestionListPage implements OnInit {
 			self._questionService.getByLineItemAndLevel(self.lineItemId, self.levelNumber).then((questions) => {
 				self.questions = questions;
 			})
+
+			self._techProfileModelService._init();
+			self.lineItem = self._techProfileModelService.getTechProfileLineItemById(self.lineItemId);
 		}
 	})
   }
@@ -47,9 +53,6 @@ export class QuestionListPage implements OnInit {
   ionViewDidEnter() {
   	this.ngOnInit()
   }
-
-  // WILO.. Can view the questions associated with a cell on the tech profile.. the new question button on that page
-  //   needs to take the line and level into account.
 
 	getAllQuestions() {
 		return this.questions;
@@ -70,5 +73,13 @@ export class QuestionListPage implements OnInit {
 
 	onBackBtnClicked(q) {
 		this._location.back();
+	}
+
+	getLineItemName() {
+		return this.lineItem && this.lineItem['name']
+	}
+
+	getLevelDescriptionShort() {
+		return this.lineItem && this.lineItem["l" + this.levelNumber + "Description"].substring(0, 25);
 	}
 }
