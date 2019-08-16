@@ -55,7 +55,6 @@ export class NewUserPage implements OnInit {
 
 	    let country = new FormControl(this.countries[0], Validators.required);
 	    let phone = new FormControl('', Validators.compose([
-	      Validators.required,
 	      PhoneValidator.validCountryPhone(country)
 	    ]));
 	    this.country_phone_group = new FormGroup({
@@ -66,7 +65,6 @@ export class NewUserPage implements OnInit {
 		this.validations_form = this.formBuilder.group({
 		  name: new FormControl('', Validators.required),
 		  email: new FormControl('', Validators.compose([
-		    Validators.required,
 		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
 		  ])),
 		  country_phone: this.country_phone_group
@@ -98,9 +96,22 @@ export class NewUserPage implements OnInit {
 	}
 
 	isSaveBtnEnabled() {
-		return this.name && this.name.length > 3
-				&& ((this.phone && this.phone.length == 10) || (
-					this.email && this.email.length >= 6));
+		let rtn = this.name && this.name.length > 3;
+		let atLeastOneFieldIsValid = false;
+
+		if (this.phone) {
+			rtn = rtn && this.validations_form.get('country_phone') !== null && (!!this.validations_form.get('country_phone').errors === false) && this.phone.length === 10;
+
+			if (rtn) atLeastOneFieldIsValid = true;
+		} 
+
+		if (this.email) {
+			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && this.email.length > 6
+
+			if (rtn) atLeastOneFieldIsValid = true;
+		}
+
+		return rtn && atLeastOneFieldIsValid;
 	}
 
 	onSaveBtnClicked() {
