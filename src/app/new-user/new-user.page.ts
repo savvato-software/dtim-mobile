@@ -49,6 +49,10 @@ export class NewUserPage implements OnInit {
 	};
 
   	ngOnInit() {
+		this.name = '';
+		this.email = undefined;
+		this.phone = undefined;
+
 	    this.countries = [
 	      new CountryPhone('US', 'United States')
 	    ];
@@ -69,6 +73,10 @@ export class NewUserPage implements OnInit {
 		  ])),
 		  country_phone: this.country_phone_group
 		});
+	}
+
+	ionViewWillEnter() {
+		this.ngOnInit();
 	}
 
 	onNameChange($event) {
