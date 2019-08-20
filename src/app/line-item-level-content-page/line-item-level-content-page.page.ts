@@ -13,7 +13,7 @@ import { TechProfileModelService } from '../_services/tech-profile-model.service
 export class LineItemLevelContentPagePage implements OnInit {
 
 	
-	candidateId = undefined;
+	userId = undefined;
 	lineItemId = undefined;
 	lineItem = undefined;
 	idx = undefined;
@@ -30,7 +30,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 	ngOnInit() {
 		let self = this;
 		self._route.params.subscribe((params) => {
-			self.candidateId = params['candidateId'];
+			self.userId = params['userId'];
 			self.lineItemId = params['lineItemId'] * 1;
 			self.idx = params['idx'] * 1;
 	
@@ -55,7 +55,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 	}
 
 	onQuestionClicked(q) {
-		this._router.navigate(['/candidate-question-detail/' + this.candidateId + '/' + q.id])
+		this._router.navigate(['/user-question-detail/' + this.userId + '/' + q.id])
 	}
 
 	getLineItemLevel() {

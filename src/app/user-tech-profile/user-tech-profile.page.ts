@@ -16,8 +16,8 @@ import { TechProfileComponent } from '../tech-profile/tech-profile.component';
 })
 export class UserTechProfilePage implements OnInit {
 
-  	candidateId = undefined;
-  	candidate = undefined;
+  	userId = undefined;
+  	user = undefined;
   	techProfile = undefined;
 
 	constructor(private _location: Location,
@@ -33,19 +33,19 @@ export class UserTechProfilePage implements OnInit {
 	ngOnInit() {
 		let self = this;
 		self._route.params.subscribe((params) => {
-			self.candidateId = params['candidateId'] * 1;
-			console.log("candidateId ==> " + self.candidateId);
+			self.userId = params['userId'] * 1;
+			console.log("userId ==> " + self.userId);
 
-			self._userTechProfileModel.init(self.candidateId);
+			self._userTechProfileModel.init(self.userId);
 
-			self._userService.getCandidateById(self.candidateId).then((data) => {
-				self.candidate = data;
+			self._userService.getUserById(self.userId).then((data) => {
+				self.user = data;
 			})
 		})
 	}
 
-	getCandidateName() {
-		return this.candidate && this.candidate["name"];
+	getUserName() {
+		return this.user && this.user["name"];
 	}
 
 	getScore(lineItemId) {
@@ -68,7 +68,7 @@ export class UserTechProfilePage implements OnInit {
 				if (score >= idx) return "lightblue"; else return "white";
 			},
 			onLxDescriptionClick: (id, idx) => {
-				self._router.navigate(['/line-item-action-page/' + self.candidateId + '/' + id + '/' + idx]);
+				self._router.navigate(['/line-item-action-page/' + self.userId + '/' + id + '/' + idx]);
 			}
 		};
 	}

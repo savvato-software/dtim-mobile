@@ -7,15 +7,15 @@ import { QuestionService } from '../_services/question.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
-  selector: 'app-candidate-question-detail',
-  templateUrl: './candidate-question-detail.page.html',
-  styleUrls: ['./candidate-question-detail.page.scss'],
+  selector: 'app-user-question-detail',
+  templateUrl: './user-question-detail.page.html',
+  styleUrls: ['./user-question-detail.page.scss'],
 })
-export class CandidateQuestionDetailPage implements OnInit {
+export class UserQuestionDetailPage implements OnInit {
 
 	dirty = false;
-	candidateId = undefined;
-	candidate = undefined;
+	userId = undefined;
+	user = undefined;
 	question = undefined;
 	questionId = undefined;
 	currentSessionScore = undefined;
@@ -35,11 +35,11 @@ export class CandidateQuestionDetailPage implements OnInit {
 	ngOnInit() {
 		let self = this;
 		self._route.params.subscribe((params) => {
-			self.candidateId = params['candidateId'];
+			self.userId = params['userId'];
 			self.questionId = params['questionId'] * 1;
 
-			self._questionService.getCandidateHistoryForQuestion(self.candidateId, self.questionId).then((data) => {
-				console.log("candidate history for question " + self.questionId)
+			self._questionService.getUserHistoryForQuestion(self.userId, self.questionId).then((data) => {
+				console.log("user history for question " + self.questionId)
 				console.log(data)
 
 				self.cqgList = data;
@@ -55,8 +55,8 @@ export class CandidateQuestionDetailPage implements OnInit {
 			})
 
 
-			self._userService.getCandidateById(self.candidateId).then((data) => {
-				self.candidate = data;
+			self._userService.getUserById(self.userId).then((data) => {
+				self.user = data;
 			})
 
 			self._questionService.getQuestionById(self.questionId).then((data) => {
@@ -74,8 +74,8 @@ export class CandidateQuestionDetailPage implements OnInit {
 		this.dirty = true;
 	}
 
-	getCandidateName() {
-		return this.candidate && this.candidate["name"];
+	getUserName() {
+		return this.user && this.user["name"];
 	}
 
 	getQuestionText() {
@@ -98,11 +98,11 @@ export class CandidateQuestionDetailPage implements OnInit {
 		return this._attendanceModelService.getCurrentSessionNumber();
 	}
 
-	getCandidateHasHistoryForQuestion() {
+	getUserHasHistoryForQuestion() {
 		return !!this.cqgList;
 	}
 
-	getCandidateHistoryForQuestion() {
+	getUserHistoryForQuestion() {
 		return this.cqgList;
 	}
 
@@ -113,7 +113,7 @@ export class CandidateQuestionDetailPage implements OnInit {
 		if (self.isDirty()) {
 			let obj = {score: self.currentSessionScore, comment: self.currentSessionComment};
 
-			self._questionService.setSessionScore(self.candidateId, self.questionId, self.getCurrentSessionNumber(), obj).then(() =>{
+			self._questionService.setSessionScore(self.userId, self.questionId, self.getCurrentSessionNumber(), obj).then(() =>{
 				self._location.back();
 			});
 		} else {

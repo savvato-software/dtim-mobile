@@ -11,16 +11,14 @@
 		</ion-card-header>
 
 		<ion-card-content>
-			
-			<!-- ion-button [disabled]="!isSessionActive()" (click)="onSessionBtnClicked()" class="">Create New Session</ion-button -->
 			<ion-button (click)="onSessionBtnClicked()" class="">Create New Session</ion-button>
 
 			<div *ngIf="isSessionActive()">
 				Session is active.<br/><br/>
 				This is the list of people who checked in..<br/><br/>
 
-				<ion-card *ngFor="let item of getListOfCandidatesInAttendance()">
-					<span class="candidateName" (click)="onCandidateClick(item)">
+				<ion-card *ngFor="let item of getListOfUsersInAttendance()">
+					<span class="userName" (click)="onUserClick(item)">
 						{{item.name}}
 					</span>
 				</ion-card>

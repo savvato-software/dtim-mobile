@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service'
+import { UserService } from './user.service'
 
 import { environment } from '../../_environments/environment';
 
@@ -8,37 +9,39 @@ import { environment } from '../../_environments/environment';
 })
 export class TechProfileAPIService {
 
-  constructor(private _apiService: ApiService) {
+  constructor(private _apiService: ApiService,
+              private _userService: UserService) {
 
   }
 
   get(techProfileId) {
-  	let url = environment.apiUrl + "/api/techprofile/" + techProfileId;
-
-	let rtn = new Promise(
-		(resolve, reject) => {
-			this._apiService.getUnsecuredAPI(url).subscribe(
-				(data) => { 
-					console.log("getTechProfile API call returned");
-					console.log(data);
-
-					resolve(data);
-				}, (err) => {
-					reject(err);
-				});
-		});
-
-	return rtn;
-  }
-
-  getScores(candidateId) {
-  	let url = environment.apiUrl + "/api/candidate/" + candidateId + "/techprofile/scores";
+    let url = environment.apiUrl + "/api/techprofile/" + techProfileId;
 
   	let rtn = new Promise(
   		(resolve, reject) => {
-  			this._apiService.getUnsecuredAPI(url).subscribe(
+  			this._apiService.get(url).subscribe(
   				(data) => { 
-  					console.log("get TechProfile scores for [" + candidateId + "] API call returned");
+  					console.log("getTechProfile API call returned");
+  					console.log(data);
+
+  					resolve(data);
+  				}, (err) => {
+  					reject(err);
+  				});
+  		});
+
+  	return rtn;
+  }
+
+  getScores(userId) {
+    console.log("calling to get TechProfile scores for [" + userId + "] ");
+  	let url = environment.apiUrl + "/api/user/" + userId + "/techprofile/scores";
+
+  	let rtn = new Promise(
+  		(resolve, reject) => {
+  			this._apiService.get(url).subscribe(
+  				(data) => { 
+  					console.log("get TechProfile scores for [" + userId + "] API call returned");
   					console.log(data);
 
   					resolve(data);
@@ -50,16 +53,16 @@ export class TechProfileAPIService {
   	return rtn;  
   }
 
-  saveScores(candidateId, scores) {
-  	let url = environment.apiUrl + "/api/candidate/" + candidateId + "/techprofile/scores";
+  saveScores(userId, scores) {
+  	let url = environment.apiUrl + "/api/user/" + userId + "/techprofile/scores";
 
   	let data = this.JSON_to_URLEncoded(scores);
 
   	let rtn = new Promise(
   		(resolve, reject) => {
-  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  			this._apiService.post(url, data).subscribe(
   				(data) => { 
-  					console.log("POST TechProfile scores for [" + candidateId + "] API call returned");
+  					console.log("POST TechProfile scores for [" + userId + "] API call returned");
   					console.log(data);
 
   					resolve(data);
@@ -78,7 +81,7 @@ export class TechProfileAPIService {
 
   	let rtn = new Promise(
   		(resolve, reject) => {
-  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  			this._apiService.post(url, data).subscribe(
   				(data) => {
   					console.log("POST addTopic [" + name + "] API call returned")
   					console.log(data)
@@ -107,7 +110,7 @@ export class TechProfileAPIService {
 
   	let rtn = new Promise(
   		(resolve, reject) => {
-  			this._apiService.postUnsecuredAPI(url, data).subscribe(
+  			this._apiService.post(url, data).subscribe(
   				(data) => {
   					console.log("POST addLineItem [" + name + "] API call returned")
   					console.log(data)
@@ -194,7 +197,7 @@ export class TechProfileAPIService {
 	
 		var ctr = 0;
 		scores.map((score) => {
-			list += "candidateId"+ctr+"="+score.candidateId;
+			list += "userId"+ctr+"="+score.userId;
 			list += "&techProfileLineItemId"+ctr+"="+score.techProfileLineItemId;
 			list += "&techProfileLineItemScore"+ctr+"="+score.techProfileLineItemScore;
 

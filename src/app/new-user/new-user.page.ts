@@ -127,8 +127,10 @@ export class NewUserPage implements OnInit {
     	
     	let self = this;
 
-    	self._userService.createNewUser(this.name, this.phone, this.email).then((candidate) => {
-			self._userService.markUserAsAttending(candidate["id"]).then(() => {
+    	let DEFAULT_PASSWORD = "password11"
+
+    	self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
+			self._userService.markUserAsAttending(user["id"]).then(() => {
 				self._alertService.show({
 					header: 'You\'re in!',
 					message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",

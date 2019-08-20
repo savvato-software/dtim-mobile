@@ -12,8 +12,8 @@ import { SequenceService } from './sequence.service';
 })
 export class UserTechProfileModelService extends TechProfileModelService {
 
-	candidateScores = undefined;
-	candidateId = undefined;
+	userScores = undefined;
+	userId = undefined;
 	dirty = false;	
 
 	constructor(protected _techProfileAPI: TechProfileAPIService,
@@ -21,20 +21,20 @@ export class UserTechProfileModelService extends TechProfileModelService {
 		super(_techProfileAPI, _sequenceService);
 	}
 
-	init(candidateId) {
+	init(userId) {
 		super._init();
 
 		let self = this;
 
-		if (candidateId !== self.candidateId) {
+		if (userId !== self.userId) {
 
-			self.candidateId = candidateId;
+			self.userId = userId;
 
-			self._techProfileAPI.getScores(candidateId).then((scores) => {
-				self.candidateScores = scores;
+			self._techProfileAPI.getScores(userId).then((scores) => {
+				self.userScores = scores;
 			})
 		} else {
-			console.log("UserTechProfileModelService did NOT init, because the candidateId requested is the same one we already have, and we do not want to overwrite any data.")
+			console.log("UserTechProfileModelService did NOT init, because the userId requested is the same one we already have, and we do not want to overwrite any data.")
 		}
 	}
 
@@ -50,15 +50,15 @@ export class UserTechProfileModelService extends TechProfileModelService {
 		return super.isTechProfileAvailable();
 	}
 
-	isCandidateScoresAvailable() {
-		return !!this.candidateScores;
+	isUserScoresAvailable() {
+		return !!this.userScores;
 	}
 
 	getScore(lineItemId) {
 		let rtn = undefined;
 
-		if (this.candidateScores) {
-			let score = this.candidateScores.find((s) => { return s["techProfileLineItemId"] === lineItemId; });
+		if (this.userScores) {
+			let score = this.userScores.find((s) => { return s["techProfileLineItemId"] === lineItemId; });
 
 			rtn = !!score ? score["techProfileLineItemScore"] : undefined;
 		}
@@ -67,26 +67,26 @@ export class UserTechProfileModelService extends TechProfileModelService {
 	}
 
 	clearScore(lineItemId) {
-		this.candidateScores = this.candidateScores.filter((s) => { return s["techProfileLineItemId"] !== lineItemId; });
+		this.userScores = this.userScores.filter((s) => { return s["techProfileLineItemId"] !== lineItemId; });
 	}
 
 	setLineItemScore(lineItemId, idx) {
 		let self = this;
 		return new Promise((resolve, reject) => {
-			if (self.candidateScores) {
-				let score = self.candidateScores.find((s) => { return s["techProfileLineItemId"] === lineItemId; });
+			if (self.userScores) {
+				let score = self.userScores.find((s) => { return s["techProfileLineItemId"] === lineItemId; });
 				let prevScore = Object.assign({}, score);
 
 				if (score) {
 					score["techProfileLineItemScore"] = idx;
 				} else {
 					score = {
-						candidateId: self.candidateId,
+						userId: self.userId,
 						techProfileLineItemId: lineItemId,
 						techProfileLineItemScore: idx
 					};
 
-					self.candidateScores.push(score);
+					self.userScores.push(score);
 				}
 
 				self.setDirty();
@@ -101,7 +101,7 @@ export class UserTechProfileModelService extends TechProfileModelService {
 		let self = this;
 		return new Promise((resolve, reject) => {
 			if (self.isDirty()) {
-				self._techProfileAPI.saveScores(self.candidateId, self.candidateScores).then((data) => {
+				self._techProfileAPI.saveScores(self.userId, self.userScores).then((data) => {
 					self.dirty = false;
 					resolve(data);
 				})

@@ -13,7 +13,7 @@ export class AttendanceAPIService {
   }
 
   getThoseWithinTheLastThreeHours() {
-  	let url = environment.apiUrl + "/api/candidates/in-attendance";
+  	let url = environment.apiUrl + "/api/user/in-attendance";
 
 	let rtn = new Promise(
 		(resolve, reject) => {
@@ -32,7 +32,7 @@ export class AttendanceAPIService {
   }
 
   getLastSession() {
-  	let url = environment.apiUrl + "/api/admin/lastSession";
+  	let url = environment.apiUrl + "/api/mockinterviewsession/mostrecent";
 
 	let rtn = new Promise(
 		(resolve, reject) => {
@@ -48,7 +48,7 @@ export class AttendanceAPIService {
   }
 
   startNewSession() {
-  	let url = environment.apiUrl + "/api/admin/createSession";
+  	let url = environment.apiUrl + "/api/mockinterviewsession/create";
   	let data = undefined;
 
 	let rtn = new Promise(

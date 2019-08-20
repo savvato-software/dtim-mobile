@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{getCandidateName()}} (Session #{{getCurrentSessionNumber()}})</ion-title>
+    <ion-title>{{getUserName()}} (Session #{{getCurrentSessionNumber()}})</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,8 +10,8 @@
 			<span class="questionLabel">Question:</span><br/>
 			<span class="questionText">{{getQuestionText()}}</span>
 			<br/><br/><br/>
-			<div *ngIf="getCandidateHasHistoryForQuestion()">
-				<div *ngFor="let cqg of getCandidateHistoryForQuestion()">
+			<div *ngIf="getUserHasHistoryForQuestion()">
+				<div *ngFor="let cqg of getUserHistoryForQuestion()">
 					<ion-card *ngIf="!cqgObjectIsForCurrentSession(cqg)">
 						<ion-card-content>
 							<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span><br/><br/>
@@ -22,7 +22,7 @@
 					</ion-card>
 				</div>
 			</div>
-			<div *ngIf="!getCandidateHasHistoryForQuestion()">
+			<div *ngIf="!getUserHasHistoryForQuestion()">
 				<ion-card >
 					<ion-card-content>
 						<span>This user does not have a history answering this question.</span>

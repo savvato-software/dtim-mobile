@@ -110,8 +110,8 @@ export class QuestionService {
       return rtn;
   }
 
-	getCandidateHistoryForQuestion(candidateId, questionId) {
-      let url = environment.apiUrl + "/api/candidate/" + candidateId + "/question/" + questionId + "/history";
+	getUserHistoryForQuestion(userId, questionId) {
+      let url = environment.apiUrl + "/api/user/" + userId + "/question/" + questionId + "/history";
 
       let rtn = new Promise(
         (resolve, reject) => {
@@ -127,8 +127,8 @@ export class QuestionService {
       return rtn;
 	}
 
-  setSessionScore(candidateId, questionId, sessionId, dataObj) {
-      let url = environment.apiUrl + "/api/candidate/" + candidateId + "/question/" + questionId + "/history";
+  setSessionScore(userId, questionId, sessionId, dataObj) {
+      let url = environment.apiUrl + "/api/user/" + userId + "/question/" + questionId + "/history";
       let data = "sessionId=" + sessionId + "&score=" + dataObj["score"];
 
       if (dataObj["comment"]) 

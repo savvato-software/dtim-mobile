@@ -41,10 +41,10 @@ export class ReturningUserPage implements OnInit {
 	onSearchBtnClicked() {
 		let self = this;
 
-		self._userService.getCandidateByEmailOrPhone(self.query).then((candidate) => {
+		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
 			
-			if (candidate) {
-				self._userService.markUserAsAttending(candidate["id"]).then(() => {
+			if (user) {
+				self._userService.markUserAsAttending(user["id"]).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
 						message: "We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!",

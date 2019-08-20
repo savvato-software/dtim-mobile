@@ -33,12 +33,13 @@ export class AdminPage implements OnInit {
   // TODO: Replace AttendanceAPI calls with AttendanceModel calls
 
 
-  getListOfCandidatesInAttendance() {
+  getListOfUsersInAttendance() {
   	if (this.inAttendanceList === undefined) {
   		this.inAttendanceList = null;
 
   		this._attendanceAPIService.getThoseWithinTheLastThreeHours().then((list) => {
-  			this.inAttendanceList = list;
+  			console.log("got attendance list for the last three hours")
+        this.inAttendanceList = list;
   		})
   	}
 
@@ -54,8 +55,8 @@ export class AdminPage implements OnInit {
     self._attendanceModelService.startNewSession();
   }
 
-  onCandidateClick(candidate) {
-    this._router.navigate(['/user-tech-profile/' + candidate["id"]]);
+  onUserClick(user) {
+    this._router.navigate(['/user-tech-profile/' + user["id"]]);
   }
 
   onHomeBtnClicked() {
