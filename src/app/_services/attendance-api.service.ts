@@ -12,8 +12,8 @@ export class AttendanceAPIService {
 
   }
 
-  getThoseWithinTheLastThreeHours() {
-  	let url = environment.apiUrl + "/api/user/in-attendance";
+  getListOfThoseMarkedInAttendanceInTheCurrentSession() {
+  	let url = environment.apiUrl + "/api/mockinterviewsession/in-attendance";
 
 	let rtn = new Promise(
 		(resolve, reject) => {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AttendanceAPIService } from './attendance-api.service';
+import { FunctionPromiseService } from './function-promise.service'
 
 import * as moment from 'moment'
 
@@ -9,11 +10,48 @@ import * as moment from 'moment'
 })
 export class AttendanceModelService {
 
+	LIST_OF_USERS_IN_ATTENDANCE = "listofUsersInAttendance";
+
 	currentSession = undefined;
 	sessionActive = undefined;
 
-	constructor(private _attendanceAPIService: AttendanceAPIService) {
+	listOfUsersInAttendance = undefined;
 
+	constructor(private _attendanceAPIService: AttendanceAPIService
+				,private _functionPromiseService: FunctionPromiseService) {
+
+	}
+
+	init() {
+		this._functionPromiseService.initFunc(this.LIST_OF_USERS_IN_ATTENDANCE, (data) => {
+			let rtn = new Promise((resolve, reject) => {
+				this._attendanceAPIService.getListOfThoseMarkedInAttendanceInTheCurrentSession().then((list) => {
+				    console.log("resolving listof thos markedinattendance fps promise")
+				    resolve(list);
+				})
+			})
+
+			return rtn;
+		})
+
+		this.listOfUsersInAttendance = undefined;
+	}
+
+	getListOfUsersInAttendance() {
+		let self = this;
+		let rtn = self.listOfUsersInAttendance;
+
+		if (self.listOfUsersInAttendance === undefined) {
+			self.listOfUsersInAttendance = [ ];
+			rtn = self.listOfUsersInAttendance;
+
+			this._functionPromiseService.get(this.LIST_OF_USERS_IN_ATTENDANCE, this.LIST_OF_USERS_IN_ATTENDANCE, undefined)
+				.then((list) => {
+					self.listOfUsersInAttendance = list;
+				})
+		} 
+
+		return rtn;
 	}
 
 	isSessionActive() {
@@ -37,6 +75,16 @@ export class AttendanceModelService {
 
 		if (this.isSessionActive()) {
 			rtn = this.currentSession.id;
+		}
+
+		return rtn;
+	}
+
+	getCurrentSessionDateString() {
+		let rtn = undefined;
+
+		if (this.isSessionActive()) {
+			rtn = new Date(this.currentSession.timestamp);
 		}
 
 		return rtn;

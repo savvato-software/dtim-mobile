@@ -15,6 +15,7 @@
 
 			<div *ngIf="isSessionActive()">
 				Session is active.<br/><br/>
+				This is Session #{{getCurrentSessionNumber()}}. It started {{getCurrentSessionDateString()}}.<br/><br/>
 				This is the list of people who checked in..<br/><br/>
 
 				<ion-card *ngFor="let item of getListOfUsersInAttendance()">
