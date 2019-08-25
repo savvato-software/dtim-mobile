@@ -1,6 +1,6 @@
 
 export const domainInfo = {
-  domain: undefined,
+  domain: '174.138.35.62',
   port: '8080'
 };
 
