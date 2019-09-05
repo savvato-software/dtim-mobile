@@ -13,7 +13,7 @@ cd /home/quizki/src/eog-mobile
 
 {
     echo From: easyahinfo@gmail.com
-    echo Subject: $HAX_APP_ENVIRONMENT test results
+    echo Subject: $HAX_APP_NAME $HAX_APP_ENVIRONMENT test results
     echo
     echo $(date)
     npx cypress run  --spec "cypress/integration/create-user-spec.js" 
