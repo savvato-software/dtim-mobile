@@ -1,5 +1,5 @@
-<table *ngIf="_model.isTechProfileAvailable()">
-	<tr class="tech-profile-level">
+<table class="tech-profile-table" *ngIf="_model.isTechProfileAvailable()">
+	<tr class="tech-profile-title">
 		{{_model.getTechProfile()["name"]}}
 	</tr>
 	<table class="tech-profile-topic-level" *ngFor="let topic of _model.getTechProfileTopics()">
