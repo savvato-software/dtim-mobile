@@ -5,24 +5,3 @@
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
 
-.tech-profile-topic {
-	font-size: 1.55em;
-}
-
-.lineItemTable {
-	margin: 1.25em;
-}
-
-.tech-profile-line-item-level td {
-	padding: .5em
-}
-
-.tech-profile-line-item-level-header {
-	background-color: lightgrey;
-}
-
-.tech-profile-line-item-level-header td {
-	font-size: 1.17em;
-}
-
-// TODO: Move this to the tech-profile component.. shouldn't need it elsewhere once thats up and running
