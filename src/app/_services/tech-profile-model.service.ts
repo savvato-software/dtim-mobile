@@ -9,6 +9,7 @@ import { SequenceService } from './sequence.service';
 export class TechProfileModelService {
 
 	techProfile = undefined;
+	questionCountsPerCell = undefined;
 
 	constructor(protected _techProfileAPI: TechProfileAPIService,
 				protected _sequenceService: SequenceService	) { }
@@ -19,9 +20,14 @@ export class TechProfileModelService {
 
 		if (force || self.techProfile === undefined) {
 			self.techProfile = null;
+			self.questionCountsPerCell = null;
 
 			self._techProfileAPI.get(1).then((tp) => {
 				self.techProfile = tp;
+			})
+
+			self._techProfileAPI.getQuestionCountsPerCell(1).then((qcpc) => {
+				self.questionCountsPerCell = qcpc;
 			})
 		}
 	}
@@ -44,7 +50,7 @@ export class TechProfileModelService {
 	}
 
 	isTechProfileAvailable() {
-		return this.techProfile && this.techProfile != null;
+		return this.techProfile && this.techProfile != null && this.questionCountsPerCell && this.questionCountsPerCell != null;
 	}
 
 	getTechProfile() {
@@ -207,6 +213,39 @@ export class TechProfileModelService {
 	addLineItem(parentTopicId, lineItemName) {
 		let self = this;
 		return self._techProfileAPI.addLineItem(parentTopicId, lineItemName);
+	}
+
+	questionCountForCellCache = { };
+	getQuestionCountForCell(lineItemId, lineItemLevelIndex) {
+		let count = 0;
+
+		if (this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]) {
+			return this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]
+		}
+
+		if (this.isTechProfileAvailable()) {
+			let found = false;
+			let passed = false;
+			let i = 0;
+
+			while (i < this.questionCountsPerCell.length && i <= lineItemId && !passed && !found) {
+				let curr = this.questionCountsPerCell[i];
+
+				passed = (curr[0] > lineItemId);
+				
+				if (!passed) {
+					if (lineItemId == curr[0] && lineItemLevelIndex == curr[1]) {
+						this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex] = curr[2];
+						count = curr[2];
+						found = true;
+					}
+				}
+
+				i++;
+			}
+		}
+
+		return count;
 	}
 
 }
