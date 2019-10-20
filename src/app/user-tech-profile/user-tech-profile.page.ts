@@ -7,10 +7,7 @@ import { TechProfileAPIService } from '../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service';
 import { UserService } from '../_services/user.service';
 
-
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
-
-import { TechProfileComponent } from '../tech-profile/tech-profile.component';
 
 @Component({
   selector: 'app-user-tech-profile',
@@ -88,5 +85,7 @@ export class UserTechProfilePage implements OnInit {
 				})
 			})
 		};
+
+		return this.getParamsPromise;
 	}
 }

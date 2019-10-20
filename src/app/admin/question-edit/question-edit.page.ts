@@ -8,8 +8,6 @@ import { TechProfileModelService } from '../../_services/tech-profile-model.serv
 
 import { QuestionEditService } from '../_services/question-edit.service';
 
-import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
-
 @Component({
   selector: 'app-question-edit',
   templateUrl: './question-edit.page.html',

@@ -5,8 +5,6 @@ import { Location } from '@angular/common';
 import { AlertService } from '../_services/alert.service';
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
-import { TechProfileComponent } from '../tech-profile/tech-profile.component';
-
 @Component({
 	selector: 'app-tech-profile-edit',
 	templateUrl: './tech-profile-edit.page.html',
@@ -18,8 +16,7 @@ export class TechProfileEditPage implements OnInit {
 		private _router: Router,
 		private _route: ActivatedRoute,
 		private _techProfileModelService: TechProfileModelService,
-		private _alertService: AlertService,
-		private tpc: TechProfileComponent) {
+		private _alertService: AlertService) {
 
 	}
 
@@ -122,9 +119,7 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.topicName && data.topicName.length >= 2) {
-						self._techProfileModelService.addTopic(data.topicName).then((data) => {
-							self.tpc.init(true);
-						})
+						self._techProfileModelService.addTopic(data.topicName);
 					} else {
 						return false; // disable the button
 					}
@@ -157,9 +152,7 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.lineItemName && data.lineItemName.length >= 2) {
-						self._techProfileModelService.addLineItem(self.selectedTopicIDs[0], data.lineItemName).then((data) => {
-							self.tpc.init(true);
-						})
+						self._techProfileModelService.addLineItem(self.selectedTopicIDs[0], data.lineItemName);
 					} else {
 						return false; // disable the button
 					}

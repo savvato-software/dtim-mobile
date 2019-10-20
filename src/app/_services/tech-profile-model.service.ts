@@ -196,7 +196,7 @@ export class TechProfileModelService {
 	updateTechProfileTopic(topic) {
 		let self = this;
 		if (topic.id !== -1) {
-			return self._techProfileAPI.updateTopic(topic);
+			return self._techProfileAPI.updateTopic(topic).then(() => self._init(true));
 		} else {
 			console.error("A topic with no backend id was passed to updateTechProfileTopic.");
 		}
@@ -205,7 +205,7 @@ export class TechProfileModelService {
 	updateTechProfileLineItem(lineItem) {
 		let self = this;
 		if (lineItem.id !== -1) {
-			return self._techProfileAPI.updateLineItemWithDescriptions(lineItem);
+			return self._techProfileAPI.updateLineItemWithDescriptions(lineItem).then(() => self._init(true));
 		} else {
 			console.error("A lineItem with no backend id was passed to updateTechProfileLineItem.");
 		}
@@ -213,12 +213,16 @@ export class TechProfileModelService {
 
 	addTopic(name) {
 		let self = this;
-		return self._techProfileAPI.addTopic(name);
+		self._techProfileAPI.addTopic(name).then(() => {
+			self._init(true);
+		})
 	}
 
 	addLineItem(parentTopicId, lineItemName) {
 		let self = this;
-		return self._techProfileAPI.addLineItem(parentTopicId, lineItemName);
+		self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
+			self._init(true);
+		})
 	}
 
 	questionCountForCellCache = { };

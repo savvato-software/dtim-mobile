@@ -5,8 +5,6 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
-import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
-
 @Component({
   selector: 'app-question-display',
   templateUrl: './question-display.page.html',
