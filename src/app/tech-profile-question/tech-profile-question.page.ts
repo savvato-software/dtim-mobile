@@ -23,33 +23,38 @@ export class TechProfileQuestionPage implements OnInit {
 
 	}
 
+	getParamsPromise = undefined;
+
 	getParams() {
 		let self = this;
 
-		return {
-			getBackgroundColor: (id, idx) => {
-				let count = this._techProfileModelService.getQuestionCountForCell(id, idx);
+		if (this.getParamsPromise === undefined) {
+			this.getParamsPromise = null;
 
-				if (count == 0)	return "white";
-				if (count == 3) return "lightblue";
-				else return "yellow";
-			},
-			onLxDescriptionClick: (id, idx) => {
-				this._router.navigate(['/question-list/' + id + '/' + idx]);
-			},
-			getTopicBackgroundColor: (thisId) => {
+			this.getParamsPromise = new Promise((resolve, reject) => {
+				self._techProfileModelService._init();
+				self._techProfileModelService.waitingPromise()
+				.then(() => { 
+					resolve({
+						getModelService: () => {
+							return self._techProfileModelService;
+						},
+						getBackgroundColor: (id, idx) => {
+							let count = this._techProfileModelService.getQuestionCountForCell(id, idx);
 
-			},
-			onTopicClick: (thisId) => {
+							if (count == 0)	return "white";
+							if (count == 3) return "lightblue";
+							else return "yellow";
+						},
+						onLxDescriptionClick: (id, idx) => {
+							this._router.navigate(['/question-list/' + id + '/' + idx]);
+						}
+					});
+				})
+			})
+		}
 
-			},
-			getLineItemBackgroundColor: (thisId) => {
-
-			},
-			onLineItemClick: (thisId) => {
-
-			}
-		};
+		return this.getParamsPromise;
 	}
 
 	onNewQuestionBtnClicked(q) {

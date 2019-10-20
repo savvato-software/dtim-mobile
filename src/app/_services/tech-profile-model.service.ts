@@ -53,6 +53,12 @@ export class TechProfileModelService {
 		return this.techProfile && this.techProfile != null && this.questionCountsPerCell && this.questionCountsPerCell != null;
 	}
 
+	/** ** */
+	getModel() {
+		return this.getTechProfile();
+	}
+	/** ** */
+
 	getTechProfile() {
 		return this.techProfile;
 	}

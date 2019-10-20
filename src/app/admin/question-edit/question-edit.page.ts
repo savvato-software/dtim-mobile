@@ -123,36 +123,52 @@ export class QuestionEditPage implements OnInit {
 		return assoc ? assoc[1] : -1;
 	}
 
+	getParamsPromise = undefined;
 	getParams() {
 		let self = this;
-		return {
-			getBackgroundColor: (id, idx) => {
-				if (self.getScore(id) === idx) {
-					return "lightblue";
-				} else {
-					return "white";
-				}
-			},
-			onLxDescriptionClick: (id, idx) => {
-				// TODO think we could do better than O(2n)?
-				let association = self.lilvassociations.find((element) => { return element[0] === id; });
+		if (this.getParamsPromise === undefined) {
+			this.getParamsPromise = null;
 
-				if (association) {
-					if (idx === association[1]) {
-						// remove the association
-						let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
-						self.lilvassociations = l;
-					} else {
-						// update the association
-						association[1] = idx
-					}
-				} else {
-					// add a new association
-					self.lilvassociations.push([id, idx]);
-				}
+			this.getParamsPromise = new Promise((resolve, reject) => {
+				self._techProfileModelService._init();
+				self._techProfileModelService.waitingPromise()
+				.then(() => { 
+					resolve({
+						getModelService: () => {
+							return self._techProfileModelService;
+						},
+						getBackgroundColor: (id, idx) => {
+							if (self.getScore(id) === idx) {
+								return "lightblue";
+							} else {
+								return "white";
+							}
+						},
+						onLxDescriptionClick: (id, idx) => {
+							// TODO think we could do better than O(2n)?
+							let association = self.lilvassociations.find((element) => { return element[0] === id; });
 
-				self.setDirty();
-			}
-		}
+							if (association) {
+								if (idx === association[1]) {
+									// remove the association
+									let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
+									self.lilvassociations = l;
+								} else {
+									// update the association
+									association[1] = idx
+								}
+							} else {
+								// add a new association
+								self.lilvassociations.push([id, idx]);
+							}
+
+							self.setDirty();
+						}
+					})
+				})
+			});
+		};
+
+		return this.getParamsPromise;
 	}
 }

@@ -42,23 +42,8 @@ export class TechProfileEditPage implements OnInit {
 				self._techProfileModelService.waitingPromise()
 				.then(() => { 
 					resolve({
-						getModel: () => {
-							return self._techProfileModelService.getTechProfile();
-						},
-						getProfileName: () => {
-							return self._techProfileModelService.getTechProfile()["name"];
-						},
-						getProfileTopics: () => {
-							return self._techProfileModelService.getTechProfileTopics()
-						},
-						getTechProfileLineItemsByTopic: (topicId) => {
-							return self._techProfileModelService.getTechProfileLineItemsByTopic(topicId);
-						},
-						getBackgroundColor: (id, idx) => {
-							return "white";
-						},
-						onLxDescriptionClick: (id, idx) => {
-							console.log("LxDescriptionClick!")
+						getModelService: () => {
+							return self._techProfileModelService;
 						},
 						getTopicBackgroundColor: (thisId) => {
 							if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
