@@ -54,9 +54,23 @@ export class TechProfileModelService {
 	}
 
 	/** ** */
-	getModel() {
-		return this.getTechProfile();
-	}
+	/*		dtim-techprofile-component model service methods */
+	/** ** */
+		getModel() {
+			return this.getTechProfile();
+		}
+
+		getName() {
+			return this.getTechProfile()['name']
+		}
+
+		getTopics() {
+			return this.getTechProfileTopics();
+		}
+
+		getLineItemsForATopic(topicId) {
+			return this.getTechProfileLineItemsByTopic(topicId);
+		}
 	/** ** */
 
 	getTechProfile() {
