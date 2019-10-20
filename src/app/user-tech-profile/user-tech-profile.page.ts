@@ -7,6 +7,9 @@ import { TechProfileAPIService } from '../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service';
 import { UserService } from '../_services/user.service';
 
+
+import { TechProfileModelService } from '../_services/tech-profile-model.service';
+
 import { TechProfileComponent } from '../tech-profile/tech-profile.component';
 
 @Component({
@@ -23,7 +26,7 @@ export class UserTechProfilePage implements OnInit {
 	constructor(private _location: Location,
 		    private _router: Router,
 		    private _route: ActivatedRoute,
-			private _techProfileService: TechProfileAPIService,
+		    private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
 		    private _userService: UserService,
 		    private _alertService: AlertService ) {
@@ -59,17 +62,31 @@ export class UserTechProfilePage implements OnInit {
 		});
 	}
 
+	getParamsPromise = undefined;
 	getParams() {
 		let self = this;
-		return {
-			getBackgroundColor: (id, idx) => {
-				let score = self.getScore(id);
-				if (score == undefined) return "white";
-				if (score >= idx) return "lightblue"; else return "white";
-			},
-			onLxDescriptionClick: (id, idx) => {
-				self._router.navigate(['/line-item-action-page/' + self.userId + '/' + id + '/' + idx]);
-			}
+		if (this.getParamsPromise === undefined) {
+			this.getParamsPromise = null;
+
+			this.getParamsPromise = new Promise((resolve, reject) => {
+				self._techProfileModelService._init();
+				self._techProfileModelService.waitingPromise()
+				.then(() => { 
+					resolve({
+						getModelService: () => {
+							return self._techProfileModelService;
+						},
+						getBackgroundColor: (id, idx) => {
+							let score = self.getScore(id);
+							if (score == undefined) return "white";
+							if (score >= idx) return "lightblue"; else return "white";
+						},
+						onLxDescriptionClick: (id, idx) => {
+							self._router.navigate(['/line-item-action-page/' + self.userId + '/' + id + '/' + idx]);
+						}
+					})
+				})
+			})
 		};
 	}
 }

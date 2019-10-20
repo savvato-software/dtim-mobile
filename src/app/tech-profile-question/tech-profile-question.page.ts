@@ -24,7 +24,6 @@ export class TechProfileQuestionPage implements OnInit {
 	}
 
 	getParamsPromise = undefined;
-
 	getParams() {
 		let self = this;
 
