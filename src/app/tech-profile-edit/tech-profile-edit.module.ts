@@ -6,7 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { TechProfileEditPage } from './tech-profile-edit.page';
-import { TechProfileModule } from '../tech-profile/tech-profile.module';
+
+import { DtimTechprofileComponentModule } from 'dtim-techprofile-component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    TechProfileModule
+    DtimTechprofileComponentModule,
   ],
   declarations: [TechProfileEditPage]
 })
