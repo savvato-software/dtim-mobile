@@ -8,24 +8,25 @@ import { TechProfileModelService } from '../_services/tech-profile-model.service
 import { TechProfileComponent } from '../tech-profile/tech-profile.component';
 
 @Component({
-  selector: 'app-tech-profile-edit',
-  templateUrl: './tech-profile-edit.page.html',
-  styleUrls: ['./tech-profile-edit.page.scss'],
+	selector: 'app-tech-profile-edit',
+	templateUrl: './tech-profile-edit.page.html',
+	styleUrls: ['./tech-profile-edit.page.scss'],
 })
 export class TechProfileEditPage implements OnInit {
 
 	constructor(private _location: Location,
-		    private _router: Router,
-		    private _route: ActivatedRoute,
-			private _techProfileModelService: TechProfileModelService,
-			private _alertService: AlertService,
-			private tpc: TechProfileComponent) {
+		private _router: Router,
+		private _route: ActivatedRoute,
+		private _techProfileModelService: TechProfileModelService,
+		private _alertService: AlertService,
+		private tpc: TechProfileComponent) {
 
 	}
 
 	selectedTopicIDs = [];
 	selectedLineItemIDs = [];
 	allowMultiSelect = false;
+	getParamsPromise = undefined;
 
 	ngOnInit() {
 
@@ -33,66 +34,89 @@ export class TechProfileEditPage implements OnInit {
 
 	getParams() {
 		let self = this;
+		if (this.getParamsPromise === undefined) {
+			this.getParamsPromise = null;
 
-		return {
-			getBackgroundColor: (id, idx) => {
-				return "white";
-			},
-			onLxDescriptionClick: (id, idx) => {
-				console.log("LxDescriptionClick!")
-			},
-			getTopicBackgroundColor: (thisId) => {
-				if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
-					return "red"; 
-				else 
-					return undefined;
-			},
-			onTopicClick: (thisId) => {
-				if (self.selectedTopicIDs.length === 0) {
-					self.selectedTopicIDs.push(thisId);
-				} else {
-					if (self.allowMultiSelect) {
-						if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
-								self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
-						} else {
-							self.selectedTopicIDs.push(thisId);
+			this.getParamsPromise = new Promise((resolve, reject) => {
+				self._techProfileModelService._init();
+				self._techProfileModelService.waitingPromise()
+				.then(() => { 
+					resolve({
+						getModel: () => {
+							return self._techProfileModelService.getTechProfile();
+						},
+						getProfileName: () => {
+							return self._techProfileModelService.getTechProfile()["name"];
+						},
+						getProfileTopics: () => {
+							return self._techProfileModelService.getTechProfileTopics()
+						},
+						getTechProfileLineItemsByTopic: (topicId) => {
+							return self._techProfileModelService.getTechProfileLineItemsByTopic(topicId);
+						},
+						getBackgroundColor: (id, idx) => {
+							return "white";
+						},
+						onLxDescriptionClick: (id, idx) => {
+							console.log("LxDescriptionClick!")
+						},
+						getTopicBackgroundColor: (thisId) => {
+							if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
+								return "red"; 
+							else 
+								return undefined;
+						},
+						onTopicClick: (thisId) => {
+							if (self.selectedTopicIDs.length === 0) {
+								self.selectedTopicIDs.push(thisId);
+							} else {
+								if (self.allowMultiSelect) {
+									if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
+										self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
+									} else {
+										self.selectedTopicIDs.push(thisId);
+									}
+								} else {
+									if (self.selectedTopicIDs[0] === thisId) {
+										self.selectedTopicIDs = [];
+									} else {
+										self.selectedTopicIDs[0] = thisId;
+									}
+								}
+							}
+						},
+						getLineItemBackgroundColor: (thisId) => {
+							if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
+								return "red"; 
+							else 
+								return undefined;
+						},
+						onLineItemClick: (thisId) => {
+							if (self.selectedLineItemIDs.length === 0) {
+								self.selectedLineItemIDs.push(thisId);
+							} else {
+								if (self.allowMultiSelect) {
+									if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
+										self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
+									} else {
+										self.selectedLineItemIDs.push(thisId);
+									}
+								} else {
+									if (self.selectedLineItemIDs[0] === thisId) {
+										self.selectedLineItemIDs = [];
+									} else {
+										self.selectedLineItemIDs[0] = thisId;
+									}
+								}
+							}
 						}
-					} else {
-						if (self.selectedTopicIDs[0] === thisId) {
-							self.selectedTopicIDs = [];
-						} else {
-							self.selectedTopicIDs[0] = thisId;
-						}
-					}
-				}
-			},
-			getLineItemBackgroundColor: (thisId) => {
-				if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
-					return "red"; 
-				else 
-					return undefined;
-			},
-			onLineItemClick: (thisId) => {
-				if (self.selectedLineItemIDs.length === 0) {
-					self.selectedLineItemIDs.push(thisId);
-				} else {
-					if (self.allowMultiSelect) {
-						if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
-							self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
-						} else {
-							self.selectedLineItemIDs.push(thisId);
-						}
-					} else {
-						if (self.selectedLineItemIDs[0] === thisId) {
-							self.selectedLineItemIDs = [];
-						} else {
-							self.selectedLineItemIDs[0] = thisId;
-						}
-					}
-				}
-			}
-		};
-	}
+					});
+				})
+			});
+		}
+
+		return this.getParamsPromise;
+	};
 
 	onNewTopicBtnClicked() {
 		let self = this;
@@ -100,9 +124,9 @@ export class TechProfileEditPage implements OnInit {
 			header: 'New Topic!',
 			message: "Enter the new topic name:",
 			inputs: [{
-			  name: 'topicName',
-			  placeholder: '....',
-			  type: 'text'
+				name: 'topicName',
+				placeholder: '....',
+				type: 'text'
 			}],			
 			buttons: [{
 				text: 'Cancel', 
@@ -135,9 +159,9 @@ export class TechProfileEditPage implements OnInit {
 			header: 'New Line Item!',
 			message: "Enter the new Line Item name:",
 			inputs: [{
-			  name: 'lineItemName',
-			  placeholder: '....',
-			  type: 'text'
+				name: 'lineItemName',
+				placeholder: '....',
+				type: 'text'
 			}],			
 			buttons: [{
 				text: 'Cancel', 
