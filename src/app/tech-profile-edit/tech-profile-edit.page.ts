@@ -34,6 +34,19 @@ export class TechProfileEditPage implements OnInit {
 		if (this.getParamsPromise === undefined) {
 			this.getParamsPromise = null;
 
+			/**
+			*
+			* TODO: Next thing is to move the techProfileModelService to the dtim-techprofile-component.
+				Because its about the line items, topics, etc as a whole. This class, I believe, should
+				only be worried (primarily worried?) about those things as individuals. So it has methods
+				which take IDs, to allow the techprofile-component to change its view, given what this controller
+				object says.
+
+				And since its only about those things individually, the service managing the whole model
+				should be pushed up.
+			 *
+			 **/
+
 			this.getParamsPromise = new Promise((resolve, reject) => {
 				self._techProfileModelService._init();
 				self._techProfileModelService.waitingPromise()
