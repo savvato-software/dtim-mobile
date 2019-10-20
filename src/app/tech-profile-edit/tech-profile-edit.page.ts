@@ -26,12 +26,12 @@ export class TechProfileEditPage implements OnInit {
 	selectedTopicIDs = [];
 	selectedLineItemIDs = [];
 	allowMultiSelect = false;
-	getParamsPromise = undefined;
 
 	ngOnInit() {
 
 	}
 
+	getParamsPromise = undefined;
 	getParams() {
 		let self = this;
 		if (this.getParamsPromise === undefined) {
