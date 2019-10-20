@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { QuestionService } from '../../_services/question.service';
+import { TechProfileModelService } from '../../_services/tech-profile-model.service';
+
 import { TechProfileComponent } from '../../tech-profile/tech-profile.component';
 
 @Component({
@@ -19,7 +21,8 @@ export class QuestionDisplayPage implements OnInit {
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
-			    private _questionService: QuestionService) {
+			    private _questionService: QuestionService,
+			    private _techProfileModelService: TechProfileModelService) {
 
 	}
 
@@ -58,20 +61,33 @@ export class QuestionDisplayPage implements OnInit {
 		return assoc ? assoc[1] : -1;
 	}
 
+	getParamsPromise = undefined;
 	getParams() {
 		let self = this;
-		return {
-			getBackgroundColor: (id, idx) => {
-				if (self.getScore(id) === idx) {
-					return "lightblue";
-				} else {
-					return "white";
-				}
-			},
-			onLxDescriptionClick: (id, idx) => {
-				// do nothing... read only.
-			}
+		if (this.getParamsPromise === undefined) {
+			this.getParamsPromise = null;
+
+			this.getParamsPromise = new Promise((resolve, reject) => {
+				self._techProfileModelService._init();
+				self._techProfileModelService.waitingPromise()
+				.then(() => {
+					resolve({
+						getModelService: () => {
+							return self._techProfileModelService;
+						},						
+						getBackgroundColor: (id, idx) => {
+							if (self.getScore(id) === idx) {
+								return "lightblue";
+							} else {
+								return "white";
+							}
+						},
+					})
+				})
+			})
 		}
+
+		return this.getParamsPromise;
 	}
 
 }
