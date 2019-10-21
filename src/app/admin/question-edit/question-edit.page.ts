@@ -135,6 +135,9 @@ export class QuestionEditPage implements OnInit {
 						getModelService: () => {
 							return self._techProfileModelService;
 						},
+						getColorMeaningString: () => {
+							return "lightblue means someone of that skill level should be able to answer this question."
+						},
 						getBackgroundColor: (id, idx) => {
 							if (self.getScore(id) === idx) {
 								return "lightblue";

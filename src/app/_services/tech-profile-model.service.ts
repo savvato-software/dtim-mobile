@@ -21,6 +21,8 @@ export class TechProfileModelService {
 		if (force || self.techProfile === undefined) {
 			self.techProfile = null;
 			self.questionCountsPerCell = null;
+			self.questionCountForCellCache = { };
+			self.highestQuestionCountForAnyCell = undefined;
 
 			self._techProfileAPI.get(1).then((tp) => {
 				self.techProfile = tp;
@@ -243,6 +245,8 @@ export class TechProfileModelService {
 	getQuestionCountForCell(lineItemId, lineItemLevelIndex) {
 		let count = 0;
 
+		// TODO: use the FunctionPromiseService, so caching is automatically handled, etc.
+
 		if (this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]) {
 			return this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]
 		}
@@ -270,6 +274,26 @@ export class TechProfileModelService {
 		}
 
 		return count;
+	}
+
+	highestQuestionCountForAnyCell = undefined;
+	getHighestQuestionCountForAnyCell() {
+		let max = 0;
+
+		if (this.highestQuestionCountForAnyCell == undefined) {
+			if (this.isTechProfileAvailable()) {
+				let i = 0;
+				while (i < this.questionCountsPerCell.length) {
+					let curr = this.questionCountsPerCell[i];
+					if (curr[2] > max) max = curr[2]; 
+					i++;
+				}
+
+				this.highestQuestionCountForAnyCell = max;
+			}
+		}
+
+		return this.highestQuestionCountForAnyCell;
 	}
 
 }

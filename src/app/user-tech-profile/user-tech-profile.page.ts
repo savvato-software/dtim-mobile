@@ -73,6 +73,9 @@ export class UserTechProfilePage implements OnInit {
 						getModelService: () => {
 							return self._techProfileModelService;
 						},
+						getColorMeaningString: () => {
+							return "lightblue means this user has been judged to have skills at this level, and below. White, user has not been tested, or has not passed, at this level."
+						},
 						getBackgroundColor: (id, idx) => {
 							let score = self.getScore(id);
 							if (score == undefined) return "white";

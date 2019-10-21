@@ -55,6 +55,9 @@ export class TechProfileEditPage implements OnInit {
 						getModelService: () => {
 							return self._techProfileModelService;
 						},
+						getColorMeaningString: () => {
+							return "Red means selected. Selected means you can edit it!"
+						},
 						getTopicBackgroundColor: (thisId) => {
 							if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
 								return "red"; 
