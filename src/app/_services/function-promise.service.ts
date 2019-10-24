@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-// The point of this class is to allow calling a function, getting a promise, 
-//  and saving it. Then using the promise over and over, rather than making 
-//  a new promise and new api call.
+// The point of this class is to cache the results of a function that does something.
+//  Then using the cached result over and over, rather than making a new api call, 
+//  a new calculation, etc.
 
 // It takes an ID, the result ID, and maps it to a promise, which is the result
 //  of a function.
@@ -11,9 +11,9 @@ import { Injectable } from '@angular/core';
 //  to download a file and return the local filename. You could call that function
 //  over and over, and only call the API once.
 
-// Results are cached, and if they get older than a user-defined length of time,
-//  they are discarded on the subsequent call for those results. A call to the 
-//  function then occurs, and its results are cached.
+// If results become stale (older than a user-defined length of time), they are 
+//  discarded on the subsequent call for those results. A call to the function then
+//  occurs, and its results are cached.
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class FunctionPromiseService {
 	results = {};
 	funcs = {};
 
-	freshnessLengthInMillis = 30 * 1000; // thirty seconds
+	freshnessLengthInMillis = 60 * 1000; // thirty seconds
 
 	constructor() {
 
@@ -32,6 +32,7 @@ export class FunctionPromiseService {
 	reset(resultKey) {
 		console.log("resetting " + resultKey)
 		this.results[resultKey] = undefined;
+		this.promiseCache[resultKey] = undefined;
 	}
 
 	initFunc(funcKey, func) {
@@ -43,8 +44,8 @@ export class FunctionPromiseService {
 	}
 
 	get(resultKey, funcKey, data) {
-		var rtn = undefined;
 		var timestamp = new Date().getTime();
+		let self = this;
 
 		if (this.results[resultKey] !== undefined) {
 			
@@ -55,16 +56,46 @@ export class FunctionPromiseService {
 			}
 		}
 
-		let func = this.funcs[funcKey];
+		self.results[resultKey] = {timestamp: new Date().getTime(), results: undefined};
+
+		let func = self.funcs[funcKey];
 
 		if (func !== undefined) {
-			this.results[resultKey] = {timestamp: timestamp, results: func(data)};
-			rtn = this.results[resultKey]["results"];
-		} else {
-			rtn = undefined;
+			func(data).then(
+				(result) => { 
+					self.results[resultKey] = {timestamp: new Date().getTime(), results: result}; 
+				})
 		}
 
-		return rtn;
+		return self.results[resultKey]["results"];
 	}
 
+	promiseCache = { }
+	waitAndGet(resultKey, funcKey, data) {
+		let self = this;
+		let prm = undefined;
+
+		prm = self.promiseCache[resultKey];
+
+		if (!prm) {
+			prm = new Promise((resolve, reject) => {
+				function to() {
+					setTimeout(() => {
+						let result = self.get(resultKey, funcKey, data);
+
+						if (result)
+							resolve(result);
+						else
+							to();
+					}, 500);
+				}
+
+				to();
+			})
+
+			self.promiseCache[resultKey] = prm;
+		}
+
+		return prm;
+	}
 }

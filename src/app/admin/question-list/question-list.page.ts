@@ -35,7 +35,6 @@ export class QuestionListPage implements OnInit {
 		self.levelNumber = params['level'] * 1;
 
 		if (!self.lineItemId || isNaN(self.levelNumber)) {
-			console.log("::::: " + self.lineItemId + " " + self.levelNumber);
 			self._questionService.getAll().then((allQuestions) => {
 				self.questions = allQuestions;
 			})

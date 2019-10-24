@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { TechProfileQuestionPage } from './tech-profile-question.page';
 
-import { DtimTechprofileComponentModule } from 'dtim-techprofile-component';
+import { DtimTechprofileModule } from 'dtim-techprofile';
+import { SavvatoJavascriptServicesModule } from 'savvato-javascript-services'
 
 const routes: Routes = [
   {
@@ -22,8 +23,14 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    DtimTechprofileComponentModule
+    DtimTechprofileModule,
+    SavvatoJavascriptServicesModule
   ],
-  declarations: [TechProfileQuestionPage]
+  declarations: [
+    TechProfileQuestionPage
+  ],
+  providers: [
+
+  ]
 })
 export class TechProfileQuestionPageModule {}

@@ -2,8 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { FunctionPromiseService } from '../_services/function-promise.service'
 import { AlertService } from '../_services/alert.service';
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
+
+import { environment } from '../../_environments/environment'
 
 @Component({
 	selector: 'app-tech-profile-edit',
@@ -16,7 +19,8 @@ export class TechProfileEditPage implements OnInit {
 		private _router: Router,
 		private _route: ActivatedRoute,
 		private _techProfileModelService: TechProfileModelService,
-		private _alertService: AlertService) {
+		private _alertService: AlertService,
+		private _functionPromiseService: FunctionPromiseService) {
 
 	}
 
@@ -24,96 +28,81 @@ export class TechProfileEditPage implements OnInit {
 	selectedLineItemIDs = [];
 	allowMultiSelect = false;
 
+	funcKey = "tpepg-getParams";
+
+	_techProfile = undefined;
+
 	ngOnInit() {
-
-	}
-
-	getParamsPromise = undefined;
-	getParams() {
 		let self = this;
-		if (this.getParamsPromise === undefined) {
-			this.getParamsPromise = null;
-
-			/**
-			*
-			* TODO: Next thing is to move the techProfileModelService to the dtim-techprofile-component.
-				Because its about the line items, topics, etc as a whole. This class, I believe, should
-				only be worried (primarily worried?) about those things as individuals. So it has methods
-				which take IDs, to allow the techprofile-component to change its view, given what this controller
-				object says.
-
-				And since its only about those things individually, the service managing the whole model
-				should be pushed up.
-			 *
-			 **/
-
-			this.getParamsPromise = new Promise((resolve, reject) => {
-				self._techProfileModelService._init();
-				self._techProfileModelService.waitingPromise()
-				.then(() => { 
-					resolve({
-						getModelService: () => {
-							return self._techProfileModelService;
-						},
-						getColorMeaningString: () => {
-							return "Red means selected. Selected means you can edit it!"
-						},
-						getTopicBackgroundColor: (thisId) => {
-							if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
-								return "red"; 
-							else 
-								return undefined;
-						},
-						onTopicClick: (thisId) => {
-							if (self.selectedTopicIDs.length === 0) {
-								self.selectedTopicIDs.push(thisId);
-							} else {
-								if (self.allowMultiSelect) {
-									if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
-										self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
-									} else {
-										self.selectedTopicIDs.push(thisId);
-									}
+		self._functionPromiseService.initFunc(self.funcKey, () => {
+			return new Promise((resolve, reject) => {
+				resolve({
+					getEnv: () => {
+						return environment;
+					},
+					initTechProfile: (techProfile) => {
+						self._techProfileModelService.setTechProfile(techProfile);
+					},
+					getColorMeaningString: () => {
+						return "Red means selected. Selected means you can edit it!"
+					},
+					getTopicBackgroundColor: (thisId) => {
+						if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
+							return "red"; 
+						else 
+							return undefined;
+					},
+					onTopicClick: (thisId) => {
+						if (self.selectedTopicIDs.length === 0) {
+							self.selectedTopicIDs.push(thisId);
+						} else {
+							if (self.allowMultiSelect) {
+								if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
+									self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
 								} else {
-									if (self.selectedTopicIDs[0] === thisId) {
-										self.selectedTopicIDs = [];
-									} else {
-										self.selectedTopicIDs[0] = thisId;
-									}
+									self.selectedTopicIDs.push(thisId);
 								}
-							}
-						},
-						getLineItemBackgroundColor: (thisId) => {
-							if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
-								return "red"; 
-							else 
-								return undefined;
-						},
-						onLineItemClick: (thisId) => {
-							if (self.selectedLineItemIDs.length === 0) {
-								self.selectedLineItemIDs.push(thisId);
 							} else {
-								if (self.allowMultiSelect) {
-									if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
-										self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
-									} else {
-										self.selectedLineItemIDs.push(thisId);
-									}
+								if (self.selectedTopicIDs[0] === thisId) {
+									self.selectedTopicIDs = [];
 								} else {
-									if (self.selectedLineItemIDs[0] === thisId) {
-										self.selectedLineItemIDs = [];
-									} else {
-										self.selectedLineItemIDs[0] = thisId;
-									}
+									self.selectedTopicIDs[0] = thisId;
 								}
 							}
 						}
-					});
-				})
-			});
-		}
+					},
+					getLineItemBackgroundColor: (thisId) => {
+						if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
+							return "red"; 
+						else 
+							return undefined;
+					},
+					onLineItemClick: (thisId) => {
+						if (self.selectedLineItemIDs.length === 0) {
+							self.selectedLineItemIDs.push(thisId);
+						} else {
+							if (self.allowMultiSelect) {
+								if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
+									self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
+								} else {
+									self.selectedLineItemIDs.push(thisId);
+								}
+							} else {
+								if (self.selectedLineItemIDs[0] === thisId) {
+									self.selectedLineItemIDs = [];
+								} else {
+									self.selectedLineItemIDs[0] = thisId;
+								}
+							}
+						}
+					}
+				});
+			})
+		});
+	}
 
-		return this.getParamsPromise;
+	getParams() {
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
 	};
 
 	onNewTopicBtnClicked() {

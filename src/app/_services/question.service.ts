@@ -157,9 +157,6 @@ export class QuestionService {
       (resolve, reject) => {
         this._apiService.postUnsecuredAPI2(url, {question: question, lilvassociations: lilvassociations}).subscribe(
           (data) => {
-            console.log("POST QuestionService::save API call returned")
-            console.log(data)
-
             resolve(data)
           }, (err) => {
             reject(err)

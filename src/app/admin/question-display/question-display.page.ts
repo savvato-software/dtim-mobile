@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { FunctionPromiseService } from '../../_services/function-promise.service';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
+
+import { environment } from '../../../_environments/environment'
 
 @Component({
   selector: 'app-question-display',
@@ -16,11 +19,15 @@ export class QuestionDisplayPage implements OnInit {
 	question = undefined;
 	lilvassociations = undefined;
 
+	funcKey = "qdpg-getParams";
+
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
-			    private _techProfileModelService: TechProfileModelService) {
+			    private _techProfileModelService: TechProfileModelService,
+			    private _functionPromiseService: FunctionPromiseService
+			    ) {
 
 	}
 
@@ -36,6 +43,26 @@ export class QuestionDisplayPage implements OnInit {
 
 				self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
 					self.lilvassociations = data;
+				})
+
+				self._functionPromiseService.initFunc(self.funcKey, () => {
+					return new Promise((resolve, reject) => {
+						resolve({
+							getEnv: () => {
+								return environment;
+							},
+							getColorMeaningString: () => {
+								return "lightblue means someone of that skill level should be able to answer this question. To apply this question to more skills, click Edit to edit the question."
+							},
+							getBackgroundColor: (id, idx) => {
+								if (self.getScore(id) === idx) {
+									return "lightblue";
+								} else {
+									return "white";
+								}
+							},
+						})						
+					})
 				})
 			}
 		});
@@ -59,36 +86,8 @@ export class QuestionDisplayPage implements OnInit {
 		return assoc ? assoc[1] : -1;
 	}
 
-	getParamsPromise = undefined;
 	getParams() {
-		let self = this;
-		if (this.getParamsPromise === undefined) {
-			this.getParamsPromise = null;
-
-			this.getParamsPromise = new Promise((resolve, reject) => {
-				self._techProfileModelService._init();
-				self._techProfileModelService.waitingPromise()
-				.then(() => {
-					resolve({
-						getModelService: () => {
-							return self._techProfileModelService;
-						},
-						getColorMeaningString: () => {
-							return "lightblue means someone of that skill level should be able to answer this question."
-						},
-						getBackgroundColor: (id, idx) => {
-							if (self.getScore(id) === idx) {
-								return "lightblue";
-							} else {
-								return "white";
-							}
-						},
-					})
-				})
-			})
-		}
-
-		return this.getParamsPromise;
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
 	}
 
 }

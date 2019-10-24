@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { FunctionPromiseService } from '../../_services/function-promise.service'
 import { QuestionService } from '../../_services/question.service';
 import { AlertService } from '../../_services/alert.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
 import { QuestionEditService } from '../_services/question-edit.service';
+
+import { environment } from '../../../_environments/environment'
 
 @Component({
   selector: 'app-question-edit',
@@ -21,13 +24,16 @@ export class QuestionEditPage implements OnInit {
 	lilvassociations = undefined;
 	isNew = true;
 
+	funcKey = "qepg-getParams1";
+
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
 			    private _questionEditService: QuestionEditService,
     			private _alertService: AlertService,
-			    private _techProfileModelService: TechProfileModelService) {
+			    private _techProfileModelService: TechProfileModelService,
+			    private _functionPromiseService: FunctionPromiseService) {
 
 	}
 
@@ -57,6 +63,46 @@ export class QuestionEditPage implements OnInit {
 					self.lilvassociations = data;
 				})
 			}
+
+			self._functionPromiseService.initFunc(self.funcKey, () => {
+				return new Promise((resolve, reject) => {
+					resolve({
+						getEnv: () => {
+							return environment;
+						},
+						getColorMeaningString: () => {
+							return "lightblue means someone of that skill level should be able to answer this question. Click on a cell to apply this question to that skill. Click again to clear it."
+						},
+						getBackgroundColor: (id, idx) => {
+							if (self.getScore(id) === idx) {
+								return "lightblue";
+							} else {
+								return "white";
+							}
+						},
+						onLxDescriptionClick: (id, idx) => {
+							// TODO think we could do better than O(2n)?
+							let association = self.lilvassociations.find((element) => { return element[0] === id; });
+
+							if (association) {
+								if (idx === association[1]) {
+									// remove the association
+									let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
+									self.lilvassociations = l;
+								} else {
+									// update the association
+									association[1] = idx
+								}
+							} else {
+								// add a new association
+								self.lilvassociations.push([id, idx]);
+							}
+
+							self.setDirty();
+						}
+					})
+				})
+			})
 		});
 	}
 
@@ -121,55 +167,7 @@ export class QuestionEditPage implements OnInit {
 		return assoc ? assoc[1] : -1;
 	}
 
-	getParamsPromise = undefined;
 	getParams() {
-		let self = this;
-		if (this.getParamsPromise === undefined) {
-			this.getParamsPromise = null;
-
-			this.getParamsPromise = new Promise((resolve, reject) => {
-				self._techProfileModelService._init();
-				self._techProfileModelService.waitingPromise()
-				.then(() => { 
-					resolve({
-						getModelService: () => {
-							return self._techProfileModelService;
-						},
-						getColorMeaningString: () => {
-							return "lightblue means someone of that skill level should be able to answer this question."
-						},
-						getBackgroundColor: (id, idx) => {
-							if (self.getScore(id) === idx) {
-								return "lightblue";
-							} else {
-								return "white";
-							}
-						},
-						onLxDescriptionClick: (id, idx) => {
-							// TODO think we could do better than O(2n)?
-							let association = self.lilvassociations.find((element) => { return element[0] === id; });
-
-							if (association) {
-								if (idx === association[1]) {
-									// remove the association
-									let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
-									self.lilvassociations = l;
-								} else {
-									// update the association
-									association[1] = idx
-								}
-							} else {
-								// add a new association
-								self.lilvassociations.push([id, idx]);
-							}
-
-							self.setDirty();
-						}
-					})
-				})
-			});
-		};
-
-		return this.getParamsPromise;
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey,  { })
 	}
 }

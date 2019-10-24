@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { QuestionDisplayPage } from './question-display.page';
 
-import { DtimTechprofileComponentModule } from 'dtim-techprofile-component';
+import { DtimTechprofileModule } from 'dtim-techprofile';
 
 const routes: Routes = [
   {
@@ -22,7 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
-    ,DtimTechprofileComponentModule
+    ,DtimTechprofileModule
   ],
   declarations: [QuestionDisplayPage]
 })

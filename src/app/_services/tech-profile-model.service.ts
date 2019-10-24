@@ -21,16 +21,14 @@ export class TechProfileModelService {
 		if (force || self.techProfile === undefined) {
 			self.techProfile = null;
 			self.questionCountsPerCell = null;
-			self.questionCountForCellCache = { };
-			self.highestQuestionCountForAnyCell = undefined;
 
 			self._techProfileAPI.get(1).then((tp) => {
 				self.techProfile = tp;
 			})
 
-			self._techProfileAPI.getQuestionCountsPerCell(1).then((qcpc) => {
-				self.questionCountsPerCell = qcpc;
-			})
+			// self._techProfileAPI.getQuestionCountsPerCell(1).then((qcpc) => {
+			// 	self.questionCountsPerCell = qcpc;
+			// })
 		}
 	}
 
@@ -52,28 +50,12 @@ export class TechProfileModelService {
 	}
 
 	isTechProfileAvailable() {
-		return this.techProfile && this.techProfile != null && this.questionCountsPerCell && this.questionCountsPerCell != null;
+		return this.techProfile && this.techProfile != null // && this.questionCountsPerCell && this.questionCountsPerCell != null;
 	}
 
-	/** ** */
-	/*		dtim-techprofile-component model service methods */
-	/** ** */
-		getModel() {
-			return this.getTechProfile();
-		}
-
-		getName() {
-			return this.getTechProfile()['name']
-		}
-
-		getTopics() {
-			return this.getTechProfileTopics();
-		}
-
-		getLineItemsForATopic(topicId) {
-			return this.getTechProfileLineItemsByTopic(topicId);
-		}
-	/** ** */
+	setTechProfile(techProfile) {
+		this.techProfile = techProfile;
+	}
 
 	getTechProfile() {
 		return this.techProfile;
@@ -88,29 +70,25 @@ export class TechProfileModelService {
 	}
 
 	isTopicAbleToMoveUp(id) {
-		if (this.isTechProfileAvailable()) {
-			let topic = this.techProfile["topics"].find((t) => { return t['id'] === id });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
 
-			if (topic)
-				return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
-		}
+		if (topic)
+			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
 
 		return false;
 	}
 
 	isTopicAbleToMoveDown(id) {
-		if (this.isTechProfileAvailable()) {
-			let topic = this.techProfile["topics"].find((t) => { return t['id'] === id });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
 
-			if (topic)
-				return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
-		}
+		if (topic)
+			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
 
 		return false;
 	}
 
 	moveSequenceForTechProfileTopic(topicId, direcionPlusOrMinus) {
-		let topic = this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
 		if (topic)
 			return this._sequenceService.moveSequenceByOne(this.techProfile["topics"], topic, direcionPlusOrMinus);
@@ -119,34 +97,29 @@ export class TechProfileModelService {
 	}
 
 	isLineItemAbleToMoveUp(topicId, id) {
-		if (this.isTechProfileAvailable()) {
-			let topic = this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
-			let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
 
-			if (lineItem)
-				return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, -1);
-		}
+		if (lineItem)
+			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, -1);
 
 		return false;
 	}
 
 	isLineItemAbleToMoveDown(topicId, id) {
-		if (this.isTechProfileAvailable()) {
-			let topic = this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
-			let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
 
-			if (lineItem) {
-				return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, 1)
-			}
-		}
+		if (lineItem) 
+			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, 1)
 
 		return false;
 	}
 
 	moveSequenceForTechProfileLineItem(topicId, lineItemId, direcionPlusOrMinus) {
-		let topic = this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 		let lineItem = topic && topic["lineItems"].find((li) => { return li['id'] === lineItemId });
 
 		if (lineItem)
@@ -190,7 +163,7 @@ export class TechProfileModelService {
 
 	getTechProfileLineItemsByTopic(topicId) {
 		let rtn = undefined;
-		let topic = this.techProfile["topics"].find((t) => { return t["id"] === topicId; });
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t["id"] === topicId; });
 
 		if (topic) {
 			rtn = topic["lineItems"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
@@ -239,61 +212,6 @@ export class TechProfileModelService {
 		self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
 			self._init(true);
 		})
-	}
-
-	questionCountForCellCache = { };
-	getQuestionCountForCell(lineItemId, lineItemLevelIndex) {
-		let count = 0;
-
-		// TODO: use the FunctionPromiseService, so caching is automatically handled, etc.
-
-		if (this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]) {
-			return this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex]
-		}
-
-		if (this.isTechProfileAvailable()) {
-			let found = false;
-			let passed = false;
-			let i = 0;
-
-			while (i < this.questionCountsPerCell.length && i <= lineItemId && !passed && !found) {
-				let curr = this.questionCountsPerCell[i];
-
-				passed = (curr[0] > lineItemId);
-				
-				if (!passed) {
-					if (lineItemId == curr[0] && lineItemLevelIndex == curr[1]) {
-						this.questionCountForCellCache[lineItemId + "" + lineItemLevelIndex] = curr[2];
-						count = curr[2];
-						found = true;
-					}
-				}
-
-				i++;
-			}
-		}
-
-		return count;
-	}
-
-	highestQuestionCountForAnyCell = undefined;
-	getHighestQuestionCountForAnyCell() {
-		let max = 0;
-
-		if (this.highestQuestionCountForAnyCell == undefined) {
-			if (this.isTechProfileAvailable()) {
-				let i = 0;
-				while (i < this.questionCountsPerCell.length) {
-					let curr = this.questionCountsPerCell[i];
-					if (curr[2] > max) max = curr[2]; 
-					i++;
-				}
-
-				this.highestQuestionCountForAnyCell = max;
-			}
-		}
-
-		return this.highestQuestionCountForAnyCell;
 	}
 
 }

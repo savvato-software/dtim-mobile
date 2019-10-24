@@ -1,29 +1,22 @@
 import { Injectable } from '@angular/core';
 
-import { TechProfileModelService } from './tech-profile-model.service'
 import { TechProfileAPIService } from './tech-profile-api.service'
 
-// IMPORTED HERE UNDER PROTEST! Why does the child need to supply instances of each service a parent might use?
-//  Doesn't that break encapsulation? WTF?!
-import { SequenceService } from './sequence.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserTechProfileModelService extends TechProfileModelService {
+export class UserTechProfileModelService {
 
 	userScores = undefined;
 	userId = undefined;
 	dirty = false;	
 
-	constructor(protected _techProfileAPI: TechProfileAPIService,
-				protected _sequenceService: SequenceService) {
-		super(_techProfileAPI, _sequenceService);
+	constructor(protected _techProfileAPI: TechProfileAPIService) {
+		
 	}
 
 	init(userId) {
-		super._init();
-
 		let self = this;
 
 		if (userId !== self.userId) {
@@ -34,8 +27,25 @@ export class UserTechProfileModelService extends TechProfileModelService {
 				self.userScores = scores;
 			})
 		} else {
-			console.log("UserTechProfileModelService did NOT init, because the userId requested is the same one we already have, and we do not want to overwrite any data.")
+			console.log("UserTechProfileModelService did NOT init. Not sure if thats a good or bad thing")
 		}
+	}
+
+	waitingPromise() {
+		let self = this;
+		return new Promise((resolve, reject) => {
+
+			function to() {
+				setTimeout(() => {
+					if (self.isUserScoresAvailable())
+						resolve();
+					else
+						to();
+				}, 600);
+			}
+
+			to();
+		})
 	}
 
 	isDirty() {
@@ -44,10 +54,6 @@ export class UserTechProfileModelService extends TechProfileModelService {
 
 	setDirty() {
 		this.dirty = true;
-	}
-
-	isTechProfileAvailable() {
-		return super.isTechProfileAvailable();
 	}
 
 	isUserScoresAvailable() {

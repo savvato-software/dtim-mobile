@@ -33,20 +33,6 @@ export class TechProfileAPIService {
   	return rtn;
   }
 
-  getQuestionCountsPerCell(techProfileId) {
-    let url = environment.apiUrl + "/api/techprofile/questionCountsPerCell";
-
-    let rtn = new Promise(
-      (resolve, reject) => {
-        this._apiService.get(url).subscribe(
-          (data) => {
-            resolve(data);
-          })
-      });
-
-    return rtn;
-  }
-
   getScores(userId) {
     console.log("calling to get TechProfile scores for [" + userId + "] ");
   	let url = environment.apiUrl + "/api/user/" + userId + "/techprofile/scores";

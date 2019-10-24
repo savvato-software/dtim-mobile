@@ -11,6 +11,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { SavvatoJavascriptServicesModule } from 'savvato-javascript-services'
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -18,7 +20,8 @@ import { AppRoutingModule } from './app-routing.module';
   	BrowserModule, 
   	IonicModule.forRoot(), 
   	AppRoutingModule,
-  	HttpClientModule
+  	HttpClientModule,
+    SavvatoJavascriptServicesModule.forRoot()
   ],
   providers: [
     StatusBar,
