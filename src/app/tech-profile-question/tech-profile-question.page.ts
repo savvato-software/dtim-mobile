@@ -14,7 +14,7 @@ import { environment } from '../../_environments/environment';
 })
 export class TechProfileQuestionPage implements OnInit {
 
-	funcKey = "tpqp-getParams";
+	funcKey = "tpqp-controller";
 
 	constructor(private _location: Location,
 		    	private _router: Router,
@@ -64,7 +64,7 @@ export class TechProfileQuestionPage implements OnInit {
 
 	}
 
-	getParams() {
+	getDtimTechprofileComponentController() {
 		let self = this;
 		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { })
 	}

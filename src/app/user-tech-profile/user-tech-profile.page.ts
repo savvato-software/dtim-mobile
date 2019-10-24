@@ -23,7 +23,7 @@ export class UserTechProfilePage implements OnInit {
   	user = undefined;
   	techProfile = undefined;
 
-  	funcKey = "utp-getParams";
+  	funcKey = "utp-controller";
 
 	constructor(private _location: Location,
 		    private _router: Router,
@@ -74,6 +74,10 @@ export class UserTechProfilePage implements OnInit {
 		})
 	}
 
+	getDtimTechprofileComponentController() {
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
+	}
+
 	getUserName() {
 		return this.user && this.user["name"];
 	}
@@ -87,9 +91,5 @@ export class UserTechProfilePage implements OnInit {
 		this._userTechProfileModel.save().then(() => {
 			this._location.back();
 		});
-	}
-
-	getParams() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
 	}
 }

@@ -28,7 +28,7 @@ export class TechProfileEditPage implements OnInit {
 	selectedLineItemIDs = [];
 	allowMultiSelect = false;
 
-	funcKey = "tpepg-getParams";
+	funcKey = "tpepg-controller";
 
 	_techProfile = undefined;
 
@@ -101,7 +101,7 @@ export class TechProfileEditPage implements OnInit {
 		});
 	}
 
-	getParams() {
+	getDtimTechprofileComponentController() {
 		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
 	};
 

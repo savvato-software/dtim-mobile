@@ -161,13 +161,14 @@ export class QuestionEditPage implements OnInit {
 		}
 	}
 
+	getDtimTechprofileComponentController() {
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey,  { })
+	}
+
 	getScore(lineItemId) {
 		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
 
 		return assoc ? assoc[1] : -1;
 	}
 
-	getParams() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey,  { })
-	}
 }

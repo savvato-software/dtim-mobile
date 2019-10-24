@@ -19,7 +19,7 @@ export class QuestionDisplayPage implements OnInit {
 	question = undefined;
 	lilvassociations = undefined;
 
-	funcKey = "qdpg-getParams";
+	funcKey = "qdpg-controller";
 
 	constructor(private _location: Location,
 			    private _router: Router,
@@ -68,6 +68,10 @@ export class QuestionDisplayPage implements OnInit {
 		});
 	}
 
+	getDtimTechprofileComponentController() {
+		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
+	}
+
 	getQuestionText() {
 		return this.question && this.question["text"];
 	}
@@ -84,10 +88,6 @@ export class QuestionDisplayPage implements OnInit {
 		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
 
 		return assoc ? assoc[1] : -1;
-	}
-
-	getParams() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
 	}
 
 }
