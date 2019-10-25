@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ApiService } from '../../_services/api.service'
-import { FunctionPromiseService } from '../../_services/function-promise.service'
-import { DomainObjectMetadataService } from 'savvato-javascript-services'
+import { FunctionPromiseService } from 'savvato-javascript-services'
 import { environment } from '../../../_environments/environment'
 
 @Injectable({
@@ -15,8 +14,7 @@ export class ModelService {
 	GET_MAX_QUESTION_COUNT_FOR_ANY_CELL = "highestQuestionCountForAnyCell";
 
 	constructor(private _apiService: ApiService,
-				private _functionPromiseService: FunctionPromiseService,
-				private _domainObjectMetadataService: DomainObjectMetadataService) {
+				private _functionPromiseService: FunctionPromiseService) {
 
 	}
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AttendanceAPIService } from './attendance-api.service';
-import { FunctionPromiseService } from './function-promise.service'
+import { FunctionPromiseService } from 'savvato-javascript-services'
 
 import * as moment from 'moment'
 
@@ -38,20 +38,7 @@ export class AttendanceModelService {
 	}
 
 	getListOfUsersInAttendance() {
-		let self = this;
-		let rtn = self.listOfUsersInAttendance;
-
-		if (self.listOfUsersInAttendance === undefined) {
-			self.listOfUsersInAttendance = [ ];
-			rtn = self.listOfUsersInAttendance;
-
-			this._functionPromiseService.get(this.LIST_OF_USERS_IN_ATTENDANCE, this.LIST_OF_USERS_IN_ATTENDANCE, undefined)
-				.then((list) => {
-					self.listOfUsersInAttendance = list;
-				})
-		} 
-
-		return rtn;
+		return this._functionPromiseService.get(this.LIST_OF_USERS_IN_ATTENDANCE, this.LIST_OF_USERS_IN_ATTENDANCE, undefined);
 	}
 
 	isSessionActive() {

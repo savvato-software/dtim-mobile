@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { ModelService } from './_services/model.service';
-import { FunctionPromiseService } from '../_services/function-promise.service';
+import { FunctionPromiseService } from 'savvato-javascript-services'
 
 import { environment } from '../../_environments/environment';
 
@@ -65,7 +65,6 @@ export class TechProfileQuestionPage implements OnInit {
 	}
 
 	getDtimTechprofileComponentController() {
-		let self = this;
 		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { })
 	}
 
