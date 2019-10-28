@@ -56,10 +56,10 @@ export class TechProfileEditPage implements OnInit {
 					getColorMeaningString: () => {
 						return "Red means selected. Selected means you can edit it!"
 					},
-					getTopicBackgroundColor: (thisId, isSelected) => {
+					getTopicBackgroundColor: (topic, isSelected) => {
 						return isSelected ? "red" : undefined;
 					},
-					getLineItemBackgroundColor: (thisId, isSelected) => {
+					getLineItemBackgroundColor: (lineItem, isSelected) => {
 						return isSelected ? "red" : undefined;
 					},
 				});

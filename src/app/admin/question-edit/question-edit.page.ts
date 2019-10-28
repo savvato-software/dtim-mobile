@@ -73,21 +73,20 @@ export class QuestionEditPage implements OnInit {
 						getColorMeaningString: () => {
 							return "lightblue means someone of that skill level should be able to answer this question. Click on a cell to apply this question to that skill. Click again to clear it."
 						},
-						getBackgroundColor: (id, idx) => {
-							if (self.getScore(id) === idx) {
+						getBackgroundColor: (lineItem, idx) => {
+							if (self.getScore(lineItem['id']) === idx) {
 								return "lightblue";
 							} else {
 								return "white";
 							}
 						},
-						onLxDescriptionClick: (id, idx) => {
-							// TODO think we could do better than O(2n)?
-							let association = self.lilvassociations.find((element) => { return element[0] === id; });
+						onLxDescriptionClick: (lineItem, idx) => {
+							let association = self.lilvassociations.find((element) => { return element[0] === lineItem['id']; });
 
 							if (association) {
 								if (idx === association[1]) {
 									// remove the association
-									let l = self.lilvassociations.filter((element) => { return element[0] !== id; });
+									let l = self.lilvassociations.filter((element) => { return element[0] !== lineItem['id']; });
 									self.lilvassociations = l;
 								} else {
 									// update the association
@@ -95,7 +94,7 @@ export class QuestionEditPage implements OnInit {
 								}
 							} else {
 								// add a new association
-								self.lilvassociations.push([id, idx]);
+								self.lilvassociations.push([lineItem['id'], idx]);
 							}
 
 							self.setDirty();

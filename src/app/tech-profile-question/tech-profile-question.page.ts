@@ -39,12 +39,12 @@ export class TechProfileQuestionPage implements OnInit {
 					getColorMeaningString: () => {
 						return "White means there a no questions associated with this skill level. Shades of gray, the closer you get to dark, the more questions, relatively speaking, for that skill level."
 					},
-					getBackgroundColor: (id, idx) => {
+					getBackgroundColor: (lineItem, idx) => {
 							// TODO: We want to use a gradient from 0 to #DDDDDD. We need to be able say, there is a range of cell question counts from 0 to MAX.
 							//  If a given cell count is N, we need a corresponding color value. So lets just say there are 14 color buckets (#000, #111, ... #DDD),
 							//  if MAX is 7, then a cell with 1 question should be #111, a cell with 6 should be #BBB
 							//  if MAX is 28, then a cell with 1 questions should be #111, 3 would be #222, 6 would be #333, 28 would be #DDD
-							let count = this._modelService.getQuestionCountForCell(id, idx);
+							let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);
 							let max = this._modelService.getHighestQuestionCountForAnyCell();
 
 							if (max) {
@@ -55,8 +55,8 @@ export class TechProfileQuestionPage implements OnInit {
 								else return "yellow";
 							}
 					},
-					onLxDescriptionClick: (id, idx) => {
-						this._router.navigate(['/question-list/' + id + '/' + idx]);
+					onLxDescriptionClick: (lineItem, idx) => {
+						this._router.navigate(['/question-list/' + lineItem['id'] + '/' + idx]);
 					}
 				});
 			});

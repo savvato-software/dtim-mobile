@@ -58,14 +58,14 @@ export class UserTechProfilePage implements OnInit {
 							getColorMeaningString: () => {
 								return "lightblue means this user's score says they have demonstrated skills at this level, and below. White, user has not been tested, or has not passed, at this level."
 							},
-							getBackgroundColor: (id, idx) => {
-								let score = self._userTechProfileModel.getScore(id);
+							getBackgroundColor: (lineItem, idx) => {
+								let score = self._userTechProfileModel.getScore(lineItem['id']);
 								
 								if (score == undefined) return "white";
 								if (score >= idx) return "lightblue"; else return "white";
 							},
-							onLxDescriptionClick: (id, idx) => {
-								self._router.navigate(['/line-item-action-page/' + self.userId + '/' + id + '/' + idx]);
+							onLxDescriptionClick: (lineItem, idx) => {
+								self._router.navigate(['/line-item-action-page/' + self.userId + '/' + lineItem['id'] + '/' + idx]);
 							}
 						})
 					})

@@ -54,8 +54,8 @@ export class QuestionDisplayPage implements OnInit {
 							getColorMeaningString: () => {
 								return "lightblue means someone of that skill level should be able to answer this question. To apply this question to more skills, click Edit to edit the question."
 							},
-							getBackgroundColor: (id, idx) => {
-								if (self.getScore(id) === idx) {
+							getBackgroundColor: (lineItem, idx) => {
+								if (self.getScore(lineItem['id']) === idx) {
 									return "lightblue";
 								} else {
 									return "white";
