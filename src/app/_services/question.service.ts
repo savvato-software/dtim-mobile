@@ -81,9 +81,9 @@ export class QuestionService {
         (resolve, reject) => {
         this._apiService.getUnsecuredAPI(url).subscribe(
           (data) => {
-            console.log("Call to getQuestionById(" + id + " returned")
-            console.log(data[0])
-            resolve(data[0]);
+            console.log("Call to getQuestionById(" + id + ") returned")
+            console.log(data)
+            resolve(data);
           }, (err) => {
             reject(err);
           });
