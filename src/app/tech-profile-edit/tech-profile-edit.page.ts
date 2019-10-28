@@ -31,6 +31,8 @@ export class TechProfileEditPage implements OnInit {
 	funcKey = "tpepg-controller";
 
 	_techProfile = undefined;
+	selectedTopicIDsProvider = () => { return [] };
+	selectedLineItemIDsProvider = () => { return [] };
 
 	ngOnInit() {
 		let self = this;
@@ -43,59 +45,23 @@ export class TechProfileEditPage implements OnInit {
 					initTechProfile: (techProfile) => {
 						self._techProfileModelService.setTechProfile(techProfile);
 					},
+					setProviderForSelectedTopicIDs: (func) => {
+						// called by the techprofile component to give us a function
+						self.selectedTopicIDsProvider = func;
+					},
+					setProviderForSelectedLineItemIDs: (func) => {
+						// called by the techprofile component to give us a function
+						self.selectedLineItemIDsProvider = func;
+					},
 					getColorMeaningString: () => {
 						return "Red means selected. Selected means you can edit it!"
 					},
-					getTopicBackgroundColor: (thisId) => {
-						if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId }))
-							return "red"; 
-						else 
-							return undefined;
+					getTopicBackgroundColor: (thisId, isSelected) => {
+						return isSelected ? "red" : undefined;
 					},
-					onTopicClick: (thisId) => {
-						if (self.selectedTopicIDs.length === 0) {
-							self.selectedTopicIDs.push(thisId);
-						} else {
-							if (self.allowMultiSelect) {
-								if (self.selectedTopicIDs.find((thatId) => { return thisId === thatId; })) {
-									self.selectedTopicIDs = self.selectedTopicIDs.filter((thatId) => { return thisId !== thatId; })
-								} else {
-									self.selectedTopicIDs.push(thisId);
-								}
-							} else {
-								if (self.selectedTopicIDs[0] === thisId) {
-									self.selectedTopicIDs = [];
-								} else {
-									self.selectedTopicIDs[0] = thisId;
-								}
-							}
-						}
+					getLineItemBackgroundColor: (thisId, isSelected) => {
+						return isSelected ? "red" : undefined;
 					},
-					getLineItemBackgroundColor: (thisId) => {
-						if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId }))
-							return "red"; 
-						else 
-							return undefined;
-					},
-					onLineItemClick: (thisId) => {
-						if (self.selectedLineItemIDs.length === 0) {
-							self.selectedLineItemIDs.push(thisId);
-						} else {
-							if (self.allowMultiSelect) {
-								if (self.selectedLineItemIDs.find((thatId) => { return thisId === thatId; })) {
-									self.selectedLineItemIDs = self.selectedLineItemIDs.filter((thatId) => { return thisId !== thatId; })
-								} else {
-									self.selectedLineItemIDs.push(thisId);
-								}
-							} else {
-								if (self.selectedLineItemIDs[0] === thisId) {
-									self.selectedLineItemIDs = [];
-								} else {
-									self.selectedLineItemIDs[0] = thisId;
-								}
-							}
-						}
-					}
 				});
 			})
 		});
@@ -135,7 +101,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	isNewLineItemBtnAvailable() {
-		return this.selectedTopicIDs.length > 0
+		return this.selectedTopicIDsProvider().length > 0
 	}
 
 	onNewLineItemBtnClicked() {
@@ -168,52 +134,51 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	isSelectedTopicAbleToMoveUp() {
-		return this._techProfileModelService.isTopicAbleToMoveUp(this.selectedTopicIDs[0]);
+		return this._techProfileModelService.isTopicAbleToMoveUp(this.selectedTopicIDsProvider()[0]);
 	}
 
 	onMoveTopicUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDs[0], -1)
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], -1)
 	}
 
 	isSelectedTopicAbleToMoveDown() {
-		return this._techProfileModelService.isTopicAbleToMoveDown(this.selectedTopicIDs[0]);
+		return this._techProfileModelService.isTopicAbleToMoveDown(this.selectedTopicIDsProvider()[0]);
 	}
 
 	onMoveTopicDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDs[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], 1)
 	}
 
 	isSelectedLineItemAbleToMoveUp() {
-		return this._techProfileModelService.isLineItemAbleToMoveUp(this.selectedTopicIDs[0], this.selectedLineItemIDs[0]);
+		return this._techProfileModelService.isLineItemAbleToMoveUp(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
 	}
 
 	onMoveLineItemUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDs[0], this.selectedLineItemIDs[0], -1)	
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1)	
 	}
 
 	isSelectedLineItemAbleToMoveDown() {
-		return this._techProfileModelService.isLineItemAbleToMoveDown(this.selectedTopicIDs[0], this.selectedLineItemIDs[0]);
+		return this._techProfileModelService.isLineItemAbleToMoveDown(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
 	}
 
 	onMoveLineItemDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDs[0], this.selectedLineItemIDs[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1)
 	}
 
 	isEditTopicBtnAvailable() {
-		return this.selectedTopicIDs.length > 0;
+		return this.selectedTopicIDsProvider().length > 0;
 	}
 
 	onEditTopicBtnClicked() {
-		this._router.navigate(['/tech-profile-topic-edit/' + this.selectedTopicIDs[0]]);
+		this._router.navigate(['/tech-profile-topic-edit/' + this.selectedTopicIDsProvider()[0]]);
 	}
 
 	isEditLineItemBtnAvailable() {
-		return this.selectedLineItemIDs.length > 0;
+		return this.selectedLineItemIDsProvider().length > 0;
 	}
 
 	onEditLineItemBtnClicked() {
-		console.log(this.selectedLineItemIDs)
-		this._router.navigate(['/tech-profile-line-item-edit/' + this.selectedLineItemIDs[0]]);
+		this._router.navigate(['/tech-profile-line-item-edit/' + this.selectedLineItemIDsProvider()[0]]);
 	}
 
 	onBackBtnClicked() {

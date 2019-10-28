@@ -25,10 +25,6 @@ export class TechProfileModelService {
 			self._techProfileAPI.get(1).then((tp) => {
 				self.techProfile = tp;
 			})
-
-			// self._techProfileAPI.getQuestionCountsPerCell(1).then((qcpc) => {
-			// 	self.questionCountsPerCell = qcpc;
-			// })
 		}
 	}
 
@@ -50,7 +46,7 @@ export class TechProfileModelService {
 	}
 
 	isTechProfileAvailable() {
-		return this.techProfile && this.techProfile != null // && this.questionCountsPerCell && this.questionCountsPerCell != null;
+		return this.techProfile && this.techProfile != null
 	}
 
 	setTechProfile(techProfile) {
