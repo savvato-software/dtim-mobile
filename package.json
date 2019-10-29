@@ -38,7 +38,7 @@
     "google-libphonenumber": "^3.2.3",
     "moment": "^2.24.0",
     "rxjs": "~6.5.1",
-    "savvato-javascript-services": "file:../savvato-javascript-services-lib/wrapper/dist/savvato-javascript-services",
+    "savvato-javascript-services": "file:../savvato/src/angular/savvato-javascript-services-lib/wrapper/dist/savvato-javascript-services",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"
   },
