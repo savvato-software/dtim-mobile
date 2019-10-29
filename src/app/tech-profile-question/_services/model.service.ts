@@ -110,4 +110,56 @@ export class ModelService {
 
 		return rtn;
 	}
+
+	getPercentileForTheNumberOfQuestionsForThisCell(id, idx) {
+		// get a count for each of the cells
+		let self = this;
+		let qcpc = this._functionPromiseService.get(self.GET_ALL_QUESTION_COUNTS_PER_CELL, self.GET_ALL_QUESTION_COUNTS_PER_CELL, { });
+
+		if (qcpc) {
+			let data = {'questionCountsPerCell': qcpc};
+			let gcqc = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
+			
+
+			if (qcpc) {
+				let arr = qcpc.map((elem) => { return elem[2]; }) // arr of the question counts for each cell in the profile
+
+				// sort array ascending
+				const asc = arr => arr.sort((a, b) => a - b);
+
+				const sum = arr => arr.reduce((a, b) => a + b, 0);
+
+				const mean = arr => sum(arr) / arr.length;
+
+				// sample standard deviation
+				const std = (arr) => {
+				    const mu = mean(arr);
+				    const diffArr = arr.map(a => (a - mu) ** 2);
+				    return Math.sqrt(sum(diffArr) / (arr.length - 1));
+				};
+
+				const calculateNtile = (arr, q) => {
+				    const sorted = asc(arr);
+				    const pos = ((sorted.length) - 1) * q;
+				    const base = Math.floor(pos);
+				    const rest = pos - base;
+				    if ((sorted[base + 1] !== undefined)) {
+				        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+				    } else {
+				        return sorted[base];
+				    }
+				};
+
+				let maxIdx = 0;
+				[1,2,3,4,5,6,7,8,9,10].forEach(i => {
+					let nTile = calculateNtile(arr, ((i + 1) / 10));
+					if (nTile <= gcqc) maxIdx++;
+				})
+
+				return maxIdx;
+			}
+		}
+
+		return undefined;
+	}
 }
