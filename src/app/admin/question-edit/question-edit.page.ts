@@ -26,6 +26,9 @@ export class QuestionEditPage implements OnInit {
 
 	funcKey = "qepg-getParams1";
 
+	LINE_ITEM_ID_IDX = 0;
+	LEVEL_IDX = 1;
+
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
@@ -73,28 +76,34 @@ export class QuestionEditPage implements OnInit {
 						getColorMeaningString: () => {
 							return "lightblue means someone of that skill level should be able to answer this question. Click on a cell to apply this question to that skill. Click again to clear it."
 						},
-						getBackgroundColor: (lineItem, idx) => {
-							if (self.getScore(lineItem['id']) === idx) {
+						getBackgroundColor: (lineItemId, idx) => {
+							if (self.getAssociatedLevel(lineItemId) === idx) {
 								return "lightblue";
 							} else {
 								return "white";
 							}
 						},
-						onLxDescriptionClick: (lineItem, idx) => {
-							let association = self.lilvassociations.find((element) => { return element[0] === lineItem['id']; });
+						onLxDescriptionClick: (lineItemId, idx) => {
+							let association = self.lilvassociations.find(
+								(element) => { 
+									return element[this.LINE_ITEM_ID_IDX] === lineItemId; 
+								});
 
 							if (association) {
-								if (idx === association[1]) {
+								if (idx === association[this.LEVEL_IDX]) {
 									// remove the association
-									let l = self.lilvassociations.filter((element) => { return element[0] !== lineItem['id']; });
-									self.lilvassociations = l;
+									self.lilvassociations = self.lilvassociations.filter(
+										(element) => { 
+											return element[this.LINE_ITEM_ID_IDX] !== lineItemId; 
+										});
+
 								} else {
 									// update the association
-									association[1] = idx
+									association[this.LEVEL_IDX] = idx;
 								}
 							} else {
 								// add a new association
-								self.lilvassociations.push([lineItem['id'], idx]);
+								self.lilvassociations.push([lineItemId, idx]);
 							}
 
 							self.setDirty();
@@ -164,10 +173,8 @@ export class QuestionEditPage implements OnInit {
 		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey,  { })
 	}
 
-	getScore(lineItemId) {
-		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
-
-		return assoc ? assoc[1] : -1;
+	getAssociatedLevel(lineItemId) {
+		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[this.LINE_ITEM_ID_IDX] === lineItemId; }));
+		return assoc ? assoc[this.LEVEL_IDX] : -1;
 	}
-
 }
