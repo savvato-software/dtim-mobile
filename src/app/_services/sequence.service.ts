@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FORWARD, BACKWARD } from '../../_constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,13 @@ export class SequenceService {
 
   constructor() { }
 
-  moveSequenceByOne(list, obj, directionPlusOrMinus) {
+  moveSequenceByOne(list, obj, direction) {
+    if (direction !== FORWARD && direction !== BACKWARD)
+      throw new Error("Invalid value for 'direction' parameter");
+
   	let done = false;
 
-    if (directionPlusOrMinus > 0) {
+    if (direction == FORWARD) {
       // moving to a higher sequence
       let follower = list.find((e) => { return e['sequence'] === obj['sequence'] + 1 })
 
@@ -42,17 +46,20 @@ export class SequenceService {
     obj2["sequence"] = tmp;
   }
 
-  isAbleToMove(list, obj, directionPlusOrMinus) {
+  isAbleToMove(list, obj, direction) {
+    if (direction !== FORWARD && direction !== BACKWARD)
+      throw new Error("Invalid value for 'direction' parameter");
+
   	let max = -1;
   	list.forEach((o) => { if (o['sequence'] > max) max = o['sequence'] });
 
   	let lastObj = list.find((o) => o['sequence'] === max);
 
-  	if (directionPlusOrMinus > 0) {
+  	if (direction == FORWARD) {
   		// moving to a higher sequence
-      return obj['sequence'] + directionPlusOrMinus <= lastObj['sequence']
+      return obj['sequence'] + direction <= lastObj['sequence']
   	} else {
-  		return obj['sequence'] + directionPlusOrMinus > 0
+  		return obj['sequence'] + direction > 0
   	}
   }
 }
