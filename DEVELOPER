@@ -1,0 +1,5 @@
+
+To run, type:
+    npm install
+    cp src/_environments/environment.dev.ts src/_environments/environment.ts
+    ionic serve
