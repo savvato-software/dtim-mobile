@@ -11,6 +11,10 @@ import { QuestionEditService } from '../_services/question-edit.service';
 
 import { environment } from '../../../_environments/environment'
 
+//
+// This page presents a field to edit the question itself, and also a view of the tech profile, used to select lineItemLevel associations
+// 
+
 @Component({
   selector: 'app-question-edit',
   templateUrl: './question-edit.page.html',
@@ -35,15 +39,12 @@ export class QuestionEditPage implements OnInit {
 			    private _questionService: QuestionService,
 			    private _questionEditService: QuestionEditService,
     			private _alertService: AlertService,
-			    private _techProfileModelService: TechProfileModelService,
 			    private _functionPromiseService: FunctionPromiseService) {
 
 	}
 
 	ngOnInit() {
 		let self = this;
-
-		self._techProfileModelService._init();
 
 		self._route.params.subscribe((params) => {
 			self.questionId = params['questionId'];

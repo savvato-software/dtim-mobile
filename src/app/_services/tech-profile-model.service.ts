@@ -65,8 +65,8 @@ export class TechProfileModelService {
 		return this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 	}
 
-	isTopicAbleToMoveUp(id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
+	isTopicAbleToMoveUp(topicId) {
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
 		if (topic)
 			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
@@ -74,8 +74,8 @@ export class TechProfileModelService {
 		return false;
 	}
 
-	isTopicAbleToMoveDown(id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
+	isTopicAbleToMoveDown(topicId) {
+		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
 		if (topic)
 			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
@@ -92,10 +92,10 @@ export class TechProfileModelService {
 			console.error("Topic with ID " + topicId + " not found. Nothing to move.");
 	}
 
-	isLineItemAbleToMoveUp(topicId, id) {
+	isLineItemAbleToMoveUp(topicId, lineItemId) {
 		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
-		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === lineItemId });
 
 		if (lineItem)
 			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, -1);
@@ -103,10 +103,10 @@ export class TechProfileModelService {
 		return false;
 	}
 
-	isLineItemAbleToMoveDown(topicId, id) {
+	isLineItemAbleToMoveDown(topicId, lineItemId) {
 		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
-		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === lineItemId });
 
 		if (lineItem) 
 			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, 1)
@@ -168,11 +168,11 @@ export class TechProfileModelService {
 		return rtn;
 	}
 
-	getTechProfileLineItemById(id) {
+	getTechProfileLineItemById(lineItemId) {
 		let rtn = undefined;
 
 		for (var x=0; this.techProfile && !rtn && x < this.techProfile["topics"].length; x++) {
-			rtn = this.techProfile["topics"][x]["lineItems"].find((li) => { return li["id"] === id; });
+			rtn = this.techProfile["topics"][x]["lineItems"].find((li) => { return li["id"] === lineItemId; });
 		}
 
 		return rtn;

@@ -21,11 +21,13 @@ export class QuestionDisplayPage implements OnInit {
 
 	funcKey = "qdpg-controller";
 
+	LINE_ITEM_ID_IDX = 0;
+	LEVEL_IDX = 1;
+
 	constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
-			    private _techProfileModelService: TechProfileModelService,
 			    private _functionPromiseService: FunctionPromiseService
 			    ) {
 
@@ -43,6 +45,8 @@ export class QuestionDisplayPage implements OnInit {
 
 				self._questionService.getLineItemLevelAssociations(self.questionId).then((data: number[]) => {
 					self.lilvassociations = data;
+
+					console.log("---", self.lilvassociations);
 				})
 
 				self._functionPromiseService.initFunc(self.funcKey, () => {
@@ -55,11 +59,14 @@ export class QuestionDisplayPage implements OnInit {
 								return "lightblue means someone of that skill level should be able to answer this question. To apply this question to more skills, click Edit to edit the question."
 							},
 							getBackgroundColor: (lineItem, idx) => {
-								if (self.getScore(lineItem['id']) === idx) {
-									return "lightblue";
+								let rtn = undefined;
+								if (self.getAssociatedLevel(lineItem['id']) === idx) {
+									rtn = "lightblue";
 								} else {
-									return "white";
+									rtn = "white";
 								}
+
+								return rtn;
 							},
 						})						
 					})
@@ -84,10 +91,8 @@ export class QuestionDisplayPage implements OnInit {
 		this._location.back();
 	}
 
-	getScore(lineItemId) {
-		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[0] === lineItemId; }));
-
-		return assoc ? assoc[1] : -1;
+	getAssociatedLevel(lineItemId) {
+		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[this.LINE_ITEM_ID_IDX] === lineItemId; }));
+		return assoc ? assoc[this.LEVEL_IDX] : -1;
 	}
-
 }
