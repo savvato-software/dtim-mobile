@@ -42,14 +42,22 @@ export class AttendanceModelService {
 	}
 
 	isSessionActive() {
+		// this function checks the API to get the date/time of the start of the last session, and then returns true if the 
+		//  current time is within three hours. 
+
 		let self = this;
-		if (self.sessionActive === undefined) {
+
+		if (self.sessionActive === undefined) { // we have not made an API call yet.. 
+
+			// set our flag, so we don't make this API call again if the method is called again.
+			//  we set it to null to indicate we've made a call, but not received the results yet
 			self.sessionActive = null;
 
 			self._attendanceAPIService.getLastSession().then((data) => {
 				if (data && moment(data["timestamp"]) > moment(new Date().getTime() - (1000*60*60*3))) {
-				  self.currentSession = data;
-				  self.sessionActive = true;
+					// if it has been less than three hours since the last session started, we consider that we are in the same session
+					self.currentSession = data;
+					self.sessionActive = true;
 				}
 			})
 		}
