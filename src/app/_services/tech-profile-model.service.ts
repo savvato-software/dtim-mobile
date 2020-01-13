@@ -58,11 +58,11 @@ export class TechProfileModelService {
 	}
 
 	getTechProfileTopics() {
-		return this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+		return this.techProfile && this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
 	}
 
 	getTechProfileTopicById(topicId) {
-		return this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		return this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 	}
 
 	isTopicAbleToMoveUp(topicId) {
@@ -83,11 +83,11 @@ export class TechProfileModelService {
 		return false;
 	}
 
-	moveSequenceForTechProfileTopic(topicId, direcionPlusOrMinus) {
+	moveSequenceForTechProfileTopic(topicId, direction) {
 		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
 		if (topic)
-			return this._sequenceService.moveSequenceByOne(this.techProfile["topics"], topic, direcionPlusOrMinus);
+			return this._sequenceService.moveSequenceByOne(this.techProfile["topics"], topic, direction);
 		else
 			console.error("Topic with ID " + topicId + " not found. Nothing to move.");
 	}
@@ -209,5 +209,4 @@ export class TechProfileModelService {
 			self._init(true);
 		})
 	}
-
 }
