@@ -150,19 +150,19 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	isSelectedLineItemAbleToMoveUp() {
-		return this._techProfileModelService.isLineItemAbleToMoveUp(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
+		return this._techProfileModelService.isLineItemAbleToMoveUp(this.selectedLineItemIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
 	}
 
 	onMoveLineItemUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1)	
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedLineItemIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1)	
 	}
 
 	isSelectedLineItemAbleToMoveDown() {
-		return this._techProfileModelService.isLineItemAbleToMoveDown(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
+		return this._techProfileModelService.isLineItemAbleToMoveDown(this.selectedLineItemIDsProvider()[0], this.selectedLineItemIDsProvider()[0]);
 	}
 
 	onMoveLineItemDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedLineItemIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1)
 	}
 
 	isEditTopicBtnAvailable() {

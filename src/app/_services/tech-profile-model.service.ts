@@ -66,21 +66,33 @@ export class TechProfileModelService {
 	}
 
 	isTopicAbleToMoveUp(topicId) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let rtn = false;
 
-		if (topic)
-			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
+		if (topicId) {
+			let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
 
-		return false;
+			if (topic)
+				rtn = this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
+
+			// return false;
+			console.log("isTopicAbleToMoveUp is returning "+rtn+" for "+topicId);
+		}
+	
+		return rtn;
 	}
 
 	isTopicAbleToMoveDown(topicId) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		let rtn = false;
 
-		if (topic)
-			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
+		if (topicId) {
 
-		return false;
+			let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+
+			if (topic)
+				return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
+		}
+
+		return rtn;
 	}
 
 	moveSequenceForTechProfileTopic(topicId, direction) {

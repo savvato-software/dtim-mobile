@@ -126,7 +126,7 @@ export class TechProfileAPIService {
 
   updateLineItemWithDescriptions(lineItem) {
   	let url = environment.apiUrl + "/api/techprofile/lineitem/" + lineItem["id"];
-    let rtn = new Promise((resolve, reject) => { reject("invalid data") });
+    let rtn = (resolve, reject) => { reject("invalid line item data") };
 
   	if (lineItem["name"] !== undefined 
         && lineItem["l0Description"] !== undefined
@@ -134,8 +134,7 @@ export class TechProfileAPIService {
         && lineItem["l2Description"] !== undefined
         && lineItem["l3Description"] !== undefined) {
 
-        	rtn = new Promise(
-        		(resolve, reject) => {
+        	rtn = (resolve, reject) => {
         			this._apiService.postUnsecuredAPI2(url, {lineItem: lineItem}).subscribe(
         				(data) => {
         					console.log("POST updateLineItem [" + lineItem['id'] + "] API call returned")
@@ -145,10 +144,10 @@ export class TechProfileAPIService {
         				}, (err) => {
         					reject(err)
         				});
-        		});
+        		};
         }
 
-  	return rtn;
+  	return new Promise(rtn);
   }
 
   updateTopic(topic) {

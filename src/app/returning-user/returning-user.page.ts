@@ -35,6 +35,14 @@ export class ReturningUserPage implements OnInit {
 	}
 
 	isSearchBtnEnabled() {
+		if (this.query) {
+			if (!isNaN(this.query.charAt(0) * 1)) { // if the first char is a number
+				return this.query.length === 10 && !isNaN(this.query);
+			} else {
+				return this.query.length >= 3;
+			}
+		}
+
 		return this.query && this.query.length >= 3;
 	}
 
