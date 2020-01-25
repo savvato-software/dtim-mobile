@@ -1,5 +1,15 @@
+FIRST THINGS FIRST
+    - You will need Ionic Framework installed
+        npm install -g ionic
+        npm install -g @angular/cli
+
+To give permissions for USB debug:
+    Settings > Connected Devices. Set USB to 'Transferring Files'
 
 To run, type:
     npm install
     cp src/_environments/environment.dev.ts src/_environments/environment.ts
     ionic serve
+
+To deploy to Android device
+     ionic cordova run android --device && date     # NOT FOR PRODUCTION
