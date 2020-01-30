@@ -25,6 +25,10 @@ export class TechProfileQuestionPage implements OnInit {
 
 	}
 
+	ngAfterContentChecked() {
+		this._functionPromiseService.get("TPQP-ResetModel", "TPQP-ResetModel", { freshnessLengthInMillis: 3000 });
+	}
+
 	ngOnInit() {
 		let self = this;
 
@@ -40,29 +44,37 @@ export class TechProfileQuestionPage implements OnInit {
 						return "Select a skill and level for this new question. White means there are no questions associated with this skill level. Shades of gray, the closer you get to dark, indicate the more questions, relatively speaking, for that skill level."
 					},
 					getBackgroundColor: (lineItem, idx) => {
-							let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);
-							let max = this._modelService.getHighestQuestionCountForAnyCell();
 
-							let shadesOfGray = ["#FFFFFF","#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060"]
+						let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);
+						let max = this._modelService.getHighestQuestionCountForAnyCell();
 
-							if (count && max) {
-								let p = this._modelService.getPercentileForTheNumberOfQuestionsForThisCell(lineItem['id'], idx);
-								let rtn = undefined;
+						let shadesOfGray = ["#FFFFFF","#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060"]
 
-								if (p) {
-									rtn = shadesOfGray[p - 1];
-								}
+						if (count && max) {
+							let p = this._modelService.getPercentileForTheNumberOfQuestionsForThisCell(lineItem['id'], idx);
+							let rtn = undefined;
 
-								return rtn;
+							if (p) {
+								rtn = shadesOfGray[p - 1];
 							}
 
-							return "white";
+							return rtn;
+						}
+
+						return "white";
 					},
 					onLxDescriptionClick: (lineItem, idx) => {
 						this._router.navigate(['/question-list/' + lineItem['id'] + '/' + idx]);
 					}
 				});
 			});
+		})
+
+		self._functionPromiseService.initFunc("TPQP-ResetModel", () => {
+			return new Promise((resolve, reject) => {
+				self._modelService._init();
+				resolve();
+			})
 		})
 
 	}

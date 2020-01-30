@@ -21,6 +21,7 @@ export class ModelService {
 	_init() {
 		let self;
 
+		this._functionPromiseService.reset(this.GET_ALL_QUESTION_COUNTS_PER_CELL);
 		this._functionPromiseService.initFunc(this.GET_ALL_QUESTION_COUNTS_PER_CELL, () => {
 			return new Promise((resolve, reject) => {
 				let url = environment.apiUrl + "/api/techprofile/questionCountsPerCell";
@@ -34,6 +35,8 @@ export class ModelService {
 		});
 
 		this._functionPromiseService.initFunc(this.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, (data) => {
+			
+
 			return new Promise((resolve, reject) => {
 				let qcpc = data['questionCountsPerCell'];
 
@@ -45,11 +48,11 @@ export class ModelService {
 					let passed = false;
 					let i = 0;
 
-					while (i < qcpc.length && i <= data['lineItemId'] && !passed && !found) {
+					while (i < qcpc.length && !passed && !found) {
 						let curr = qcpc[i];
 
-						passed = (curr[0] > data['lineItemId']);
-						
+						passed = (curr[0] > data['lineItemId']); // have we passed the point we are looking for?
+
 						if (!passed) {
 							if (data['lineItemId'] == curr[0] && data['lineItemLevelIndex'] == curr[1]) {
 								rtn = curr[2];
