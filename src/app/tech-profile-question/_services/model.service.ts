@@ -35,8 +35,6 @@ export class ModelService {
 		});
 
 		this._functionPromiseService.initFunc(this.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, (data) => {
-			
-
 			return new Promise((resolve, reject) => {
 				let qcpc = data['questionCountsPerCell'];
 
@@ -154,7 +152,7 @@ export class ModelService {
 				};
 
 				let maxIdx = 0;
-				[1,2,3,4,5,6,7,8,9,10].forEach(i => {
+				[0,1,2,3,4,5,6,7,8,9].forEach(i => {
 					let nTile = calculateNtile(arr, ((i + 1) / 10));
 					if (nTile <= gcqc) maxIdx++;
 				})

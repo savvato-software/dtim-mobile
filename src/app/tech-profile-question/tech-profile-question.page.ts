@@ -48,15 +48,15 @@ export class TechProfileQuestionPage implements OnInit {
 						let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);
 						let max = this._modelService.getHighestQuestionCountForAnyCell();
 
-						let shadesOfGray = ["#FFFFFF","#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060"]
+						let shadesOfGray = ["#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060", "#505050"]
 
 						if (count && max) {
 							let p = this._modelService.getPercentileForTheNumberOfQuestionsForThisCell(lineItem['id'], idx);
 							let rtn = undefined;
 
-							if (p) {
-								rtn = shadesOfGray[p - 1];
-							}
+							rtn = shadesOfGray[Math.max(p - 1, 0)];
+
+							// console.log("### controller getBackgroundColor()", lineItem['id'], idx, count, max, p, rtn);
 
 							return rtn;
 						}
