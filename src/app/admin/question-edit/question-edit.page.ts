@@ -46,6 +46,8 @@ export class QuestionEditPage implements OnInit {
 	ngOnInit() {
 		let self = this;
 
+		self._functionPromiseService.reset(self.funcKey);
+
 		self._route.params.subscribe((params) => {
 			self.questionId = params['questionId'];
 
@@ -54,10 +56,12 @@ export class QuestionEditPage implements OnInit {
 
 			let tmp = self._questionEditService.getSetupFunc()();
 			if (tmp) {
-				self.lilvassociations.push([tmp['lineItemId'], tmp['levelNumber']]);
+				for (var x = 0; x < tmp.length; x++) {
+					self.lilvassociations.push([tmp[x]['lineItemId'], tmp[x]['levelNumber']]);	
+				}
 			}
 
-			if (self.questionId) {
+			if (self.questionId) { // this is an existing question.. it already has an id.
 				self._questionService.getQuestionById(self.questionId).then((q) => {
 					self.question = q;
 					self.isNew = false;
@@ -77,17 +81,17 @@ export class QuestionEditPage implements OnInit {
 						getColorMeaningString: () => {
 							return "lightblue means someone of that skill level should be able to answer this question. Click on a cell to apply this question to that skill. Click again to clear it."
 						},
-						getBackgroundColor: (lineItemId, idx) => {
-							if (self.getAssociatedLevel(lineItemId) === idx) {
+						getBackgroundColor: (lineItem, idx) => {
+							if (self.getAssociatedLevel(lineItem) === idx) {
 								return "lightblue";
 							} else {
 								return "white";
 							}
 						},
-						onLxDescriptionClick: (lineItemId, idx) => {
+						onLxDescriptionClick: (lineItem, idx) => {
 							let association = self.lilvassociations.find(
 								(element) => { 
-									return element[this.LINE_ITEM_ID_IDX] === lineItemId; 
+									return element[this.LINE_ITEM_ID_IDX] === lineItem['id']; 
 								});
 
 							if (association) {
@@ -95,7 +99,7 @@ export class QuestionEditPage implements OnInit {
 									// remove the association
 									self.lilvassociations = self.lilvassociations.filter(
 										(element) => { 
-											return element[this.LINE_ITEM_ID_IDX] !== lineItemId; 
+											return element[this.LINE_ITEM_ID_IDX] !== lineItem['id']; 
 										});
 
 								} else {
@@ -104,7 +108,7 @@ export class QuestionEditPage implements OnInit {
 								}
 							} else {
 								// add a new association
-								self.lilvassociations.push([lineItemId, idx]);
+								self.lilvassociations.push([lineItem['id'], idx]);
 							}
 
 							self.setDirty();
@@ -133,7 +137,7 @@ export class QuestionEditPage implements OnInit {
 	}
 
 	isSaveBtnAvailable() {
-		return this.isDirty() && this.question && this.question['text'] && this.lilvassociations && this.lilvassociations.length > 0
+		return this.dirty && this.question && this.question['text'] && this.lilvassociations && this.lilvassociations.length > 0
 	}
 
 	onSaveBtnClicked() {
@@ -174,8 +178,8 @@ export class QuestionEditPage implements OnInit {
 		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey,  { })
 	}
 
-	getAssociatedLevel(lineItemId) {
-		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[this.LINE_ITEM_ID_IDX] === lineItemId; }));
+	getAssociatedLevel(lineItem) {
+		let assoc = (this.lilvassociations && this.lilvassociations.find((elem) => { return elem[this.LINE_ITEM_ID_IDX] === lineItem['id']; }));
 		return assoc ? assoc[this.LEVEL_IDX] : -1;
 	}
 }

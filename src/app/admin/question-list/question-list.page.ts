@@ -63,8 +63,11 @@ export class QuestionListPage implements OnInit {
 
 	onNewQuestionBtnClicked() {
 		let self = this;
+			
+		self._questionEditService.reset();
+
 		if (self.lineItemId && !isNaN(self.levelNumber)) {
-			self._questionEditService.setSetupFunc(() => { return {lineItemId: self.lineItemId, levelNumber: self.levelNumber} })
+			self._questionEditService.setSetupFunc(() => { return [{lineItemId: self.lineItemId, levelNumber: self.levelNumber}] })
 		}
 
 		this._router.navigate(['/question-edit/new']);
