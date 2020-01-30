@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { MenuController } from '@ionic/angular';
+
 import { ModelService } from './_services/model.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
 
@@ -20,7 +22,8 @@ export class TechProfileQuestionPage implements OnInit {
 		    	private _router: Router,
 		    	private _route: ActivatedRoute,
 				private _modelService: ModelService,
-				private _functionPromiseService: FunctionPromiseService
+				private _functionPromiseService: FunctionPromiseService,
+				private _menuCtrl: MenuController
 		    	) {
 
 	}
@@ -33,6 +36,23 @@ export class TechProfileQuestionPage implements OnInit {
 		let self = this;
 
 		self._modelService._init();
+
+		self._functionPromiseService.reset("currentMenuOptions");
+		self._functionPromiseService.initFunc("currentMenuOptions", () => {
+			return new Promise((resolve, reject) => { 
+				resolve([{
+			        title: 'Home',
+			        url: '/home',
+			        icon: 'home'
+			      },
+			      {
+			        title: 'End',
+			        url: '/end',
+			        icon: 'down'
+			      }
+			    ]);
+			});
+		})
 
 		self._functionPromiseService.initFunc(self.funcKey, () => {
 			return new Promise((resolve, reject) => {
@@ -64,7 +84,10 @@ export class TechProfileQuestionPage implements OnInit {
 						return "white";
 					},
 					onLxDescriptionClick: (lineItem, idx) => {
-						this._router.navigate(['/question-list/' + lineItem['id'] + '/' + idx]);
+						// this._router.navigate(['/question-list/' + lineItem['id'] + '/' + idx]);
+						self._menuCtrl.open("main").then((b) => {
+
+						})
 					}
 				});
 			});
