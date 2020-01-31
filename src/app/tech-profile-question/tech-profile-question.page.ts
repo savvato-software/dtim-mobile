@@ -47,6 +47,12 @@ export class TechProfileQuestionPage implements OnInit {
 					getColorMeaningString: () => {
 						return "Select a skill and level for this new question. White means there are no questions associated with this skill level. Shades of gray, the closer you get to dark, indicate the more questions, relatively speaking, for that skill level."
 					},
+					getTopicBackgroundColor: (topic, isSelected) => {
+						return undefined; // use the default
+					},
+					getLineItemBackgroundColor: (lineItem, isSelected) => {
+						return undefined; // use the default;
+					},
 					getBackgroundColor: (lineItem, idx) => {
 
 						let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);

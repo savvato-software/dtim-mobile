@@ -82,6 +82,12 @@ export class QuestionEditPage implements OnInit {
 						getColorMeaningString: () => {
 							return "lightblue means someone of that skill level should be able to answer this question. Click on a cell to apply this question to that skill. Click again to clear it."
 						},
+						getTopicBackgroundColor: (topic, isSelected) => {
+							return undefined; // use the default
+						},
+						getLineItemBackgroundColor: (lineItem, isSelected) => {
+							return undefined; // use the default
+						},
 						getBackgroundColor: (lineItem, idx) => {
 							if (self.getAssociatedLevel(lineItem) === idx) {
 								return "lightblue";

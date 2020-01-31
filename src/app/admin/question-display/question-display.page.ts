@@ -58,6 +58,12 @@ export class QuestionDisplayPage implements OnInit {
 							getEnv: () => {
 								return environment;
 							},
+							getTopicBackgroundColor: (topic, isSelected) => {
+								return undefined; // use the default
+							},
+							getLineItemBackgroundColor: (lineItem, isSelected) => {
+								return undefined; // use the default
+							},
 							getColorMeaningString: () => {
 								return "lightblue means someone of that skill level should be able to answer this question. To apply this question to more skills, click Edit to edit the question."
 							},
