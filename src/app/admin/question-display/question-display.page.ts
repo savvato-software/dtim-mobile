@@ -51,6 +51,7 @@ export class QuestionDisplayPage implements OnInit {
 					console.log("---", self.lilvassociations);
 				})
 
+				self._functionPromiseService.reset(self.funcKey);
 				self._functionPromiseService.initFunc(self.funcKey, () => {
 					return new Promise((resolve, reject) => {
 						resolve({

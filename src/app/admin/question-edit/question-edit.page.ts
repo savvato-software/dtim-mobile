@@ -72,6 +72,7 @@ export class QuestionEditPage implements OnInit {
 				})
 			}
 
+			self._functionPromiseService.reset(self.funcKey);
 			self._functionPromiseService.initFunc(self.funcKey, () => {
 				return new Promise((resolve, reject) => {
 					resolve({
