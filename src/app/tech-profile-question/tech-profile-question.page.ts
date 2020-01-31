@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { AlertService } from '../_services/alert.service';
 import { ModelService } from './_services/model.service';
+import { QuestionEditService } from '../_services/question-edit.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
 
 import { environment } from '../../_environments/environment';
@@ -22,6 +23,7 @@ export class TechProfileQuestionPage implements OnInit {
 		    	private _route: ActivatedRoute,
 				private _modelService: ModelService,
 				private _alertService: AlertService,
+				private _questionEditService: QuestionEditService,
 				private _functionPromiseService: FunctionPromiseService
 		    	) {
 
@@ -77,6 +79,14 @@ export class TechProfileQuestionPage implements OnInit {
 								buttons: [
 								{
 								    text: 'New Question', handler: () => {
+										self._questionEditService.reset();
+										self._questionEditService.setSetupFunc(
+											// this returns an array of lineItemLevels, one for each that this question has selected
+											() => { 
+												return [ {lineItemId: lineItem['id'], levelNumber: idx} ];
+											}
+										);
+
 								      self._router.navigate(['/question-edit/new']);
 								    }
 								},

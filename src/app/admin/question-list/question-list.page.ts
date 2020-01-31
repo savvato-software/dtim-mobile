@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
-import { QuestionEditService } from '../_services/question-edit.service';
+import { QuestionEditService } from '../../_services/question-edit.service';
 
 @Component({
   selector: 'app-question-list',
