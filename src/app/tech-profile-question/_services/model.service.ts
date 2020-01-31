@@ -41,7 +41,7 @@ export class ModelService {
 				if (!qcpc) 
 					throw new Error("questionCountsPerCell needed.");
 				else {
-					let rtn = undefined;
+					let rtn = 0;
 					let found = false;
 					let passed = false;
 					let i = 0;
