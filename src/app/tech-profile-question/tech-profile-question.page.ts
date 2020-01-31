@@ -74,8 +74,8 @@ export class TechProfileQuestionPage implements OnInit {
 							console.log("COUNT is 0")
 
 							self._alertService.show({
-								header: 'Choose!',
-								message: "",
+								header: 'New Question?',
+								message: "Do you want to create a new question here?",
 								buttons: [
 								{
 								    text: 'New Question', handler: () => {
