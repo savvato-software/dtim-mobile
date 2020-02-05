@@ -40,11 +40,11 @@ export class NewUserPage implements OnInit {
 		],
 		'email': [
 		  { type: 'required', message: 'Email is required.' },
-		  { type: 'pattern', message: 'Please enter a valid email.' }
+		  { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' }
 		],
 		'phone': [
 		  { type: 'required', message: 'Phone is required.' },
-		  { type: 'validCountryPhone', message: 'The phone should be ten digits long.' }
+		  { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' }
 		]
 	};
 
