@@ -72,7 +72,9 @@ export class NewUserPage implements OnInit {
 		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
 		  ])),
 		  country_phone: this.country_phone_group
-		});
+		},
+		{updateOn: "blur"}
+		);
 	}
 
 	ionViewWillEnter() {
@@ -102,6 +104,11 @@ export class NewUserPage implements OnInit {
 	getEmail() {
 		return this.email;
 	}
+
+	// onFocusLostEvent() {
+	// 	let input = event['target'] as HTMLElement;
+	// 	console.log(input.id); // the id of the ion-input object for its identification
+	// }
 
 	isSaveBtnEnabled() {
 		let rtn = this.name && this.name.length > 3;
@@ -151,3 +158,33 @@ export class NewUserPage implements OnInit {
     	this._router.navigate(['/home']);
 	}
 }
+
+// Click I'm New Here..
+
+// Enter a valid name
+
+// Enter email field, begin typing, notice the error message
+
+// Expected: we should not be showing the error message until the onBlur event happens (when the cursor leaves the field). It should then validate the contents of the field.
+
+// Actual: the validation error message does show for the email field.
+
+// But ignore the email validation error message for now. Enter an invalid email, like 'bademail@'
+
+// Enter the phone number field, and begin typing. Again,
+
+// Expected: we should not be showing the error message until the onBlur event happens (when the cursor leaves the field). It should then validate the contents of the field.
+
+// Actual: the validation error message does show for the phone number field.
+
+// Finish entering a correct string of 10 digits in the phone number field.
+
+// Notice the error message on the phone number field has gone away, thats good. +1
+
+// The error message on the email field
+
+// Expected: it should read "Please clear this field, or enter a valid email."
+
+// Actual: it reads: "Please enter a valid email, OR a ten digit phone number."
+
+// Likewise, if starting from the top, you enter a valid name, and then a valid email address, as you begin typing the phone number, there should be no validation error message (wait till they exit the field to validate). If they leave the field with an invalid value, since the email address does have a valid value (in this scenario), the error on the phone number field should read "Please clear this field, or enter a valid phone number."
