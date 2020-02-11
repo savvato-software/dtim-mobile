@@ -81,6 +81,28 @@ export class NewUserPage implements OnInit {
 		this.ngOnInit();
 	}
 
+	getErrorMessages() {
+		console.log(this.validations_form.get('email'));
+		console.log(this.validations_form.get('country_phone'));
+		if(this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 2 && this.validations_form.controls.country_phone.status === "INVALID") {
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field.' };
+		} else if (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10 && this.validations_form.controls.email.status === "INVALID") {
+			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field.' };
+		} else {
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
+			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
+		}
+
+	}
+
+	onPhoneBlur($event) {
+		this.getErrorMessages();
+	}
+
+	onEmailBlur($event) {
+		this.getErrorMessages();
+	}
+
 	onNameChange($event) {
 		this.name = $event.currentTarget.value;
 	}
@@ -188,3 +210,6 @@ export class NewUserPage implements OnInit {
 // Actual: it reads: "Please enter a valid email, OR a ten digit phone number."
 
 // Likewise, if starting from the top, you enter a valid name, and then a valid email address, as you begin typing the phone number, there should be no validation error message (wait till they exit the field to validate). If they leave the field with an invalid value, since the email address does have a valid value (in this scenario), the error on the phone number field should read "Please clear this field, or enter a valid phone number."
+
+// We want to add a second error message that indicates what field needs to be cleared
+// May need to create a getValidationMessages function that we call in order to determine what message is displayed. Be more specific.
