@@ -20,7 +20,7 @@
 
 		    <form [formGroup]="validations_form"  (ngSubmit)="onSaveBtnClicked(validations_form.value)">
 			    <ion-item>
-			      <ion-label position="floating" color="primary">Name</ion-label>
+			      <ion-label position="floating" color="primary">Name (Required)</ion-label>
 			      <ion-input data-test="name-input" type="text" formControlName="name" (ionInput)="onNameChange($event)" [value]="getName()" required></ion-input>
 			    </ion-item>
 			    <div class="validation-errors">
@@ -33,7 +33,7 @@
 
 			    <ion-item>
 			      <ion-label position="floating" color="primary">Email</ion-label>
-			      <ion-input data-test="email-input" type="text" formControlName="email" (ionBlur)="onEmailBlur($event)" (ionInput)="onEmailChange($event)" [value]="getEmail()" ></ion-input>
+			      <ion-input data-test="email-input" type="text" formControlName="email"  (ionInput)="onEmailChange($event)" [value]="getEmail()" ></ion-input>
 			    </ion-item>
 			    <div class="validation-errors">
 			      <ng-container *ngFor="let validation of validation_messages.email">
@@ -45,8 +45,8 @@
 
 			    <div formGroupName="country_phone">
 			      <ion-item>
-			        <ion-label position="floating" color="primary">Phone (only digits, no symbols)</ion-label>
-					<ion-input data-test="phone-input" type="text" formControlName="phone" (ionBlur)="onPhoneBlur($event)" (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="{{ validations_form.value.country_phone.country.sample_phone }}"></ion-input>
+			        <ion-label position="floating" color="primary">Phone (10 digits only, no symbols)</ion-label>
+					<ion-input data-test="phone-input" type="text" formControlName="phone"  (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="5555555555"></ion-input>
 			      </ion-item>
 			      <div class="validation-errors">
 			        <ng-container *ngFor="let validation of validation_messages.phone">

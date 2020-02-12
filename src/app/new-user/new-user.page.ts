@@ -72,8 +72,7 @@ export class NewUserPage implements OnInit {
 		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
 		  ])),
 		  country_phone: this.country_phone_group
-		},
-		{updateOn: "blur"}
+		}
 		);
 	}
 
@@ -82,12 +81,15 @@ export class NewUserPage implements OnInit {
 	}
 
 	getErrorMessages() {
-		console.log(this.validations_form.get('email'));
-		console.log(this.validations_form.get('country_phone'));
-		if(this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 2 && this.validations_form.controls.country_phone.status === "INVALID") {
-			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field.' };
-		} else if (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10 && this.validations_form.controls.email.status === "INVALID") {
-			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field.' };
+		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
+			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
+		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
+		} else if ((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 3)) {
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
+			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
@@ -95,13 +97,6 @@ export class NewUserPage implements OnInit {
 
 	}
 
-	onPhoneBlur($event) {
-		this.getErrorMessages();
-	}
-
-	onEmailBlur($event) {
-		this.getErrorMessages();
-	}
 
 	onNameChange($event) {
 		this.name = $event.currentTarget.value;
@@ -113,6 +108,7 @@ export class NewUserPage implements OnInit {
 
 	onPhoneChange($event) {
 		this.phone = $event.currentTarget.value;
+		this.getErrorMessages();
 	}
 
 	getPhone() {
@@ -121,6 +117,7 @@ export class NewUserPage implements OnInit {
 
 	onEmailChange($event) {
 		this.email = $event.currentTarget.value;
+		this.getErrorMessages();
 	}
 
 	getEmail() {
@@ -139,13 +136,22 @@ export class NewUserPage implements OnInit {
 		if (this.phone) {
 			rtn = rtn && this.validations_form.get('country_phone') !== null && (!!this.validations_form.get('country_phone').errors === false) && this.phone.length === 10;
 
-			if (rtn) atLeastOneFieldIsValid = true;
+			if (rtn) {
+				atLeastOneFieldIsValid = true;
+				// this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field.' };
+				// this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
+			}
 		} 
 
 		if (this.email) {
 			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && this.email.length > 6
 
-			if (rtn) atLeastOneFieldIsValid = true;
+			if (rtn) {
+				atLeastOneFieldIsValid = true;
+				// this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
+				// this.validation_messages.email[1] = { type: 'pattern', message: null };
+
+			}
 		}
 
 		return rtn && atLeastOneFieldIsValid;
