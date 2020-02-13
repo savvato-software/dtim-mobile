@@ -72,6 +72,9 @@ export class NewUserPage implements OnInit {
 		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
 		  ])),
 		  country_phone: this.country_phone_group
+		},
+		{
+			updateOn: "blur"
 		}
 		);
 	}
@@ -124,10 +127,13 @@ export class NewUserPage implements OnInit {
 		return this.email;
 	}
 
-	// onFocusLostEvent() {
-	// 	let input = event['target'] as HTMLElement;
-	// 	console.log(input.id); // the id of the ion-input object for its identification
-	// }
+	onEmailBlur($event) {
+		this.getErrorMessages();
+	}
+
+	onPhoneBlur($event) {
+		this.getErrorMessages();
+	}
 
 	isSaveBtnEnabled() {
 		let rtn = this.name && this.name.length > 3;
