@@ -112,7 +112,6 @@ export class NewUserPage implements OnInit {
 
 	onPhoneChange($event) {
 		this.phone = $event.currentTarget.value;
-		// this.getErrorMessages();
 		this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
 
 	}
@@ -123,7 +122,6 @@ export class NewUserPage implements OnInit {
 
 	onEmailChange($event) {
 		this.email = $event.currentTarget.value;
-		// this.getErrorMessages();
 		this.validation_messages.email[1] = { type: 'pattern', message: null };
 	}
 
@@ -148,19 +146,16 @@ export class NewUserPage implements OnInit {
 
 			if (rtn) {
 				atLeastOneFieldIsValid = true;
-				// this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field.' };
-				// this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
 			}
 		} 
 
 		if (this.email) {
-			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && this.email.length > 6
+
+			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email);
+
 
 			if (rtn) {
 				atLeastOneFieldIsValid = true;
-				// this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
-				// this.validation_messages.email[1] = { type: 'pattern', message: null };
-
 			}
 		}
 
