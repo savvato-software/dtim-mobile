@@ -84,6 +84,7 @@ export class NewUserPage implements OnInit {
 	}
 
 	getErrorMessages() {
+		console.log(this.validations_form.controls);
 		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
@@ -111,7 +112,9 @@ export class NewUserPage implements OnInit {
 
 	onPhoneChange($event) {
 		this.phone = $event.currentTarget.value;
-		this.getErrorMessages();
+		// this.getErrorMessages();
+		this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
+
 	}
 
 	getPhone() {
@@ -120,7 +123,8 @@ export class NewUserPage implements OnInit {
 
 	onEmailChange($event) {
 		this.email = $event.currentTarget.value;
-		this.getErrorMessages();
+		// this.getErrorMessages();
+		this.validation_messages.email[1] = { type: 'pattern', message: null };
 	}
 
 	getEmail() {
