@@ -72,6 +72,56 @@ context('logging in', () => {
 	})
 
 	it('does not allow you to submit new acct info if the phone is invalid', () => {
+		cy.visit('localhost:8100/new-user')     
 
+		cy.get('[data-cy=name-input]') 
+			.children('.native-input')
+  			.first()
+		  	.type('Test')   /
+	
+		cy.get('[data-cy=phone-input]')  
+			.children('.native-input')
+			.first()
+		  	.type('720')   
+	
+		cy.get('ion-button')
+			.contains('Sign Me Up!')
+			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated')     
+		  
+		cy.get('[data-cy=phone-input]')  
+			.children('.native-input')
+			.first()
+			.type('37')
+		
+		cy.get('ion-button')
+			.contains('Sign Me Up!')
+			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated') 
+
+		cy.get('[data-cy=phone-input]')  
+			.children('.native-input')
+			.first()
+			.type('5')
+		
+		cy.get('ion-button')
+			.contains('Sign Me Up!')
+			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated')
+		
+			cy.get('[data-cy=phone-input]')  
+			.children('.native-input')
+			.first()
+			.type('13')
+		
+		cy.get('ion-button')
+			.contains('Sign Me Up!')
+			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated') 
+		
+			cy.get('[data-cy=phone-input]')  
+			.children('.native-input')
+			.first()
+			.type('09')
+		
+		cy.get('ion-button')
+			.contains('Sign Me Up!')
+			.should('have.attr', 'class', 'submit-btn md button button-solid ion-activatable ion-focusable hydrated') 
 	})
 })
