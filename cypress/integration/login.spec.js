@@ -15,60 +15,25 @@ context('logging in', () => {
 		  .should('contain', 'Found you!')
 	})
 
-	it('does not allow you to submit new acct info if the email is invalid', () => {
+	it.only('does not allow you to submit new acct info if the email is invalid', () => {
 
 		cy.visit('localhost:8100/new-user')     
 
-		cy.get('[data-cy=name-input]') 
-			.children('.native-input')
-  			.first()
-		  	.type('Test')   /
-	
-		cy.get('[data-cy=email-input]')  
-			.children('.native-input')
-			.first()
-		  	.type('test')   
-	
-		cy.get('ion-button')
-			.contains('Sign Me Up!')
-			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated')     
-		  
-		cy.get('[data-cy=email-input]')  
-			.children('.native-input')
-			.first()
-			.type('@')
-		
-		cy.get('ion-button')
-			.contains('Sign Me Up!')
-			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated') 
+		cy.typeInField('name-input', 'Test') 
+		cy.typeInField('email-input', 'test') 
+		cy.expectButtonIsDisabled('new-user-submit-btn')
 
-		cy.get('[data-cy=email-input]')  
-			.children('.native-input')
-			.first()
-			.type('gmail')
-		
-		cy.get('ion-button')
-			.contains('Sign Me Up!')
-			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated')
-		
-			cy.get('[data-cy=email-input]')  
-			.children('.native-input')
-			.first()
-			.type('.')
-		
-		cy.get('ion-button')
-			.contains('Sign Me Up!')
-			.should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated') 
-		
-			cy.get('[data-cy=email-input]')  
-			.children('.native-input')
-			.first()
-			.type('com')
-		
-		cy.get('ion-button')
-			.contains('Sign Me Up!')
-			.should('have.attr', 'class', 'submit-btn md button button-solid ion-activatable ion-focusable hydrated') 
+		cy.typeInField('email-input', '@') 
+		cy.expectButtonIsDisabled('new-user-submit-btn')
 
+		cy.typeInField('email-input', 'gmail') 
+		cy.expectButtonIsDisabled('new-user-submit-btn')
+		
+		cy.typeInField('email-input', '.') 
+		cy.expectButtonIsDisabled('new-user-submit-btn')
+		
+		cy.typeInField('email-input', 'com') 
+		cy.expectButtonIsEnabled('new-user-submit-btn')
 	})
 
 	it('does not allow you to submit new acct info if the phone is invalid', () => {
