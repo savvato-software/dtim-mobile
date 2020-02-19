@@ -56,3 +56,7 @@ To run locally:
 
 To deploy to Android device
      ionic cordova run android --device && date     # NOT FOR PRODUCTION
+
+To run cypress tests
+    npx cypress run  --spec "cypress/integration/*.spec.js"
+
