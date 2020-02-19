@@ -24,8 +24,6 @@ export class TechProfileEditPage implements OnInit {
 
 	}
 
-	selectedTopicIDs = [];
-	selectedLineItemIDs = [];
 	allowMultiSelect = false;
 
 	funcKey = "tpepg-controller";
@@ -123,7 +121,7 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.lineItemName && data.lineItemName.length >= 2) {
-						self._techProfileModelService.addLineItem(self.selectedTopicIDs[0], data.lineItemName);
+						self._techProfileModelService.addLineItem(self.selectedTopicIDsProvider()[0], data.lineItemName);
 					} else {
 						return false; // disable the button
 					}
