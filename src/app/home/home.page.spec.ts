@@ -6,6 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { FunctionPromiseService } from 'savvato-javascript-services';
+
 import { HomePage } from './home.page';
 
 describe('HomePage', () => {
@@ -19,6 +21,7 @@ describe('HomePage', () => {
       imports: [ RouterTestingModule, HttpClientTestingModule ],
       declarations: [ HomePage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [ FunctionPromiseService ]
     })
       .compileComponents();
   }));

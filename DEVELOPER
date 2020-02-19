@@ -57,6 +57,9 @@ To run locally:
 To deploy to Android device
      ionic cordova run android --device && date     # NOT FOR PRODUCTION
 
+To run unit tests (Karma / Jasmine)
+    ng test
+
 To run cypress tests
      ./node_modules/cypress/bin/cypress open
 
