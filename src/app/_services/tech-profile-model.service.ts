@@ -73,9 +73,6 @@ export class TechProfileModelService {
 
 			if (topic)
 				rtn = this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
-
-			// return false;
-			console.log("isTopicAbleToMoveUp is returning "+rtn+" for "+topicId);
 		}
 	
 		return rtn;
@@ -157,9 +154,6 @@ export class TechProfileModelService {
 
 				arr1.push(arr);
 			})
-
-			console.log("saveSequenceInfo")
-			console.log(arr1)
 
 			this._techProfileAPI.saveSequenceInfo(arr1).then((data) => {
 				resolve(data);
