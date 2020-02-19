@@ -58,5 +58,5 @@ To deploy to Android device
      ionic cordova run android --device && date     # NOT FOR PRODUCTION
 
 To run cypress tests
-    npx cypress run  --spec "cypress/integration/*.spec.js"
+     ./node_modules/cypress/bin/cypress open
 
