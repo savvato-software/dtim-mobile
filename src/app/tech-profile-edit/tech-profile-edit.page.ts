@@ -28,6 +28,8 @@ export class TechProfileEditPage implements OnInit {
 
 	selectedTopicIDsProvider = () => { return [] };
 	selectedLineItemIDsProvider = () => { return [] };
+	techProfileProvider = () => { return undefined };
+	accessorToForceTechProfileRefresh = () => { return undefined };
 
 	ngOnInit() {
 		let self = this;
@@ -37,8 +39,8 @@ export class TechProfileEditPage implements OnInit {
 					getEnv: () => {
 						return environment;
 					},
-					initTechProfile: (techProfile) => {
-						self._techProfileModelService.setTechProfile(techProfile);
+					setProviderForTechProfile: (func) => {
+						self._techProfileModelService.setProviderForTechProfile(func);
 					},
 					setProviderForSelectedTopicIDs: (func) => {
 						// called by the techprofile component to give us a function
@@ -47,6 +49,9 @@ export class TechProfileEditPage implements OnInit {
 					setProviderForSelectedLineItemIDs: (func) => {
 						// called by the techprofile component to give us a function
 						self.selectedLineItemIDsProvider = func;
+					},
+					setAcessorToForceTechProfileRefresh: (func) => {
+						self.accessorToForceTechProfileRefresh = func;
 					},
 					getColorMeaningString: () => {
 						return "Red means selected. Selected means you can edit it!"
@@ -85,7 +90,9 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.topicName && data.topicName.length >= 2) {
-						self._techProfileModelService.addTopic(data.topicName);
+						self._techProfileModelService.addTopic(data.topicName).then(() => {
+							self.accessorToForceTechProfileRefresh();
+						});
 					} else {
 						return false; // disable the button
 					}
@@ -118,7 +125,10 @@ export class TechProfileEditPage implements OnInit {
 				text: 'OK', 
 				handler: (data) => {
 					if (data.lineItemName && data.lineItemName.length >= 2) {
-						self._techProfileModelService.addLineItem(self.selectedTopicIDsProvider()[0], data.lineItemName);
+						self._techProfileModelService.addLineItem(self.selectedTopicIDsProvider()[0], data.lineItemName).then(() => {
+							self.accessorToForceTechProfileRefresh();
+						});
+						
 					} else {
 						return false; // disable the button
 					}

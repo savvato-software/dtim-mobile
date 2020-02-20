@@ -15,6 +15,9 @@ export class TechProfileModelService {
 				protected _sequenceService: SequenceService	) { }
 
 
+	// This service is initialized two different ways.. By _init(), which calls the API directly,
+	//  and setProviderForTechProfile, which uses a passed-in function from a third party. 
+
 	_init(force?: boolean) {
 		let self = this;
 
@@ -26,6 +29,10 @@ export class TechProfileModelService {
 				self.techProfile = tp;
 			})
 		}
+	}
+
+	setProviderForTechProfile(func) {
+		this.techProfile = func();
 	}
 
 	waitingPromise() {
@@ -204,15 +211,23 @@ export class TechProfileModelService {
 
 	addTopic(name) {
 		let self = this;
-		self._techProfileAPI.addTopic(name).then(() => {
-			self._init(true);
-		})
+		return new Promise((resolve, reject) => {
+			self._techProfileAPI.addTopic(name).then(() => {
+				self._init(true);
+
+				resolve();
+			})
+		});
 	}
 
 	addLineItem(parentTopicId, lineItemName) {
 		let self = this;
-		self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
-			self._init(true);
+		return new Promise((resolve, reject) => {
+			self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
+				self._init(true);
+
+				resolve();
+			})
 		})
 	}
 }
