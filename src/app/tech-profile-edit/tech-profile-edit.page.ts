@@ -6,6 +6,8 @@ import { FunctionPromiseService } from 'savvato-javascript-services'
 import { AlertService } from '../_services/alert.service';
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
+import { UP, DOWN } from '../../_constants/constants';
+
 import { environment } from '../../_environments/environment'
 
 @Component({
@@ -36,11 +38,8 @@ export class TechProfileEditPage implements OnInit {
 		self._functionPromiseService.initFunc(self.funcKey, () => {
 			return new Promise((resolve, reject) => {
 				resolve({
-					getEnv: () => {
-						return environment;
-					},
-					setProviderForTechProfile: (func) => {
-						self._techProfileModelService.setProviderForTechProfile(func);
+					getTechProfileModelService: () => {
+						return self._techProfileModelService;
 					},
 					setProviderForSelectedTopicIDs: (func) => {
 						// called by the techprofile component to give us a function
@@ -49,9 +48,6 @@ export class TechProfileEditPage implements OnInit {
 					setProviderForSelectedLineItemIDs: (func) => {
 						// called by the techprofile component to give us a function
 						self.selectedLineItemIDsProvider = func;
-					},
-					setAcessorToForceTechProfileRefresh: (func) => {
-						self.accessorToForceTechProfileRefresh = func;
 					},
 					getColorMeaningString: () => {
 						return "Red means selected. Selected means you can edit it!"
@@ -65,6 +61,11 @@ export class TechProfileEditPage implements OnInit {
 				});
 			})
 		});
+	}
+
+	ngOnDestroy() {
+		this._functionPromiseService.resetFunc(this.funcKey);
+		this._functionPromiseService.reset(this.funcKey);
 	}
 
 	getDtimTechprofileComponentController() {
@@ -143,7 +144,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveTopicUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], -1)
+		console.log(this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], UP))
 	}
 
 	isSelectedTopicAbleToMoveDown() {
@@ -151,7 +152,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveTopicDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], 1)
+		console.log(this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], DOWN))
 	}
 
 	isSelectedLineItemAbleToMoveUp() {
@@ -159,7 +160,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveLineItemUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1)	
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], UP)	
 	}
 
 	isSelectedLineItemAbleToMoveDown() {
@@ -167,7 +168,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveLineItemDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], DOWN)
 	}
 
 	isEditTopicBtnAvailable() {

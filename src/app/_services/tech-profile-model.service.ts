@@ -52,6 +52,27 @@ export class TechProfileModelService {
 		})
 	}
 
+	getModel() {
+		return this.techProfile;
+	}
+
+	getName() {
+		let model = this.getModel();
+
+		if (model) 
+			return model['name']
+		else
+			return undefined;
+	}
+
+	getTopics() {
+		return this.techProfile && this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+	}
+
+	getLineItemsForATopic(topicId) {
+		return this.getTechProfileLineItemsByTopic(topicId);
+	}
+
 	isTechProfileAvailable() {
 		return this.techProfile && this.techProfile != null
 	}
@@ -60,11 +81,11 @@ export class TechProfileModelService {
 		this.techProfile = techProfile;
 	}
 
-	getTechProfile() {
+	getTechProfile() { // dupe
 		return this.techProfile;
 	}
 
-	getTechProfileTopics() {
+	getTechProfileTopics() { // dupe
 		return this.techProfile && this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
 	}
 
@@ -147,17 +168,22 @@ export class TechProfileModelService {
 			this.techProfile['topics'].forEach((topic) => {
 				let arr = [];
 
-				topic['lineItems'].forEach((lineItem) => {
-					let row = []
-					row.push(1) // techProfileId
-					row.push(topic['id'])
-					row.push(topic['sequence'])
+				if (topic['lineItems'].length > 0) {
+					topic['lineItems'].forEach((lineItem) => {
+						let row = []
+						row.push(1) // techProfileId
+						row.push(topic['id'])
+						row.push(topic['sequence'])
 
-					row.push(lineItem['id'])
-					row.push(lineItem['sequence'])
+						row.push(lineItem['id'])
+						row.push(lineItem['sequence'])
 
-					arr.push(row);
-				})
+						arr.push(row);
+					})
+				} else {
+					// this topic does not have line items
+					arr.push([1 /* tech profile id */, topic['id'], topic['sequence'], -1, -1])
+				}
 
 				arr1.push(arr);
 			})
