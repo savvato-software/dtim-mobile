@@ -29,8 +29,8 @@ export class TechProfileQuestionPage implements OnInit {
 
 	}
 
-	ngAfterContentChecked() {
-		this._functionPromiseService.get("TPQP-ResetModel", "TPQP-ResetModel", { freshnessLengthInMillis: 3000 });
+	ionViewWillEnter() {
+		this._modelService._init();
 	}
 
 	ngOnInit() {
@@ -45,7 +45,7 @@ export class TechProfileQuestionPage implements OnInit {
 						return environment;
 					},
 					getColorMeaningString: () => {
-						return "Select a skill and level for this new question. White means there are no questions associated with this skill level. Shades of gray, the closer you get to dark, indicate the more questions, relatively speaking, for that skill level."
+						return "Select a skill and level for this new question. Cells are colored such that, the closer you get to dark, the more questions, relatively speaking, are defined at that skill level."
 					},
 					getTopicBackgroundColor: (topic, isSelected) => {
 						return undefined; // use the default
@@ -66,8 +66,6 @@ export class TechProfileQuestionPage implements OnInit {
 
 							rtn = shadesOfGray[Math.max(p - 1, 0)];
 
-							// console.log("### controller getBackgroundColor()", lineItem['id'], idx, count, max, p, rtn);
-
 							return rtn;
 						}
 
@@ -77,7 +75,6 @@ export class TechProfileQuestionPage implements OnInit {
 						let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);
 						console.log(lineItem['id'], idx, " clicked on. count --> ", count)						
 						if (count === 0) {
-							console.log("COUNT is 0")
 
 							self._alertService.show({
 								header: 'New Question?',
@@ -88,12 +85,14 @@ export class TechProfileQuestionPage implements OnInit {
 										self._questionEditService.reset();
 										self._questionEditService.setSetupFunc(
 											// this returns an array of lineItemLevels, one for each that this question has selected
+											//   ..and since this is a new question, the result of clicking on a single cell,
+											//   ....there is only one lineItemLevel in the array
 											() => { 
 												return [ {lineItemId: lineItem['id'], levelNumber: idx} ];
 											}
 										);
 
-								      self._router.navigate(['/question-edit/new']);
+										self._router.navigate(['/question-edit/new']);
 								    }
 								},
 								  {
@@ -105,21 +104,12 @@ export class TechProfileQuestionPage implements OnInit {
 							})
 
 						} else if (count > 0) {
-							console.log("- COUNT is ", count)
 							this._router.navigate(['/question-list/' + lineItem['id'] + '/' + idx]);
 						}
 					}
 				});
 			});
 		})
-
-		self._functionPromiseService.initFunc("TPQP-ResetModel", () => {
-			return new Promise((resolve, reject) => {
-				self._modelService._init();
-				resolve();
-			})
-		})
-
 	}
 
 	getDtimTechprofileComponentController() {

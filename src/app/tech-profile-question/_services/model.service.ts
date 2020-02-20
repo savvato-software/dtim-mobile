@@ -92,9 +92,9 @@ export class ModelService {
 
 		if (qcpc) {
 			let data = {'lineItemId': id, 'lineItemLevelIndex': idx, 'questionCountsPerCell': qcpc};
-			rtn = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
+			rtn = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx+"/"+qcpc.length, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
 		}
-
+		
 		return rtn;
 	}
 
@@ -119,7 +119,7 @@ export class ModelService {
 
 		if (qcpc) {
 			let data = {'questionCountsPerCell': qcpc};
-			let gcqc = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
+			let gcqc = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx+"/"+qcpc.length, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
 			
 
 			if (qcpc) {
