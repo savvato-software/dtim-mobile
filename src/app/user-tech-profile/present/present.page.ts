@@ -55,12 +55,6 @@ export class PresentUserTechProfilePage implements OnInit {
 							getEnv: () => {
 								return environment;
 							},
-							getTopicBackgroundColor: (topic, isSelected) => {
-								return undefined; // use the default
-							},
-							getLineItemBackgroundColor: (lineItem, isSelected) => {
-								return undefined; // use the default;
-							},
 							getColorMeaningString: () => {
 								return "A highlighted cell is one which contains a question which has been asked during this session."
 							},

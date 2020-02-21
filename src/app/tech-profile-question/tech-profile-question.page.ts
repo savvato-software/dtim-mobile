@@ -47,12 +47,6 @@ export class TechProfileQuestionPage implements OnInit {
 					getColorMeaningString: () => {
 						return "Select a skill and level for this new question. Cells are colored such that, the closer you get to dark, the more questions, relatively speaking, are defined at that skill level."
 					},
-					getTopicBackgroundColor: (topic, isSelected) => {
-						return undefined; // use the default
-					},
-					getLineItemBackgroundColor: (lineItem, isSelected) => {
-						return undefined; // use the default;
-					},
 					getBackgroundColor: (lineItem, idx) => {
 
 						let count = this._modelService.getQuestionCountForCell(lineItem['id'], idx);

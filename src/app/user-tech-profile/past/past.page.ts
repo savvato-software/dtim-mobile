@@ -55,12 +55,6 @@ export class PastUserTechProfilePage implements OnInit {
 							getEnv: () => {
 								return environment;
 							},
-							getTopicBackgroundColor: (topic, isSelected) => {
-								return undefined; // use the default
-							},
-							getLineItemBackgroundColor: (lineItem, isSelected) => {
-								return undefined; // use the default;
-							},
 							getColorMeaningString: () => {
 								return "A highlighted cell is one in which a question was answered by this candidate at some session in the past. The darker the cell, the greater the percentage of those questions answered successfully."
 							},
