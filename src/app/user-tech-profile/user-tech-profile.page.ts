@@ -39,58 +39,29 @@ export class UserTechProfilePage implements OnInit {
 	ngOnInit() {
 		let self = this;
 		self._route.params.subscribe((params) => {
-			self.userId = params['userId'] * 1;
-			console.log("userId ==> " + self.userId);
+           self.userId = params['userId'] * 1;
 
-			self._userTechProfileModel.init(self.userId);
+           // self._userTechProfileModel.init(self.userId);
 
-			self._userService.getUserById(self.userId).then((data) => {
-				self.user = data;
-			})
+          self._userService.getUserById(self.userId).then((data) => {
+                   self.user = data;
+           })
 
-			self._functionPromiseService.initFunc(self.funcKey, () => {
-				return new Promise((resolve, reject) => {
-					self._userTechProfileModel.waitingPromise().then(() => {
-						resolve({
-							getEnv: () => {
-								return environment;
-							},
-							getTopicBackgroundColor: (topic, isSelected) => {
-								return undefined; // use the default
-							},
-							getLineItemBackgroundColor: (lineItem, isSelected) => {
-								return undefined; // use the default;
-							},
-							getColorMeaningString: () => {
-								return "lightblue means this user's score says they have demonstrated skills at this level, and below. White, user has not been tested, or has not passed, at this level."
-							},
-							getBackgroundColor: (lineItem, idx) => {
-								let score = self._userTechProfileModel.getScore(lineItem['id']);
-								
-								if (score == undefined) return "white";
-								if (score >= idx) return "lightblue"; else return "white";
-							},
-							onLxDescriptionClick: (lineItem, idx) => {
-								self._router.navigate(['/line-item-action-page/' + self.userId + '/' + lineItem['id'] + '/' + idx]);
-							}
-						})
-					})
-				})
-			})
 		})
 	}
 
-	getDtimTechprofileComponentController() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
-	}
-
 	getUserName() {
-		return this.user && this.user["name"];
+		return this.user && this.user['name'];
 	}
 
-	getScore(lineItemId) {
+	onPastViewBtnClicked() {
 		let self = this;
-		return self._userTechProfileModel.getScore(lineItemId);
+		self._router.navigate(['/user-tech-profile/' + self.userId + '/past']);
+	}
+
+	onPresentViewBtnClicked() {
+		let self = this;
+		self._router.navigate(['/user-tech-profile/' + self.userId + '/present']);
 	}
 
 	onBackBtnClicked() {

@@ -5,14 +5,10 @@
 </ion-header>
 
 <ion-content>
-	<ion-card>
-		<!-- ion-card-header>
-		    <ion-card-title>Here's the user tech profile:</ion-card-title>
-		</ion-card-header -->
-		<ion-card-content>
-			<lib-dtim-techprofile-component [ctrl]="getDtimTechprofileComponentController()"></lib-dtim-techprofile-component>
-		</ion-card-content>
-	</ion-card>
+	<br/><br/>
+	Which View of this User's Profile Did you want to See?<br/><br/><br/>
+	<ion-button class="" (click)="onPastViewBtnClicked()">Past View</ion-button>
+	<ion-button class="" (click)="onCurrentViewBtnClicked()">Current View</ion-button>
 </ion-content>
 <ion-content class="footerButtonRow">
 	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>

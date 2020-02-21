@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{getUserName()}} - Tech Profile - PAST View</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+		<ion-card-content>
+			<lib-dtim-techprofile-component [ctrl]="getDtimTechprofileComponentController()"></lib-dtim-techprofile-component>
+		</ion-card-content>
+	</ion-card>
+</ion-content>
+<ion-content class="footerButtonRow">
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
+</ion-content>
