@@ -55,6 +55,12 @@ export class UserTechProfilePage implements OnInit {
 							getEnv: () => {
 								return environment;
 							},
+							getTopicBackgroundColor: (topic, isSelected) => {
+								return undefined; // use the default
+							},
+							getLineItemBackgroundColor: (lineItem, isSelected) => {
+								return undefined; // use the default;
+							},
 							getColorMeaningString: () => {
 								return "lightblue means this user's score says they have demonstrated skills at this level, and below. White, user has not been tested, or has not passed, at this level."
 							},
