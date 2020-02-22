@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { ModelService } from './_services/model.service';
+
 import { AlertService } from '../../_services/alert.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
 import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
@@ -28,6 +30,7 @@ export class PastUserTechProfilePage implements OnInit {
 	constructor(private _location: Location,
 		    private _router: Router,
 		    private _route: ActivatedRoute,
+		    private _modelService: ModelService,
 		    private _functionPromiseService: FunctionPromiseService,
 		    private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
@@ -42,6 +45,7 @@ export class PastUserTechProfilePage implements OnInit {
 			self.userId = params['userId'] * 1;
 			console.log("userId ==> " + self.userId);
 
+			self._modelService._init();
 			self._userTechProfileModel.init(self.userId);
 
 			self._userService.getUserById(self.userId).then((data) => {
@@ -59,10 +63,15 @@ export class PastUserTechProfilePage implements OnInit {
 								return "A highlighted cell is one in which a question was answered by this candidate at some session in the past. The darker the cell, the greater the percentage of those questions answered successfully."
 							},
 							getBackgroundColor: (lineItem, idx) => {
-								let score = self._userTechProfileModel.getScore(lineItem['id']);
-								
-								if (score == undefined) return "white";
-								if (score >= idx) return "lightblue"; else return "white";
+								let count = self._modelService.getAnsweredQuestionCountForCell(lineItem['id'], idx, self.userId);
+								let max = self._modelService.getQuestionCountForCell(lineItem['id'], idx, self.userId);
+
+								if (count && max) {
+									let rtn = (count / max) * 0xE0E0E0;
+									return "#" + rtn.toString(16);
+								}
+
+								return undefined;
 							},
 							onLxDescriptionClick: (lineItem, idx) => {
 								self._router.navigate(['/line-item-action-page/' + self.userId + '/' + lineItem['id'] + '/' + idx]);
