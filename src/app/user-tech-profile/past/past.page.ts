@@ -67,14 +67,17 @@ export class PastUserTechProfilePage implements OnInit {
 								let max = self._modelService.getQuestionCountForCell(lineItem['id'], idx, self.userId);
 
 								if (count && max) {
-									let rtn = (count / max) * 0xE0E0E0;
-									return "#" + rtn.toString(16);
+									let rtn = Math.ceil((count / max) * 10);
+
+									let shadesOfGray = ["#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060", "#505050"]
+
+									return shadesOfGray[rtn];
 								}
 
 								return undefined;
 							},
 							onLxDescriptionClick: (lineItem, idx) => {
-								self._router.navigate(['/line-item-action-page/' + self.userId + '/' + lineItem['id'] + '/' + idx]);
+								self._router.navigate(['/user-tech-profile/' + self.userId + '/past/all-user-sessions-listing/' + lineItem['id'] + '/' + idx]);
 							}
 						})
 					})

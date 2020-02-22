@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>all-user-sessions-listing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content>
+
+	A list of all the questions.. the ones that have been asked in bold, you can click on them, get a list of each session-grade-comment 
+		data for this question.
+
+		If it has not been asked, you will be taken to the question-detail page.
+
+</ion-content>
+-->
+
+<ion-content>
+	This is a list of all the questions in this cell. Questions which have been correctly answered in the past, are in <span class="boldText">bold</span>.<br/><br/>
+	<div *ngFor="let q of questions" class="question-list-item">
+		<span *ngIf="isCorrectlyAnswered(q)" class="boldText" (click)="onCorrectAnswerClick(q)">{{q.text}}<br/></span>
+		<span *ngIf="!isCorrectlyAnswered(q)" (click)="onNonCorrectAnswerClick(q)">{{q.text}}<br/></span>
+	</div>
+
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>	
+</ion-content>

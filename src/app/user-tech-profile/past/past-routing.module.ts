@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: PastUserTechProfilePage
+  },
+  {
+    path: 'all-user-sessions-listing/:lineItemId/:idx',
+    loadChildren: './pages/all-user-sessions-listing/all-user-sessions-listing.module#AllUserSessionsListingPageModule'
+  },
+  {
+    path: 'question-session-grade/:questionId',
+    loadChildren: './pages/question-session-grade/question-session-grade.module#QuestionSessionGradePageModule'    
   }
 ];
 
