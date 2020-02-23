@@ -58,4 +58,8 @@ export class AllUserSessionsListingPage implements OnInit {
 	onNonCorrectAnswerClick(q) {
 		this._router.navigate(['/question-display/' + q.id]);
 	}
+
+	onBackBtnClicked() {
+		this._location.back();
+	}
 }
