@@ -1,9 +1,23 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>question-session-grade</ion-title>
+    <ion-title>{{getUserName()}} - Question History</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+	<br/>
+	{{getQuestionText()}}<br/><br/>
+	<div *ngFor="let cqg of cqgList">
+		<ion-card>
+			<ion-card-content>
+				<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span><br/><br/>
+				<span class="commentLabel">Comment:</span><br/>
+				<span class="commentText" *ngIf="!!cqg.comment">{{cqg.comment}}<br/><br/></span>
+				<span class="commentText" *ngIf="!(!!cqg.comment)">-- no comment --<br/><br/></span>
+			</ion-card-content>
+		</ion-card>
+	</div>
+</ion-content>
+<ion-content class="footerButtonRow">
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
 </ion-content>
