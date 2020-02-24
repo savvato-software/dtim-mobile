@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { UserService } from '../../../../_services/user.service';
 import { QuestionService } from '../../../../_services/question.service';
+import { LineItemAPIService } from '../../../../_services/line-item-api.service';
 
 import { ModelService } from '../../_services/model.service'
 
@@ -13,16 +15,20 @@ import { ModelService } from '../../_services/model.service'
 })
 export class AllUserSessionsListingPage implements OnInit {
 
+	user = undefined;
 	userId = undefined;
 	questions = undefined;
-	correctlyAnsweredQuestions = undefined;
 	lineItemId = undefined;
 	levelNumber = undefined;
+	lineItem = undefined;
+	correctlyAnsweredQuestions = undefined;
 
     constructor(private _location: Location,
 			    private _router: Router,
 			    private _route: ActivatedRoute,
+			    private _userService: UserService,
 			    private _questionService: QuestionService,
+			    private _lineItemAPIService: LineItemAPIService,
 			    private _modelService: ModelService) {
 
 	}
@@ -37,12 +43,20 @@ export class AllUserSessionsListingPage implements OnInit {
 
 			self._modelService._init();
 
+			self._userService.getUserById(self.userId).then((user) => {
+				self.user = user;
+			})
+
 			self._questionService.getByLineItemAndLevel(self.lineItemId, self.levelNumber).then((questions) => {
 				self.questions = questions;
 			})
 
 			self._modelService.getAnsweredQuestionsForCell(self.lineItemId, self.levelNumber, self.userId).then((questions) => {
 				self.correctlyAnsweredQuestions = questions;
+			})
+
+			self._lineItemAPIService.getLineItem(self.lineItemId).then((lineItem) => {
+				self.lineItem = lineItem;
 			})
 		})
 	}
@@ -57,6 +71,22 @@ export class AllUserSessionsListingPage implements OnInit {
 
 	onNonCorrectAnswerClick(q) {
 		this._router.navigate(['/question-display/' + q.id]);
+	}
+
+	getLineItemName() {
+		return this.lineItem && this.lineItem['name'];
+	}
+
+	getLineItemLevelDescription() {
+		return this.lineItem && this.lineItem['l' + this.levelNumber + 'Description'];
+	}
+
+	getLineItemLevelNumber() {
+		return this.lineItem && this.lineItem['id'];
+	}
+
+	getUserName() {
+		return this.user && this.user['name'];
 	}
 
 	onBackBtnClicked() {
