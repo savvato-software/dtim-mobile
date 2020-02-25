@@ -20,7 +20,7 @@ export class NewUserPage implements OnInit {
   	phone = undefined;
   	email = undefined;
 
-  	validations_form: FormGroup;  	
+  	validations_form: FormGroup;
   	country_phone_group: FormGroup;
 
   	countries: Array<CountryPhone>;

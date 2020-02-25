@@ -54,5 +54,9 @@ To run locally:
         cp src/_environments/environment.dev.ts src/_environments/environment.ts
         ionic serve
 
+To run cypress test suite:
+    - At the command prompt:
+        ./node_modules/cypress/bin/cypress open
+
 To deploy to Android device
      ionic cordova run android --device && date     # NOT FOR PRODUCTION

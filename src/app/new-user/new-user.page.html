@@ -37,7 +37,7 @@
 			    </ion-item>
 			    <div class="validation-errors">
 			      <ng-container *ngFor="let validation of validation_messages.email">
-			        <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+			        <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)" data-cy='email-error'>
 			          <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
 			        </div>
 			      </ng-container>
@@ -50,7 +50,7 @@
 			      </ion-item>
 			      <div class="validation-errors">
 			        <ng-container *ngFor="let validation of validation_messages.phone">
-			          <div class="error-message" *ngIf="validations_form.get('country_phone').get('phone').hasError(validation.type) && (validations_form.get('country_phone').get('phone').dirty || validations_form.get('country_phone').get('phone').touched)">
+			          <div class="error-message" *ngIf="validations_form.get('country_phone').get('phone').hasError(validation.type) && (validations_form.get('country_phone').get('phone').dirty || validations_form.get('country_phone').get('phone').touched)" data-cy='phone-error'>
 			            <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
 			          </div>
 			        </ng-container>
