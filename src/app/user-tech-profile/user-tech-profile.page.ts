@@ -69,4 +69,8 @@ export class UserTechProfilePage implements OnInit {
 			this._location.back();
 		});
 	}
+
+	onCurrentViewBtnClicked() {
+		
+	}
 }
