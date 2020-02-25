@@ -73,7 +73,7 @@ export class QuestionListPage implements OnInit {
 		this._router.navigate(['/question-edit/new']);
 	}
 
-	onBackBtnClicked(q) {
+	onBackBtnClicked() {
 		this._location.back();
 	}
 
