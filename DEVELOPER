@@ -54,7 +54,7 @@ To run locally:
         cp src/_environments/environment.dev.ts src/_environments/environment.ts
         ionic serve
 
-To run cypress test suite:
+To run cypress test suite run the following command:
     - At the command prompt:
         ./node_modules/cypress/bin/cypress open
 
