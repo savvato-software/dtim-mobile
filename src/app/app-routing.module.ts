@@ -23,10 +23,6 @@ const routes: Routes = [
       loadChildren: './line-item-level-content-page/line-item-level-content-page.module#LineItemLevelContentPagePageModule' },
   { path: 'user-question-detail/:userId/:questionId', 
       loadChildren: './user-question-detail/user-question-detail.module#UserQuestionDetailPageModule' },
-  { path: 'question-list/:lineItemId/:level', 
-      loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
-  { path: 'question-list', 
-      loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
   { path: 'question-display/:questionId',
       loadChildren: './admin/question-display/question-display.module#QuestionDisplayPageModule' }
 ];
