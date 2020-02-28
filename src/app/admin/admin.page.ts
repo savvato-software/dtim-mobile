@@ -68,14 +68,6 @@ export class AdminPage implements OnInit {
     this._router.navigate(['/home']);
   }
 
-  onQuestionsBtnClicked() {
-    this._router.navigate(['/tech-profile-question']);
-  }
-
-  onTechProfileEditBtnClicked() {
-    this._router.navigate(['/tech-profile-edit'])
-  }
-
   getCurrentSessionNumber() {
     return this._attendanceModelService.getCurrentSessionNumber()
   }

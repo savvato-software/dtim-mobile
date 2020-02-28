@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 
 import { FunctionPromiseService } from 'savvato-javascript-services'
 import { QuestionService } from '../../_services/question.service';
-import { QuestionEditService } from '../../_services/question-edit.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
 import { environment } from '../../../_environments/environment'
@@ -29,7 +28,6 @@ export class QuestionDisplayPage implements OnInit {
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
-				private _questionEditService: QuestionEditService,
 			    private _functionPromiseService: FunctionPromiseService
 			    ) {
 
@@ -59,7 +57,7 @@ export class QuestionDisplayPage implements OnInit {
 								return environment;
 							},
 							getColorMeaningString: () => {
-								return "lightblue means someone of that skill level should be able to answer this question. To apply this question to more skills, click Edit to edit the question."
+								return "lightblue means someone of that skill level should be able to answer this question."
 							},
 							getBackgroundColor: (lineItem, idx) => {
 								let rtn = undefined;
@@ -84,19 +82,6 @@ export class QuestionDisplayPage implements OnInit {
 
 	getQuestionText() {
 		return this.question && this.question["text"];
-	}
-
-	onEditQuestionBtnClicked() {
-
-		this._questionEditService.reset();
-		this._questionEditService.setSetupFunc(
-			// this returns an array of lineItemLevels, one for each that this question has selected
-			() => { 
-				return this.lilvassociations.map(e => { return {lineItemId: e[this.LINE_ITEM_ID_IDX], levelNumber: e[this.LEVEL_IDX]} });
-			}
-		);
-
-		this._router.navigate(['/question-edit/' + this.questionId]);
 	}
 
 	onBackBtnClicked() {

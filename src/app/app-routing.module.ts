@@ -28,19 +28,7 @@ const routes: Routes = [
   { path: 'question-list', 
       loadChildren: './admin/question-list/question-list.module#QuestionListPageModule' },
   { path: 'question-display/:questionId',
-      loadChildren: './admin/question-display/question-display.module#QuestionDisplayPageModule' },
-  { path: 'question-edit/new', 
-      loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
-  { path: 'question-edit/:questionId', 
-      loadChildren: './admin/question-edit/question-edit.module#QuestionEditPageModule' },
-  { path: 'tech-profile-edit', 
-      loadChildren: './tech-profile-edit/tech-profile-edit.module#TechProfileEditPageModule' },
-  { path: 'tech-profile-line-item-edit/:lineItemId', 
-      loadChildren: './tech-profile-line-item-edit/tech-profile-line-item-edit.module#TechProfileLineItemEditPageModule' },
-  { path: 'tech-profile-topic-edit/:topicId',
-      loadChildren: './tech-profile-topic-edit/tech-profile-topic-edit.module#TechProfileTopicEditPageModule' },
-  { path: 'tech-profile-question',
-      loadChildren: './tech-profile-question/tech-profile-question.module#TechProfileQuestionPageModule' },
+      loadChildren: './admin/question-display/question-display.module#QuestionDisplayPageModule' }
 ];
 
 @NgModule({

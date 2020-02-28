@@ -5,8 +5,6 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
-import { QuestionEditService } from '../../_services/question-edit.service';
-
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.page.html',
@@ -23,8 +21,7 @@ export class QuestionListPage implements OnInit {
 			    private _router: Router,
 			    private _route: ActivatedRoute,
 			    private _questionService: QuestionService,
-			    private _techProfileModelService: TechProfileModelService,
-			    private _questionEditService: QuestionEditService) {
+			    private _techProfileModelService: TechProfileModelService) {
 
   }
 
@@ -59,18 +56,6 @@ export class QuestionListPage implements OnInit {
 
 	onDisplayQuestionBtnClicked(q) {
 		this._router.navigate(['/question-display/' + q.id]);
-	}
-
-	onNewQuestionBtnClicked() {
-		let self = this;
-			
-		self._questionEditService.reset();
-
-		if (self.lineItemId && !isNaN(self.levelNumber)) {
-			self._questionEditService.setSetupFunc(() => { return [{lineItemId: self.lineItemId, levelNumber: self.levelNumber}] })
-		}
-
-		this._router.navigate(['/question-edit/new']);
 	}
 
 	onBackBtnClicked() {
