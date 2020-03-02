@@ -17,8 +17,6 @@ const routes: Routes = [
       loadChildren: './user-tech-profile/past/past.module#PastPageModule' },
   { path: 'user-tech-profile/:userId/present',
       loadChildren: './user-tech-profile/present/present.module#PresentPageModule' },
-  { path: 'line-item-action-page/:userId/:lineItemId/:idx', 
-      loadChildren: './line-item-action-page/line-item-action-page.module#LineItemActionPagePageModule' },
   { path: 'line-item-level-content-page/:userId/:lineItemId/:idx', 
       loadChildren: './line-item-level-content-page/line-item-level-content-page.module#LineItemLevelContentPagePageModule' },
   { path: 'user-question-detail/:userId/:questionId', 
