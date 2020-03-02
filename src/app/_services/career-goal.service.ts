@@ -49,4 +49,24 @@ export class CareerGoalService {
 
 		return rtn;
 	}
+
+	getQuestionsAlreadyAskedInThisSession(userId, sessionId) {
+		console.log("!!!!!!!!!!!!")
+	  	let url = environment.apiUrl + "/api/user/" + userId + "/mockinterviewsession/" + sessionId + "/questions";
+
+		let rtn = new Promise(
+			(resolve, reject) => {
+				this._apiService.getUnsecuredAPI(url).subscribe(
+					(data) => { 
+						console.log("Questions Already Asked In This session for user " + userId + " received!");
+						console.log(data);
+
+						resolve(data);
+					}, (err) => {
+						reject(err);
+					});
+			});
+
+		return rtn;
+	}
 }

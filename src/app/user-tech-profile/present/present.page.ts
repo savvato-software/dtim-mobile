@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { AlertService } from '../../_services/alert.service';
+import { AttendanceModelService } from '../../_services/attendance-model.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
 import { CareerGoalService } from '../../_services/career-goal.service';
 import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
@@ -24,6 +25,7 @@ export class PresentUserTechProfilePage implements OnInit {
   	user = undefined;
   	careerGoal = undefined;
   	questions = undefined;
+  	alreadyAskedQuestions = undefined;
 
   	funcKey = "present-utp-controller";
 
@@ -32,6 +34,7 @@ export class PresentUserTechProfilePage implements OnInit {
 		    private _route: ActivatedRoute,
 		    private _functionPromiseService: FunctionPromiseService,
 		    private _careerGoalService: CareerGoalService,
+		    private _attendanceModelService: AttendanceModelService,
 		    private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
 		    private _userService: UserService,
@@ -60,6 +63,14 @@ export class PresentUserTechProfilePage implements OnInit {
 					self.questions = questions;
 				})
 
+				let csn = self._attendanceModelService.getCurrentSessionNumber();
+
+				if (csn) {
+					self._careerGoalService.getQuestionsAlreadyAskedInThisSession(self.userId, csn).then((questions) => {
+						self.alreadyAskedQuestions = questions;
+					})
+				}
+
 				self.careerGoal = careerGoal;
 			})
 
@@ -78,8 +89,20 @@ export class PresentUserTechProfilePage implements OnInit {
 		return this.questions;
 	}
 
-	onQuestionClicked(q) {
+	thereAreQuestionsAskedInThisSession() {
+		return this.alreadyAskedQuestions !== undefined;
+	}
 
+	getQuestionsAlreadyAskedInThisSession() {
+		return this.alreadyAskedQuestions;
+	}
+
+	getCurrentSessionNumber() {
+		return this._attendanceModelService.getCurrentSessionNumber();
+	}
+
+	onQuestionClicked(q) {
+		this._router.navigate(['user-question-detail/' + this.userId + '/' + q.id ]);
 	}
 
 	onBackBtnClicked() {
