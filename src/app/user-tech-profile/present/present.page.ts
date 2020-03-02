@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { AlertService } from '../../_services/alert.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
+import { CareerGoalService } from '../../_services/career-goal.service';
 import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../../_services/user-tech-profile-model.service';
 import { UserService } from '../../_services/user.service';
@@ -21,7 +22,8 @@ export class PresentUserTechProfilePage implements OnInit {
 
   	userId = undefined;
   	user = undefined;
-  	techProfile = undefined;
+  	careerGoal = undefined;
+  	questions = undefined;
 
   	funcKey = "present-utp-controller";
 
@@ -29,6 +31,7 @@ export class PresentUserTechProfilePage implements OnInit {
 		    private _router: Router,
 		    private _route: ActivatedRoute,
 		    private _functionPromiseService: FunctionPromiseService,
+		    private _careerGoalService: CareerGoalService,
 		    private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
 		    private _userService: UserService,
@@ -48,42 +51,35 @@ export class PresentUserTechProfilePage implements OnInit {
 				self.user = data;
 			})
 
-			self._functionPromiseService.initFunc(self.funcKey, () => {
-				return new Promise((resolve, reject) => {
-					self._userTechProfileModel.waitingPromise().then(() => {
-						resolve({
-							getEnv: () => {
-								return environment;
-							},
-							getColorMeaningString: () => {
-								return "A highlighted cell is one which contains a question which has been asked during this session."
-							},
-							// getBackgroundColor: (lineItem, idx) => {
-							// 	let score = self._userTechProfileModel.getScore(lineItem['id']);
-								
-							// 	if (score == undefined) return "white";
-							// 	if (score >= idx) return "lightblue"; else return "white";
-							// },
-							onLxDescriptionClick: (lineItem, idx) => {
-								// shows a list of questions assigned to this lineItemLevel
-								self._router.navigate(['/line-item-level-content-page/' + self.userId + '/' + lineItem['id'] + '/' + idx]);
+			// WILO...
+			// First create a present view that is just a list of questions. You can tap on a question, be taken to its grading page for this user in this session.questions
+			// Then a tech profile view.. you tap the cell, and if there is a single question in the cell, you are taken to the grading page. If there are multiple recommended questions in the cell, you are taken to the list of questions, same as the list of questions view described above. If there are no questions in the cell, tapping it does nothing.
 
-								// which shows a list of the sessions in which that question was given for this user
-								// in which you can click on a session, go to a session detail page, and see the per-question comments for this user's mock interview
-							}
-						})
-					})
+			self._careerGoalService.getCareerGoalForUserId(self.userId).then((careerGoal) => {
+				self._careerGoalService.getNextQuestionsForCareerGoal(self.userId, careerGoal['id']).then((questions) => {
+					self.questions = questions;
 				})
+
+				self.careerGoal = careerGoal;
 			})
+
 		})
 	}
 
-	getDtimTechprofileComponentController() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
+	getUserName() {
+		return this.user && this.user['name']
 	}
 
-	getUserName() {
-		return this.user && this.user["name"];
+	getChosenCareerGoalName() {
+		return this.careerGoal && this.careerGoal['name'];
+	}
+
+	getNextQuestions() {
+		return this.questions;
+	}
+
+	onQuestionClicked(q) {
+
 	}
 
 	onBackBtnClicked() {
