@@ -5,6 +5,8 @@ import { AlertService } from '../_services/alert.service';
 // import { AttendanceAPIService } from '../_services/attendance-api.service';
 import { AttendanceModelService } from '../_services/attendance-model.service';
 
+import { environment } from '../../_environments/environment'
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.page.html',
@@ -26,6 +28,10 @@ export class AdminPage implements OnInit {
 
   ngOnInit() {
     this._attendanceModelService.init();
+  }
+
+  getEnvironment() {
+    return environment;
   }
 
   getListOfUsersInAttendance() {

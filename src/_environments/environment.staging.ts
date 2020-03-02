@@ -8,6 +8,7 @@ export const domainPort = domainInfo.domain + ':' + domainInfo.port;
 
 export const environment = {
   production: false,
+  name: 'staging',
   domainPort: domainPort,
   apiUrl: 'http://' + domainPort
 };
