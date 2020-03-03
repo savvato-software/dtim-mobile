@@ -46,7 +46,7 @@
 			    <div formGroupName="country_phone">
 			      <ion-item>
 			        <ion-label position="floating" color="primary">Phone (10 digits, no symbols)</ion-label>
-					<ion-input data-test="phone-input" type="text" formControlName="phone" (ionBlur)="onPhoneBlur($event)" (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="5555555555" data-cy='phone-input'></ion-input>
+					<ion-input data-test="phone-input" type="number" formControlName="phone" (ionBlur)="onPhoneBlur($event)" (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="5555555555" data-cy='phone-input'></ion-input>
 			      </ion-item>
 			      <div class="validation-errors">
 			        <ng-container *ngFor="let validation of validation_messages.phone">
