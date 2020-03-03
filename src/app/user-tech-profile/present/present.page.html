@@ -29,12 +29,17 @@
 		    <ion-card-title>Recommended Next Questions</ion-card-title>
 			This is a list of the next questions this user should address.<br/><br/>		    
 		</ion-card-header>
-		<ion-card-content>
-			<span *ngFor="let q of getNextQuestions()" (click)="onQuestionClicked(q)">
-				{{ q.text }}<br/>
-				{{ q.description }}<br/>
-				<br/><br/>
-			</span>
+		<ion-card-content class="greenBackground" *ngFor="let path of getCareerGoalPaths()">
+			<ion-card-content class="yellowBackground" *ngFor="let milestone of getMilestones(path)">
+				<ion-card-content class="blueBackground" *ngFor="let labour of getLabours(milestone)">
+					<span class="labourName">{{labour.name}}</span><br/>
+					<span *ngFor="let q of getNextQuestions(labour)" (click)="onQuestionClicked(q)">
+						{{ q.text }}<br/>
+						{{ q.description }}<br/>
+						<br/><br/>
+					</span>
+				</ion-card-content>
+			</ion-card-content>
 		</ion-card-content>
 	</ion-card>
 </ion-content>

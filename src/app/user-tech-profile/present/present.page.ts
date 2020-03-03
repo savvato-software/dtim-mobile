@@ -85,8 +85,20 @@ export class PresentUserTechProfilePage implements OnInit {
 		return this.careerGoal && this.careerGoal['name'];
 	}
 
-	getNextQuestions() {
-		return this.questions;
+	getCareerGoalPaths() {
+		return this.careerGoal && this.careerGoal['paths'];
+	}
+
+	getMilestones(path) {
+		return path['milestones'];
+	}
+
+	getLabours(milestone) {
+		return milestone['labours'];
+	}
+
+	getNextQuestions(labour) {
+ 		return this.questions && labour["questions"].filter(q => this.questions.map(m => m.id).includes(q.id)) // return all the questions in this labor that also appear in the next-questions object
 	}
 
 	thereAreQuestionsAskedInThisSession() {
