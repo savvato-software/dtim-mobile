@@ -167,7 +167,7 @@ export class PresentUserTechProfilePage implements OnInit {
 	}
 
 	thereAreQuestionsAskedInThisSession() {
-		return this.alreadyAskedQuestions !== undefined;
+		return this.alreadyAskedQuestions && this.alreadyAskedQuestions.length > 0;
 	}
 
 	getQuestionsAlreadyAskedInThisSession() {
