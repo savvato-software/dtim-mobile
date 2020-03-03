@@ -8,7 +8,6 @@ import { UserService } from '../_services/user.service';
 
 import { CountryPhone } from './country-phone.model';
 import { PhoneValidator } from '../validators/phone.validator';
-import { type } from 'os';
 
 @Component({
   selector: 'app-new-user',
