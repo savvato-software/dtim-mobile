@@ -12,7 +12,11 @@ import { UserService } from '../../_services/user.service';
 
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
+import { ModelService } from './_services/model.service'
+
 import { environment } from '../../../_environments/environment';
+
+import * as jsonpath from 'jsonpath'
 
 @Component({
   selector: 'app-user-tech-profile-present',
@@ -32,6 +36,7 @@ export class PresentUserTechProfilePage implements OnInit {
 	constructor(private _location: Location,
 		    private _router: Router,
 		    private _route: ActivatedRoute,
+		    private _modelService: ModelService,
 		    private _functionPromiseService: FunctionPromiseService,
 		    private _careerGoalService: CareerGoalService,
 		    private _attendanceModelService: AttendanceModelService,
@@ -59,8 +64,10 @@ export class PresentUserTechProfilePage implements OnInit {
 			// Then a tech profile view.. you tap the cell, and if there is a single question in the cell, you are taken to the grading page. If there are multiple recommended questions in the cell, you are taken to the list of questions, same as the list of questions view described above. If there are no questions in the cell, tapping it does nothing.
 
 			self._careerGoalService.getCareerGoalForUserId(self.userId).then((careerGoal) => {
-				self._careerGoalService.getNextQuestionsForCareerGoal(self.userId, careerGoal['id']).then((questions) => {
+				self._careerGoalService.getNextQuestionsForCareerGoal(self.userId, careerGoal['id']).then((questions: []) => {
 					self.questions = questions;
+
+					self._modelService.getPathsForCareerGoalQuestions(careerGoal, questions);
 				})
 
 				let csn = self._attendanceModelService.getCurrentSessionNumber();
@@ -86,19 +93,77 @@ export class PresentUserTechProfilePage implements OnInit {
 	}
 
 	getCareerGoalPaths() {
-		return this.careerGoal && this.careerGoal['paths'];
+		if (this.careerGoal && this.questions) {
+			let paths = this._modelService.getPathsForCareerGoalQuestions(this.careerGoal, this.questions);
+
+			let rtn = [];
+
+			let indexes = paths.map(p => p[2]);
+			indexes = indexes.filter((item, index) => indexes.indexOf(item) === index); // remove dupes
+
+			indexes.forEach(pi => rtn.push(jsonpath.query(this.careerGoal, "$..paths[" + pi + "]")))
+
+			if (rtn.length === 1) return rtn;
+			else return rtn.sort((a, b) => { 
+				return a['name'].localeCompare(b['name'])
+			});
+		}
 	}
 
 	getMilestones(path) {
-		return path['milestones'];
+		if (this.careerGoal && this.questions) {
+			let paths = this._modelService.getPathsForCareerGoalQuestions(this.careerGoal, this.questions);
+
+			let rtn = [];
+
+			let indexes = paths.map(p => p[4]);
+			indexes = indexes.filter((item, index) => indexes.indexOf(item) === index); // remove dupes
+
+			indexes.forEach(pi => rtn.push(jsonpath.query(this.careerGoal, "$..milestones[" + pi + "]")[0]))
+
+			if (rtn.length === 1) return rtn;
+			else return rtn.sort((a, b) => { 
+				return a['name'].localeCompare(b['name'])
+			});
+		}
 	}
 
 	getLabours(milestone) {
-		return milestone['labours'];
+		if (this.careerGoal && this.questions) {
+			let paths = this._modelService.getPathsForCareerGoalQuestions(this.careerGoal, this.questions);
+
+			let rtn = [];
+
+			for (var i=0; i<paths.length; i++) {
+				let func = (p, milestone) => {
+					let cg = jsonpath.query(this.careerGoal, p[0])[0];
+					let pp = jsonpath.query(cg, p[1]+'['+p[2]+']')[0]
+					let ms = jsonpath.query(pp, p[3]+'['+p[4]+']')[0]
+					
+					if (ms['id'] === milestone['id'])
+						rtn.push(jsonpath.query(ms, p[5]+'['+p[6]+']'))
+				};
+
+				func(paths[i], milestone);
+			}
+
+			if (rtn.length === 1) return rtn;
+			else return rtn.sort((a, b) => { 
+				return a[0]['name'].localeCompare(b[0]['name'])
+			});
+		}
+	}
+
+	getLabourName(labour) {
+		return labour['name']
+	}
+
+	getMilestoneName(milestone)	{
+		return milestone['name']
 	}
 
 	getNextQuestions(labour) {
- 		return this.questions && labour["questions"].filter(q => this.questions.map(m => m.id).includes(q.id)) // return all the questions in this labor that also appear in the next-questions object
+		return labour["questions"].filter(q => this.questions.map(m => m.id).includes(q.id)) // return all the questions in this labor that also appear in the next-questions object
 	}
 
 	thereAreQuestionsAskedInThisSession() {
