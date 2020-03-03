@@ -82,7 +82,7 @@ export class AllUserSessionsListingPage implements OnInit {
 	}
 
 	getLineItemLevelNumber() {
-		return this.lineItem && this.lineItem['id'];
+		return this.levelNumber;
 	}
 
 	getUserName() {
