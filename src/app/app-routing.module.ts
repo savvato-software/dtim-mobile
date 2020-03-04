@@ -13,6 +13,10 @@ const routes: Routes = [
       loadChildren: './admin/admin.module#AdminPageModule' },
   { path: 'user-tech-profile/:userId', 
       loadChildren: './user-tech-profile/user-tech-profile.module#UserTechProfilePageModule' },
+  { path: 'user-tech-profile/:userId/past',
+      loadChildren: './user-tech-profile/past/past.module#PastPageModule' },
+  { path: 'user-tech-profile/:userId/present',
+      loadChildren: './user-tech-profile/present/present.module#PresentPageModule' },
   { path: 'line-item-action-page/:userId/:lineItemId/:idx', 
       loadChildren: './line-item-action-page/line-item-action-page.module#LineItemActionPagePageModule' },
   { path: 'line-item-level-content-page/:userId/:lineItemId/:idx', 
@@ -36,7 +40,7 @@ const routes: Routes = [
   { path: 'tech-profile-topic-edit/:topicId',
       loadChildren: './tech-profile-topic-edit/tech-profile-topic-edit.module#TechProfileTopicEditPageModule' },
   { path: 'tech-profile-question',
-      loadChildren: './tech-profile-question/tech-profile-question.module#TechProfileQuestionPageModule' }
+      loadChildren: './tech-profile-question/tech-profile-question.module#TechProfileQuestionPageModule' },
 ];
 
 @NgModule({

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{getUserName()}} - Question History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+	<ion-card>
+		<ion-card-header>
+			<ion-card-title>{{getQuestionText()}}</ion-card-title>
+		</ion-card-header>
+		<ion-card-content>
+			<div *ngFor="let cqg of cqgList">
+				<ion-card>
+					<ion-card-content>
+						<span>Session {{cqg.sessionId}}</span> - <span>Received {{cqg.grade}}</span><br/><br/>
+						<span class="commentLabel">Comment:</span><br/>
+						<span class="commentText" *ngIf="!!cqg.comment">{{cqg.comment}}<br/><br/></span>
+						<span class="commentText" *ngIf="!(!!cqg.comment)">-- no comment --<br/><br/></span>
+					</ion-card-content>
+				</ion-card>
+			</div>
+		</ion-card-content>
+	</ion-card>
+</ion-content>
+<ion-content class="footerButtonRow">
+	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
+</ion-content>

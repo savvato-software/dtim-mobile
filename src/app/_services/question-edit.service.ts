@@ -32,4 +32,8 @@ export class QuestionEditService {
 		else
 			return () => { return undefined; };
 	}
+
+	reset() {
+		this.func = undefined;
+	}
 }

@@ -15,7 +15,7 @@
       </ion-col>
     </ion-row>
     <br/><br/><br/>
-    <span class="centered home-admin-warning" [hidden]="isSessionActive()">ADMIN, THE MEETING SESSION HAS NOT STARTED!</span>
+    <span class="centered home-admin-warning" data-test="home-admin-warning" [hidden]="isSessionActive()">ADMIN, THE MEETING SESSION HAS NOT STARTED!</span>
     <ion-button [hidden]="isAdminBtnHidden()" class="centered" (click)="onAdminBtnClicked()">I'm the Admin!</ion-button>
   </div>
 </ion-content>
