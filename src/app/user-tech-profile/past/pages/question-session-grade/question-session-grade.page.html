@@ -9,9 +9,13 @@
 <ion-content>
 	<ion-card>
 		<ion-card-header>
+			<ion-card-title>Question Text: </ion-card-title>
 			<ion-card-title>{{getQuestionText()}}</ion-card-title>
 		</ion-card-header>
-		<ion-card-content>
+		<ion-card-content *ngIf="cqgList && cqgList.length === 0">
+			<span>No History For This Question!</span>
+		</ion-card-content>
+		<ion-card-content *ngIf="cqgList && cqgList.length > 0">
 			<div *ngFor="let cqg of cqgList">
 				<ion-card>
 					<ion-card-content>
