@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{getUserName()}} - Correctly Answered Questions For A Skill And Level</ion-title>
+    <ion-title>{{getUserName()}} - Answered Questions For A Skill And Level</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -30,8 +30,7 @@
 			This is a list of all the questions in this cell. Questions which have been correctly answered in the past, are in <span class="boldText">bold</span>.<br/><br/>		    
 		</ion-card-header>
 		<ion-card-content *ngFor="let q of questions">
-			<span *ngIf="isCorrectlyAnswered(q)" class="boldText" (click)="onCorrectAnswerClick(q)">{{q.text}}<br/></span>
-			<span *ngIf="!isCorrectlyAnswered(q)" (click)="onNonCorrectAnswerClick(q)">{{q.text}}<br/></span>
+			<span [class]="getQuestionCSSString(q)" (click)="onAnswerClick(q)">{{q.text}}<br/></span>
 		</ion-card-content>
 	</ion-card>
 

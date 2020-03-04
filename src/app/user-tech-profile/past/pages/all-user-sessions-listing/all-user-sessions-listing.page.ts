@@ -22,6 +22,7 @@ export class AllUserSessionsListingPage implements OnInit {
 	levelNumber = undefined;
 	lineItem = undefined;
 	correctlyAnsweredQuestions = undefined;
+	incorrectlyAnsweredQuestions = undefined;
 
     constructor(private _location: Location,
 			    private _router: Router,
@@ -55,17 +56,37 @@ export class AllUserSessionsListingPage implements OnInit {
 				self.correctlyAnsweredQuestions = questions;
 			})
 
+			self._modelService.getIncorrectlyAnsweredQuestionsForCell(self.lineItemId, self.levelNumber, self.userId).then((questions) => {
+				self.incorrectlyAnsweredQuestions = questions;
+			})
+
 			self._lineItemAPIService.getLineItem(self.lineItemId).then((lineItem) => {
 				self.lineItem = lineItem;
 			})
 		})
 	}
 
+	getQuestionCSSString(q) {
+		let rtn = "";
+
+		if (this.correctlyAnsweredQuestions && this.correctlyAnsweredQuestions.find(caq => caq['id'] == q['id'])) {
+			rtn = "boldText";
+		} else if (this.incorrectlyAnsweredQuestions && this.incorrectlyAnsweredQuestions.find(caq => caq['id'] == q['id'])) {
+			rtn = "italicText"
+		}
+
+		return rtn;
+	}
+
 	isCorrectlyAnswered(q) {
 		return this.correctlyAnsweredQuestions && this.correctlyAnsweredQuestions.find(caq => caq['id'] == q['id']);
 	}
 
-	onCorrectAnswerClick(q) {
+	isIncorrectlyAnswered(q) {
+		return this.incorrectlyAnsweredQuestions && this.incorrectlyAnsweredQuestions.find(caq => caq['id'] == q['id']);
+	}
+
+	onAnswerClick(q) {
 		this._router.navigate(['/user-tech-profile/' + this.userId + '/past/question-session-grade/' + q.id]);
 	}
 

@@ -18,6 +18,7 @@ export class ModelService {
 	GET_QUESTION_COUNT_OF_A_GIVEN_CELL = "getQuestionCountForAGivenCell";
 	GET_TOTAL_QUESTION_COUNT_FOR_CELL = "totalQuestionCountForCell";
 	GET_CORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL = "getCorrectlyAnsweredQuestionsOfAGivenCell";
+	GET_INCORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL = "getIncorrectlyAnsweredQuestionsOfAGivenCell";
 
 	constructor(private _apiService: ApiService,
 				private _functionPromiseService: FunctionPromiseService) {
@@ -124,6 +125,19 @@ export class ModelService {
 			})
 		});
 
+		this._functionPromiseService.reset(this.GET_INCORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL);
+		this._functionPromiseService.initFunc(this.GET_INCORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL, (data) => {
+			return new Promise((resolve, reject) => {
+				let url = environment.apiUrl + "/api/question/" + data['lineItemId'] + "/" + data['lineItemLevelIndex'] + "/user/" + data['userId'] + "/incorrectlyAnsweredQuestions";
+				this._apiService.get(url)
+				.subscribe((rtn) => {
+					resolve(rtn);
+				}, (err) => {
+					reject(err);
+				})
+			})
+		});
+
 	}
 
 	answerQualityFilter = this.GET_ASKED_QUESTION_COUNTS_PER_CELL;
@@ -151,6 +165,13 @@ export class ModelService {
 		let self = this;
 		let data = {'lineItemId': id, 'lineItemLevelIndex': idx, 'userId': userId};
 		let rtn = this._functionPromiseService.waitAndGet(self.GET_CORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL, self.GET_CORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL, data);
+		return rtn;
+	}
+
+	getIncorrectlyAnsweredQuestionsForCell(id, idx, userId) {
+		let self = this;
+		let data = {'lineItemId': id, 'lineItemLevelIndex': idx, 'userId': userId};
+		let rtn = this._functionPromiseService.waitAndGet(self.GET_INCORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL, self.GET_INCORRECTLY_ANSWERED_QUESTIONS_OF_A_GIVEN_CELL, data);
 		return rtn;
 	}
 
