@@ -86,19 +86,15 @@ export class NewUserPage implements OnInit {
 	getErrorMessages() {
 		
 		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
-			console.log("case 1");
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.toString().length === 10)) {
-			console.log("case 2");
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 		} else if ((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 3)) {
-			console.log("case 3");
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else {
-			console.log("case 4");
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		}
@@ -116,16 +112,6 @@ export class NewUserPage implements OnInit {
 
 	onPhoneChange($event) {
 		this.phone = $event.target.value
-		// console.log($event.target);
-		// console.log(typeof(this.phone))
-		// let currentPhoneValue = $event.currentTarget.value.split('');
-		// console.log(currentPhoneValue);
-		// write a filter to limit to digits before validation
-		// console.log(currentPhoneValue.map(char => /[0-9]/.test(char)))
-		// let filteredPhone = currentPhoneValue.filter(char => /[0-9]/.test(char)).join('');
-		// console.log(filteredPhone);
-
-		// this.phone = filteredPhone;
 		this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
 
 	}
@@ -177,7 +163,6 @@ export class NewUserPage implements OnInit {
 	}
 
 	onSaveBtnClicked() {
-		console.log("Save Btn Clicked!");
     	
     	let self = this;
 
@@ -201,7 +186,6 @@ export class NewUserPage implements OnInit {
 	}
 
 	onCancelBtnClicked() {
-		console.log("Cancel Btn Clicked!");
     	this._router.navigate(['/home']);
 	}
 }
