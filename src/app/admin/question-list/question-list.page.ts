@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { QuestionService } from '../../_services/question.service';
 import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
-import { QuestionEditService } from '../_services/question-edit.service';
+import { QuestionEditService } from '../../_services/question-edit.service';
 
 @Component({
   selector: 'app-question-list',
@@ -63,14 +63,17 @@ export class QuestionListPage implements OnInit {
 
 	onNewQuestionBtnClicked() {
 		let self = this;
+			
+		self._questionEditService.reset();
+
 		if (self.lineItemId && !isNaN(self.levelNumber)) {
-			self._questionEditService.setSetupFunc(() => { return {lineItemId: self.lineItemId, levelNumber: self.levelNumber} })
+			self._questionEditService.setSetupFunc(() => { return [{lineItemId: self.lineItemId, levelNumber: self.levelNumber}] })
 		}
 
 		this._router.navigate(['/question-edit/new']);
 	}
 
-	onBackBtnClicked(q) {
+	onBackBtnClicked() {
 		this._location.back();
 	}
 

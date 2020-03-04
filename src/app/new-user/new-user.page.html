@@ -18,7 +18,7 @@
 			Absolutely not required, but we think you will find the insights very valuable.<br/>
 			<br/>
 
-		    <form [formGroup]="validations_form"  (ngSubmit)="onSaveBtnClicked(validations_form.value)">
+		    <form [formGroup]="validations_form"  (ngSubmit)="onSaveBtnClicked()">
 			    <ion-item>
 			      <ion-label position="floating" color="primary">Name (Required)</ion-label>
 			      <ion-input data-test="name-input" type="text" formControlName="name" (ionInput)="onNameChange($event)" [value]="getName()" data-cy='name-input' required></ion-input>

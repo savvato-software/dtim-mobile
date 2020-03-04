@@ -2,9 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AttendanceModelService } from './attendance-model.service';
 
+import { FunctionPromiseService } from 'savvato-javascript-services'
+
 describe('AttendanceModelService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [ HttpClientTestingModule ], 
+    providers: [FunctionPromiseService]
   }));
 
   it('should be created', () => {

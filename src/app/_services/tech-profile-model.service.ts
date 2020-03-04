@@ -15,6 +15,9 @@ export class TechProfileModelService {
 				protected _sequenceService: SequenceService	) { }
 
 
+	// This service is initialized two different ways.. By _init(), which calls the API directly,
+	//  and setProviderForTechProfile, which uses a passed-in function from a third party. 
+
 	_init(force?: boolean) {
 		let self = this;
 
@@ -26,6 +29,10 @@ export class TechProfileModelService {
 				self.techProfile = tp;
 			})
 		}
+	}
+
+	setProviderForTechProfile(func) {
+		this.techProfile = func();
 	}
 
 	waitingPromise() {
@@ -45,6 +52,27 @@ export class TechProfileModelService {
 		})
 	}
 
+	getModel() {
+		return this.techProfile;
+	}
+
+	getName() {
+		let model = this.getModel();
+
+		if (model) 
+			return model['name']
+		else
+			return undefined;
+	}
+
+	getTopics() {
+		return this.techProfile && this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+	}
+
+	getLineItemsForATopic(topicId) {
+		return this.getTechProfileLineItemsByTopic(topicId);
+	}
+
 	isTechProfileAvailable() {
 		return this.techProfile && this.techProfile != null
 	}
@@ -53,11 +81,11 @@ export class TechProfileModelService {
 		this.techProfile = techProfile;
 	}
 
-	getTechProfile() {
+	getTechProfile() { // dupe
 		return this.techProfile;
 	}
 
-	getTechProfileTopics() {
+	getTechProfileTopics() { // dupe
 		return this.techProfile && this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
 	}
 
@@ -73,9 +101,6 @@ export class TechProfileModelService {
 
 			if (topic)
 				rtn = this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
-
-			// return false;
-			console.log("isTopicAbleToMoveUp is returning "+rtn+" for "+topicId);
 		}
 	
 		return rtn;
@@ -143,23 +168,25 @@ export class TechProfileModelService {
 			this.techProfile['topics'].forEach((topic) => {
 				let arr = [];
 
-				topic['lineItems'].forEach((lineItem) => {
-					let row = []
-					row.push(1) // techProfileId
-					row.push(topic['id'])
-					row.push(topic['sequence'])
+				if (topic['lineItems'].length > 0) {
+					topic['lineItems'].forEach((lineItem) => {
+						let row = []
+						row.push(1) // techProfileId
+						row.push(topic['id'])
+						row.push(topic['sequence'])
 
-					row.push(lineItem['id'])
-					row.push(lineItem['sequence'])
+						row.push(lineItem['id'])
+						row.push(lineItem['sequence'])
 
-					arr.push(row);
-				})
+						arr.push(row);
+					})
+				} else {
+					// this topic does not have line items
+					arr.push([1 /* tech profile id */, topic['id'], topic['sequence'], -1, -1])
+				}
 
 				arr1.push(arr);
 			})
-
-			console.log("saveSequenceInfo")
-			console.log(arr1)
 
 			this._techProfileAPI.saveSequenceInfo(arr1).then((data) => {
 				resolve(data);
@@ -210,15 +237,23 @@ export class TechProfileModelService {
 
 	addTopic(name) {
 		let self = this;
-		self._techProfileAPI.addTopic(name).then(() => {
-			self._init(true);
-		})
+		return new Promise((resolve, reject) => {
+			self._techProfileAPI.addTopic(name).then(() => {
+				self._init(true);
+
+				resolve();
+			})
+		});
 	}
 
 	addLineItem(parentTopicId, lineItemName) {
 		let self = this;
-		self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
-			self._init(true);
+		return new Promise((resolve, reject) => {
+			self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
+				self._init(true);
+
+				resolve();
+			})
 		})
 	}
 }

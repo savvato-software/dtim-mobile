@@ -21,6 +21,7 @@ export class ModelService {
 	_init() {
 		let self;
 
+		this._functionPromiseService.reset(this.GET_ALL_QUESTION_COUNTS_PER_CELL);
 		this._functionPromiseService.initFunc(this.GET_ALL_QUESTION_COUNTS_PER_CELL, () => {
 			return new Promise((resolve, reject) => {
 				let url = environment.apiUrl + "/api/techprofile/questionCountsPerCell";
@@ -40,16 +41,16 @@ export class ModelService {
 				if (!qcpc) 
 					throw new Error("questionCountsPerCell needed.");
 				else {
-					let rtn = undefined;
+					let rtn = 0;
 					let found = false;
 					let passed = false;
 					let i = 0;
 
-					while (i < qcpc.length && i <= data['lineItemId'] && !passed && !found) {
+					while (i < qcpc.length && !passed && !found) {
 						let curr = qcpc[i];
 
-						passed = (curr[0] > data['lineItemId']);
-						
+						passed = (curr[0] > data['lineItemId']); // have we passed the point we are looking for?
+
 						if (!passed) {
 							if (data['lineItemId'] == curr[0] && data['lineItemLevelIndex'] == curr[1]) {
 								rtn = curr[2];
@@ -91,9 +92,9 @@ export class ModelService {
 
 		if (qcpc) {
 			let data = {'lineItemId': id, 'lineItemLevelIndex': idx, 'questionCountsPerCell': qcpc};
-			rtn = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
+			rtn = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx+"/"+qcpc.length, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
 		}
-
+		
 		return rtn;
 	}
 
@@ -118,7 +119,7 @@ export class ModelService {
 
 		if (qcpc) {
 			let data = {'questionCountsPerCell': qcpc};
-			let gcqc = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
+			let gcqc = this._functionPromiseService.get(self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL+""+id+"-"+idx+"/"+qcpc.length, self.GET_QUESTION_COUNT_OF_A_GIVEN_CELL, data)
 			
 
 			if (qcpc) {
@@ -151,7 +152,7 @@ export class ModelService {
 				};
 
 				let maxIdx = 0;
-				[1,2,3,4,5,6,7,8,9,10].forEach(i => {
+				[0,1,2,3,4,5,6,7,8,9].forEach(i => {
 					let nTile = calculateNtile(arr, ((i + 1) / 10));
 					if (nTile <= gcqc) maxIdx++;
 				})

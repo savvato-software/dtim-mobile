@@ -5,6 +5,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
+import { FunctionPromiseService } from 'savvato-javascript-services';
+
 import { QuestionDisplayPage } from './question-display.page';
 
 describe('QuestionDisplayPage', () => {
@@ -17,6 +19,7 @@ describe('QuestionDisplayPage', () => {
       imports: [ RouterTestingModule, HttpClientTestingModule ],
       declarations: [ QuestionDisplayPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [ FunctionPromiseService ]
     })
     .compileComponents();
   }));
