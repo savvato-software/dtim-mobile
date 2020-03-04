@@ -24,6 +24,7 @@ export class PastUserTechProfilePage implements OnInit {
   	userId = undefined;
   	user = undefined;
   	techProfile = undefined;
+  	answerQualityFilter = undefined;
 
   	funcKey = "past-utp-controller";
 
@@ -97,6 +98,14 @@ export class PastUserTechProfilePage implements OnInit {
 	getScore(lineItemId) {
 		let self = this;
 		return self._userTechProfileModel.getScore(lineItemId);
+	}
+
+	onFocus(evt) {
+		this._modelService.setAnswerQualityFilter(evt.target.value);
+	}
+
+	onBlur(evt) {
+
 	}
 
 	onBackBtnClicked() {
