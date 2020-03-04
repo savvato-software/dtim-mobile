@@ -27,7 +27,7 @@
 	<ion-card>
 		<ion-card-header>
 		    <ion-card-title>Questions</ion-card-title>
-			This is a list of all the questions in this cell. Questions which have been correctly answered in the past, are in <span class="boldText">bold</span>.<br/><br/>		    
+			This is a list of all the questions in this cell. <br/><span class="boldText">bold</span> = correct, <span class="italicText">italic</span> = incorrect.<br/><br/>		    
 		</ion-card-header>
 		<ion-card-content *ngFor="let q of questions">
 			<span [class]="getQuestionCSSString(q)" (click)="onAnswerClick(q)">{{q.text}}<br/></span>
