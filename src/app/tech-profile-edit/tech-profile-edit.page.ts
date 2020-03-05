@@ -64,7 +64,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	ngOnDestroy() {
-		// this._functionPromiseService.resetFunc(this.funcKey);
+		this._functionPromiseService.resetFunc(this.funcKey);
 		this._functionPromiseService.reset(this.funcKey);
 	}
 
