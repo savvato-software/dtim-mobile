@@ -18,7 +18,8 @@ export class NewUserPage implements OnInit {
 
   	name = undefined;
   	phone = undefined;
-  	email = undefined;
+	email = undefined;
+	query = undefined;
 
   	validations_form: FormGroup;
   	country_phone_group: FormGroup;
@@ -161,31 +162,58 @@ export class NewUserPage implements OnInit {
 
 		return rtn && atLeastOneFieldIsValid;
 	}
-
+	
 	onSaveBtnClicked() {
     	
     	let self = this;
 
-    	let DEFAULT_PASSWORD = "password11"
+		let DEFAULT_PASSWORD = "password11"
 
-    	self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
-			self._userService.markUserAsAttending(user["id"]).then(() => {
-				self._alertService.show({
-					header: 'You\'re in!',
-					message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
-					buttons: [
-						{
-							text: 'OK', role: 'cancel', handler: () => {
-								self._router.navigate(['/home']);
+		if (this.email) {
+			this.query = this.email
+		} else {
+			this.query = this.phone;
+		}
+
+		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
+			
+			if (user) {
+				self._userService.markUserAsAttending(user["id"]).then(() => {
+					self._alertService.show({
+						header: 'Found you!',
+						message: "We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!",
+						buttons: [
+							{
+								text: 'OK', role: 'cancel', handler: () => {
+									this._location.back();
+								}
 							}
-						}
-					]
+						]
+					})
 				})
-			})
-    	})
+			} else {
+				self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
+					self._userService.markUserAsAttending(user["id"]).then(() => {
+						self._alertService.show({
+							header: 'You\'re in!',
+							message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
+							buttons: [
+								{
+									text: 'OK', role: 'cancel', handler: () => {
+										self._router.navigate(['/home']);
+									}
+								}
+							]
+						})
+					})
+				})
+			}
+		})
 	}
+	
 
+	
 	onCancelBtnClicked() {
-    	this._router.navigate(['/home']);
+		this._router.navigate(['/home']);
 	}
 }
