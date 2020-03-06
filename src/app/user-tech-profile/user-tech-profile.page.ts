@@ -59,11 +59,6 @@ export class UserTechProfilePage implements OnInit {
 		self._router.navigate(['/user-tech-profile/' + self.userId + '/past']);
 	}
 
-	onPresentViewBtnClicked() {
-		let self = this;
-		self._router.navigate(['/user-tech-profile/' + self.userId + '/present']);
-	}
-
 	onBackBtnClicked() {
 		this._userTechProfileModel.save().then(() => {
 			this._location.back();
@@ -71,6 +66,7 @@ export class UserTechProfilePage implements OnInit {
 	}
 
 	onCurrentViewBtnClicked() {
-		
+		let self = this;
+		self._router.navigate(['/user-tech-profile/' + self.userId + '/present']);
 	}
 }
