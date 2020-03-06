@@ -1,13 +1,48 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{getUserName()}} - Tech Profile - PRESENT View</ion-title>
+    <ion-title>{{getUserName()}} - DTIM Mock Interview - PRESENT View</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 	<ion-card>
 		<ion-card-content>
-			<lib-dtim-techprofile-component [ctrl]="getDtimTechprofileComponentController()"></lib-dtim-techprofile-component>
+			<ion-card-title>Chosen Career Goal:</ion-card-title>
+			<span> {{ getChosenCareerGoalName() }} </span>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="thereAreQuestionsAskedInThisSession()">
+		<ion-card-header>
+		    <ion-card-title>Questions Asked During This Session</ion-card-title>
+			This is a list of the questions you already asked the user in this session.<br/><br/>		    
+		</ion-card-header>
+		<ion-card-content>
+			<span *ngFor="let q of getQuestionsAlreadyAskedInThisSession()" (click)="onQuestionClicked(q)">
+				{{ q.text }}<br/>
+				{{ q.description }}<br/>
+				<br/><br/>
+			</span>
+		</ion-card-content>
+	</ion-card>
+	<ion-card>
+		<ion-card-header>
+		    <ion-card-title>Recommended Next Questions</ion-card-title>
+			This is a list of the next questions this user should address.<br/><br/>		    
+		</ion-card-header>
+		<ion-card-content *ngFor="let path of getCareerGoalPaths()">
+			<ion-card-content class="greenBackground" *ngFor="let milestone of getMilestones(path)">
+				<span class="milestoneName">{{getMilestoneName(milestone)}}</span><br/>
+				<ion-card-content class="yellowBackground" *ngFor="let labour of getLabours(milestone)">
+					<ion-card-content class="blueBackground" *ngFor="let l of labour">
+						<span class="labourName">{{getLabourName(l)}}</span><br/>
+						<span class="questionText" *ngFor="let q of getNextQuestions(l)" (click)="onQuestionClicked(q)">
+							{{ q.text }}<br/>
+							{{ q.description }}<br/>
+							<br/><br/>
+						</span>
+					</ion-card-content>
+				</ion-card-content>
+			</ion-card-content>
 		</ion-card-content>
 	</ion-card>
 </ion-content>

@@ -72,6 +72,7 @@ export class AttendanceModelService {
 			rtn = this.currentSession.id;
 		}
 
+		console.log("getCurrentSessionNumber returning ", rtn)
 		return rtn;
 	}
 
