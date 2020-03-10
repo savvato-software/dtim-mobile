@@ -134,8 +134,8 @@ context('signing up', () => {
 
     }) 
 
-    it('should alert success upon signup if user is new', () => {
-      // Something is not right here. It was expected that this test would have failed as written. The alert should have contained "You're In!"
+        //this test fails on first run, and passes on subsequent runs. The stub route is not being hit, and instead we are hitting our own API that is responding as it should on initial and secondary runs.
+    it('should alert success upon sign in if user is not new', () => {
       cy.visit('localhost:8100/new-user')     
 
       cy.typeInField('name-input', 'Test6')
@@ -170,27 +170,3 @@ context('signing up', () => {
     })
 
 })
-
-// TODOS:
-
-// Manually submit the form and console log the response.
-    // {id: 5, name: "Test", password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa", phone: "3035551414", email: "test@gmail.com", …}
-    // id: 5
-    // name: "Test"
-    // password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa"
-    // phone: "3035551414"
-    // email: "test@gmail.com"
-    // enabled: 1
-    // roles: null
-// Mock the format of the response in a cypress stub route.
-// Write the cypress test for success of sign up.
-// Change the route for proper response if user exists.
-    // {id: 5, name: "Test", password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa", phone: "3035551414", email: "test@gmail.com", …}
-    // id: 5
-    // name: "Test"
-    // password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa"
-    // phone: "3035551414"
-    // email: "test@gmail.com"
-    // enabled: 1
-    // roles: []
-// May need to reset routes for following tests.
