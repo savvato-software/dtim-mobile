@@ -134,5 +134,63 @@ context('signing up', () => {
 
     }) 
 
+    it('should alert success upon signup if user is new', () => {
+      // Something is not right here. It was expected that this test would have failed as written. The alert should have contained "You're In!"
+      cy.visit('localhost:8100/new-user')     
+
+      cy.typeInField('name-input', 'Test6')
+      cy.typeInField('phone-input', '3035551616') 
+      cy.typeInField('email-input', 'test6@gmail.com')
+        .blur() 
+      cy.get('[data-cy=email-error]').should('not.exist')
+      cy.get('[data-cy=phone-error]').should('not.exist')
+      cy.expectButtonIsEnabled('submit')
+
+      cy.server();
+      cy.route({
+        url: "/api/user/new",
+        method: "POST",
+        response: ''
+        // {
+          // id: 5,
+          // name: "Test",
+          // password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa",
+          // phone: "7203741309",
+          // email: "test@gmail.com",
+          // enabled: 1,
+          // roles: null,
+        // }
+      });
+  
+      cy.get("form").submit();
+  
+      cy.get('.alert-title')              
+		  .should('contain', 'Found you!')
+
+    })
+
 })
 
+// TODOS:
+
+// Manually submit the form and console log the response.
+    // {id: 5, name: "Test", password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa", phone: "3035551414", email: "test@gmail.com", …}
+    // id: 5
+    // name: "Test"
+    // password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa"
+    // phone: "3035551414"
+    // email: "test@gmail.com"
+    // enabled: 1
+    // roles: null
+// Mock the format of the response in a cypress stub route.
+// Write the cypress test for success of sign up.
+// Change the route for proper response if user exists.
+    // {id: 5, name: "Test", password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa", phone: "3035551414", email: "test@gmail.com", …}
+    // id: 5
+    // name: "Test"
+    // password: "$2a$10$4cEC/bye0MXuKnYD50dBOO50bYNiatT6T93lfUJnglU5FP5Y/IjZa"
+    // phone: "3035551414"
+    // email: "test@gmail.com"
+    // enabled: 1
+    // roles: []
+// May need to reset routes for following tests.

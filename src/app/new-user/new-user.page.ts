@@ -176,8 +176,9 @@ export class NewUserPage implements OnInit {
 		}
 
 		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
-			
+			console.log("new user submit:", user);
 			if (user) {
+				console.log('returning user:', user);
 				self._userService.markUserAsAttending(user["id"]).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
@@ -193,6 +194,7 @@ export class NewUserPage implements OnInit {
 				})
 			} else {
 				self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
+					console.log("new user:", user);
 					self._userService.markUserAsAttending(user["id"]).then(() => {
 						self._alertService.show({
 							header: 'You\'re in!',
