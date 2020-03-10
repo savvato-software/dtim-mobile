@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { ModelService } from './_services/model.service';
 
 import { AlertService } from '../../_services/alert.service';
+import { CareerGoalService } from '../../_services/career-goal.service';
 import { FunctionPromiseService } from 'savvato-javascript-services'
 import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../../_services/user-tech-profile-model.service';
@@ -23,6 +24,7 @@ export class PastUserTechProfilePage implements OnInit {
 
   	userId = undefined;
   	user = undefined;
+	careerGoal = undefined;
   	techProfile = undefined;
   	answerQualityFilter = undefined;
 
@@ -32,6 +34,7 @@ export class PastUserTechProfilePage implements OnInit {
 		    private _router: Router,
 		    private _route: ActivatedRoute,
 		    private _modelService: ModelService,
+		    private _careerGoalService: CareerGoalService,
 		    private _functionPromiseService: FunctionPromiseService,
 		    private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
@@ -51,6 +54,10 @@ export class PastUserTechProfilePage implements OnInit {
 
 			self._userService.getUserById(self.userId).then((data) => {
 				self.user = data;
+			})
+
+			self._careerGoalService.getCareerGoalForUserId(self.userId).then((careerGoal) => {
+				self.careerGoal = careerGoal;
 			})
 
 			self._functionPromiseService.initFunc(self.funcKey, () => {
@@ -85,6 +92,10 @@ export class PastUserTechProfilePage implements OnInit {
 				})
 			})
 		})
+	}
+
+	getChosenCareerGoalName() {
+		return this.careerGoal && this.careerGoal['name'];
 	}
 
 	getDtimTechprofileComponentController() {
