@@ -16,24 +16,24 @@ export class QuestionEditService {
 	//
 	// but alas, it seems I need to write an entire fucking service to do that.
   
-	func = undefined;
+	// func = undefined;
 
-	constructor() { 
+	// constructor() { 
 
-	}
+	// }
 
-	setSetupFunc(func) {
-		this.func = func;
-	}
+	// setSetupFunc(func) {
+	// 	this.func = func;
+	// }
 
-	getSetupFunc() {
-		if (this.func)
-			return this.func
-		else
-			return () => { return undefined; };
-	}
+	// getSetupFunc() {
+	// 	if (this.func)
+	// 		return this.func
+	// 	else
+	// 		return () => { return undefined; };
+	// }
 
-	reset() {
-		this.func = undefined;
-	}
+	// reset() {
+	// 	this.func = undefined;
+	// }
 }
