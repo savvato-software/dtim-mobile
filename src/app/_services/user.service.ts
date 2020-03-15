@@ -65,8 +65,8 @@ export class UserService {
 	return rtn;
   }
 
-  getUserByEmailOrPhone(query) {
-  	let url = environment.apiUrl + "/api/user?q=" + query;
+  getUserByEmailAndPhone(query) {
+	let url = environment.apiUrl + `/api/user?email=${query.email}&phone=${query.phone}`;
 
 	let rtn = new Promise(
 		(resolve, reject) => {

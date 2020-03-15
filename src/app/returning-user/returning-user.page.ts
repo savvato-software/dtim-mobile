@@ -12,7 +12,10 @@ import { UserService } from '../_services/user.service';
 })
 export class ReturningUserPage implements OnInit {
 
-	query = undefined;
+	query = {
+		email: undefined,
+		phone: undefined
+	}
 
     constructor(private _location: Location,
 			    private _router: Router,
@@ -27,29 +30,33 @@ export class ReturningUserPage implements OnInit {
 	}
 
 	onQueryChange($event) {
-		this.query = $event.currentTarget.value;
+		if ($event.currentTarget.id == "phone") {
+			this.query.phone = $event.currentTarget.value
+		} else if($event.currentTarget.id == "email") {
+			this.query.email = $event.currentTarget.value
+		}
 	}
 
-	getQuery() {
-		return this.query;
+	getQuery(value) {
+		if (value == 'phone') {
+			return this.query.phone;
+		} else if(value == "email") {
+			return this.query.email
+		}
 	}
 
 	isSearchBtnEnabled() {
-		if (this.query) {
-			if (!isNaN(this.query.charAt(0) * 1)) { // if the first char is a number
-				return this.query.length === 10 && !isNaN(this.query);
-			} else {
-				return this.query.length >= 3;
-			}
+		if (this.query.phone && this.query.email) {
+			return true
+		} else {
+			return false
 		}
-
-		return this.query && this.query.length >= 3;
 	}
 
 	onSearchBtnClicked() {
 		let self = this;
 
-		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
+		self._userService.getUserByEmailAndPhone(self.query).then((user) => {
 			
 			if (user) {
 				self._userService.markUserAsAttending(user["id"]).then(() => {
