@@ -18,7 +18,7 @@
 			  <ion-label position="floating">Phone (only digits, no symbols)</ion-label>
 			  <ion-input data-test="query-input" (ionChange)="onQueryChange($event)" [value]="getQuery('phone')" [id]="'phone'" required></ion-input>
 			 <ion-label position="floating">Email</ion-label> 
-			  <ion-input data-test="query-input" (ionChange)="onQueryChange($event)" [value]="getQuery('email')" [attr.id]="'email'" required></ion-input>
+			  <ion-input data-test="query-input" (ionChange)="onQueryChange($event)" [value]="getQuery('email')" [id]="'email'" required></ion-input>
 			</ion-item>
 
 			<ion-button class="" [disabled]="!isSearchBtnEnabled()" (click)="onSearchBtnClicked()">Find Me</ion-button>
