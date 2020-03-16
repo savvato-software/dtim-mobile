@@ -8,7 +8,7 @@ import { PastPageRoutingModule } from './past-routing.module';
 
 import { PastUserTechProfilePage } from './past.page';
 
-import { DtimTechprofileModule } from 'dtim-techprofile';
+import { DtimTechprofileModule } from '@savvato-software/dtim-techprofile-component';
 
 @NgModule({
   imports: [

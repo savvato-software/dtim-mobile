@@ -1,13 +1,17 @@
 context('logging in', () => {
 	it('succeeds on the happy path', () => {
-		
-	})
+		cy.visit('localhost:8100/returning-user')     
 
-	it('does not allow you to submit new acct info if the email is invalid', () => {
-		
-	})
-
-	it('does not allow you to submit new acct info if the phone is invalid', () => {
-		
+		cy.get('[data-cy=phone-email]') 
+			.children('.native-input')
+  			.first()
+		  	.type('test@test.com')   /
+	
+		cy.get('ion-button')
+		  .contains('Find Me')     
+		  .click()                
+	
+		cy.get('.alert-title')              
+		  .should('contain', 'Found you!')
 	})
 })

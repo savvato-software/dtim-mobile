@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AttendanceAPIService } from './attendance-api.service';
-import { FunctionPromiseService } from 'savvato-javascript-services'
+import { FunctionPromiseService } from '@savvato-software/savvato-javascript-services'
 
 import * as moment from 'moment'
 

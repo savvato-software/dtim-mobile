@@ -23,3 +23,23 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('expectButtonInitiallyDisabled', (data_cy_id) => {
+	cy.get('[data-cy=' + data_cy_id + ']').should('have.attr', 'class', 'submit-btn md button button-solid button-disabled ion-activatable ion-focusable hydrated')     
+})
+
+Cypress.Commands.add('expectButtonCurrentlyDisabled', (data_cy_id) => {
+	cy.get('[data-cy=' + data_cy_id + ']').should('have.attr', 'class', 'submit-btn md button button-solid ion-activatable ion-focusable hydrated button-disabled')     
+})
+
+Cypress.Commands.add('expectButtonIsEnabled', (data_cy_id) => {
+	cy.get('[data-cy=' + data_cy_id + ']').should('have.attr', 'class', 'submit-btn md button button-solid ion-activatable ion-focusable hydrated')
+})
+
+Cypress.Commands.add('typeInField', (data_cy_id, text) => {
+	cy.get('[data-cy=' + data_cy_id + ']') 
+	.children('.native-input')
+	.first()
+  	.type(text)
+})
+

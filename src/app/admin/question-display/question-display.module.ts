@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { QuestionDisplayPage } from './question-display.page';
 
-import { DtimTechprofileModule } from 'dtim-techprofile';
+import { DtimTechprofileModule } from '@savvato-software/dtim-techprofile-component';
 
 const routes: Routes = [
   {

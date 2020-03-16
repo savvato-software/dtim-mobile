@@ -8,7 +8,7 @@ import { PresentPageRoutingModule } from './present-routing.module';
 
 import { PresentUserTechProfilePage } from './present.page';
 
-import { DtimTechprofileModule } from 'dtim-techprofile';
+import { DtimTechprofileModule } from '@savvato-software/dtim-techprofile-component';
 
 @NgModule({
   imports: [

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { AlertService } from '../_services/alert.service';
-import { FunctionPromiseService } from 'savvato-javascript-services'
+import { FunctionPromiseService } from '@savvato-software/savvato-javascript-services'
 import { TechProfileAPIService } from '../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../_services/user-tech-profile-model.service';
 import { UserService } from '../_services/user.service';

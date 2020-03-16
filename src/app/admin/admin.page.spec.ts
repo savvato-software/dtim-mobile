@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
-import { FunctionPromiseService } from 'savvato-javascript-services';
+import { FunctionPromiseService } from '@savvato-software/savvato-javascript-services';
 
 import { AdminPage } from './admin.page';
 
