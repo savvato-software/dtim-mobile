@@ -18,9 +18,10 @@ export class NewUserPage implements OnInit {
 
   	name = undefined;
   	phone = undefined;
-  	email = undefined;
+	email = undefined;
+	query = undefined;
 
-  	validations_form: FormGroup;  	
+  	validations_form: FormGroup;
   	country_phone_group: FormGroup;
 
   	countries: Array<CountryPhone>;
@@ -84,11 +85,11 @@ export class NewUserPage implements OnInit {
 	}
 
 	getErrorMessages() {
-		console.log(this.validations_form.controls);
+		
 		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
-		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.toString().length === 10)) {
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 		} else if ((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 3)) {
@@ -111,7 +112,7 @@ export class NewUserPage implements OnInit {
 	}
 
 	onPhoneChange($event) {
-		this.phone = $event.currentTarget.value;
+		this.phone = $event.target.value
 		this.validation_messages.phone[1] = { type: 'validCountryPhone', message: null };
 
 	}
@@ -161,66 +162,60 @@ export class NewUserPage implements OnInit {
 
 		return rtn && atLeastOneFieldIsValid;
 	}
-
+	
 	onSaveBtnClicked() {
-		console.log("Save Btn Clicked!");
     	
     	let self = this;
 
-    	let DEFAULT_PASSWORD = "password11"
+		let DEFAULT_PASSWORD = "password11"
 
-    	self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
-			self._userService.markUserAsAttending(user["id"]).then(() => {
-				self._alertService.show({
-					header: 'You\'re in!',
-					message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
-					buttons: [
-						{
-							text: 'OK', role: 'cancel', handler: () => {
-								self._router.navigate(['/home']);
+		if (this.email) {
+			this.query = this.email
+		} else {
+			this.query = this.phone;
+		}
+
+		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
+			console.log("new user submit:", user);
+			if (user) {
+				console.log('returning user:', user);
+				self._userService.markUserAsAttending(user["id"]).then(() => {
+					self._alertService.show({
+						header: 'Found you!',
+						message: "We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!",
+						buttons: [
+							{
+								text: 'OK', role: 'cancel', handler: () => {
+									this._location.back();
+								}
 							}
-						}
-					]
+						]
+					})
 				})
-			})
-    	})
+			} else {
+				self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
+					console.log("new user:", user);
+					self._userService.markUserAsAttending(user["id"]).then(() => {
+						self._alertService.show({
+							header: 'You\'re in!',
+							message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
+							buttons: [
+								{
+									text: 'OK', role: 'cancel', handler: () => {
+										self._router.navigate(['/home']);
+									}
+								}
+							]
+						})
+					})
+				})
+			}
+		})
 	}
+	
 
+	
 	onCancelBtnClicked() {
-		console.log("Cancel Btn Clicked!");
-    	this._router.navigate(['/home']);
+		this._router.navigate(['/home']);
 	}
 }
-
-// Click I'm New Here..
-
-// Enter a valid name
-
-// Enter email field, begin typing, notice the error message
-
-// Expected: we should not be showing the error message until the onBlur event happens (when the cursor leaves the field). It should then validate the contents of the field.
-
-// Actual: the validation error message does show for the email field.
-
-// But ignore the email validation error message for now. Enter an invalid email, like 'bademail@'
-
-// Enter the phone number field, and begin typing. Again,
-
-// Expected: we should not be showing the error message until the onBlur event happens (when the cursor leaves the field). It should then validate the contents of the field.
-
-// Actual: the validation error message does show for the phone number field.
-
-// Finish entering a correct string of 10 digits in the phone number field.
-
-// Notice the error message on the phone number field has gone away, thats good. +1
-
-// The error message on the email field
-
-// Expected: it should read "Please clear this field, or enter a valid email."
-
-// Actual: it reads: "Please enter a valid email, OR a ten digit phone number."
-
-// Likewise, if starting from the top, you enter a valid name, and then a valid email address, as you begin typing the phone number, there should be no validation error message (wait till they exit the field to validate). If they leave the field with an invalid value, since the email address does have a valid value (in this scenario), the error on the phone number field should read "Please clear this field, or enter a valid phone number."
-
-// We want to add a second error message that indicates what field needs to be cleared
-// May need to create a getValidationMessages function that we call in order to determine what message is displayed. Be more specific.
