@@ -36,5 +36,5 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 
 src/_environments/environments.ts
-cypress/
 
+cypress/videos
