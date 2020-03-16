@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { FunctionPromiseService } from 'savvato-javascript-services';
+import { FunctionPromiseService } from '@savvato-software/savvato-javascript-services';
 
 import { UserTechProfilePage } from './user-tech-profile.page';
 
