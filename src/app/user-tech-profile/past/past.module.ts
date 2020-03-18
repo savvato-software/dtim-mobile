@@ -9,6 +9,7 @@ import { PastPageRoutingModule } from './past-routing.module';
 import { PastUserTechProfilePage } from './past.page';
 
 import { DtimTechprofileModule } from '@savvato-software/dtim-techprofile-component';
+import { SavvatoTechprofileUserHistoricalViewModule } from '@savvato-software/savvato-techprofile-user-historical-view';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { DtimTechprofileModule } from '@savvato-software/dtim-techprofile-compon
     FormsModule,
     IonicModule,
     PastPageRoutingModule,
-    DtimTechprofileModule
+    DtimTechprofileModule,
+    SavvatoTechprofileUserHistoricalViewModule
   ],
   declarations: [PastUserTechProfilePage]
 })
