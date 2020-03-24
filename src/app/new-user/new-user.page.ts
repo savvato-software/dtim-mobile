@@ -50,6 +50,7 @@ export class NewUserPage implements OnInit {
 	};
 
   	ngOnInit() {
+		  console.log(this);
 		this.name = '';
 		this.email = undefined;
 		this.phone = undefined;
@@ -70,9 +71,9 @@ export class NewUserPage implements OnInit {
 		this.validations_form = this.formBuilder.group({
 		  name: new FormControl('', Validators.required),
 		  email: new FormControl('', Validators.compose([
-		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-		  ])),
-		  country_phone: this.country_phone_group
+		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$')
+			])),
+			country_phone: this.country_phone_group
 		},
 		{
 			updateOn: "blur"
@@ -80,22 +81,31 @@ export class NewUserPage implements OnInit {
 		);
 	}
 
+	
 	ionViewWillEnter() {
 		this.ngOnInit();
 	}
 
 	getErrorMessages() {
-		
-		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+
+		if((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+			console.log('valid email and phone')
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.toString().length === 10)) {
+			console.log('valid phone')
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
-		} else if ((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 3)) {
+		} else if ((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value))) {
+			console.log('valid email')
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
+		} else if ((this.validations_form.controls.email.status === "VALID" && !(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)))) {
+			console.log('invalid email with valid status');
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
+			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else {
+			console.log('case 5');			
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		}
@@ -152,7 +162,7 @@ export class NewUserPage implements OnInit {
 
 		if (this.email) {
 
-			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email);
+			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.email);
 
 
 			if (rtn) {
