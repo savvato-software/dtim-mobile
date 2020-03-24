@@ -76,6 +76,10 @@ export class PastUserTechProfilePage implements OnInit {
 		return this._functionPromiseService.waitAndGet(this.ppcFuncKey, this.ppcFuncKey, { });
 	}
 
+	getUserName() {
+		return this.user && this.user['name'];
+	}
+	
 	onBackBtnClicked() {
 		this._userTechProfileModel.save().then(() => {
 			this._location.back();
