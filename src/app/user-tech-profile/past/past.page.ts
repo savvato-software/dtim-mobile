@@ -2,16 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { ModelService } from './_services/model.service';
+// import { ModelService } from './_services/model.service';
 
-import { AlertService } from '../../_services/alert.service';
-import { CareerGoalService } from '../../_services/career-goal.service';
+// import { AlertService } from '../../_services/alert.service';
 import { FunctionPromiseService } from '@savvato-software/savvato-javascript-services'
-import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
+// import { TechProfileAPIService } from '../../_services/tech-profile-api.service';
 import { UserTechProfileModelService } from '../../_services/user-tech-profile-model.service';
 import { UserService } from '../../_services/user.service';
 
-import { TechProfileModelService } from '../../_services/tech-profile-model.service';
+// import { TechProfileModelService } from '../../_services/tech-profile-model.service';
 
 import { environment } from '../../../_environments/environment';
 
@@ -26,20 +25,18 @@ export class PastUserTechProfilePage implements OnInit {
   	user = undefined;
 	careerGoal = undefined;
   	techProfile = undefined;
-  	answerQualityFilter = undefined;
 
-  	funcKey = "past-utp-controller";
+  	ppcFuncKey = "past-page-controller"
 
 	constructor(private _location: Location,
 		    private _router: Router,
 		    private _route: ActivatedRoute,
-		    private _modelService: ModelService,
-		    private _careerGoalService: CareerGoalService,
 		    private _functionPromiseService: FunctionPromiseService,
-		    private _techProfileModelService: TechProfileModelService,
+		    // private _techProfileModelService: TechProfileModelService,
 			private _userTechProfileModel: UserTechProfileModelService,
-		    private _userService: UserService,
-		    private _alertService: AlertService ) {
+		    private _userService: UserService //,
+		    // private _alertService: AlertService 
+		    ) {
 
 	}
 
@@ -47,78 +44,42 @@ export class PastUserTechProfilePage implements OnInit {
 		let self = this;
 		self._route.params.subscribe((params) => {
 			self.userId = params['userId'] * 1;
-			console.log("userId ==> " + self.userId);
 
-			self._modelService._init();
 			self._userTechProfileModel.init(self.userId);
 
 			self._userService.getUserById(self.userId).then((data) => {
 				self.user = data;
 			})
 
-			self._careerGoalService.getCareerGoalForUserId(self.userId).then((careerGoal) => {
-				self.careerGoal = careerGoal;
-			})
-
-			self._functionPromiseService.initFunc(self.funcKey, () => {
+			self._functionPromiseService.initFunc(self.ppcFuncKey, () => {
 				return new Promise((resolve, reject) => {
-					self._userTechProfileModel.waitingPromise().then(() => {
 						resolve({
 							getEnv: () => {
 								return environment;
 							},
-							getColorMeaningString: () => {
-								return "A highlighted cell is one in which a question was answered by this candidate at some session in the past. The darker the cell, the greater the percentage of those questions answered successfully."
+							getUser: () => {
+								return self.user;
 							},
-							getBackgroundColor: (lineItem, idx) => {
-								let count = self._modelService.getAnsweredQuestionCountForCell(lineItem['id'], idx, self.userId);
-								let max = self._modelService.getQuestionCountForCell(lineItem['id'], idx, self.userId);
-
-								if (count && max) {
-									let rtn = Math.ceil((count / max) * 10);
-
-									let shadesOfGray = ["#E0E0E0","#D0D0D0","#C0C0C0","#B0B0B0","#A0A0A0","#909090","#808080","#707070","#606060", "#505050"]
-
-									return shadesOfGray[rtn];
-								}
-
-								return undefined;
+							onLxDescriptionClick: () => {
+								return () => { console.log("pastPageController for onLxDescriptionClick")}
 							},
-							onLxDescriptionClick: (lineItem, idx) => {
-								self._router.navigate(['/user-tech-profile/' + self.userId + '/past/all-user-sessions-listing/' + lineItem['id'] + '/' + idx]);
+							getRoutePrefix: () => {
+								return "user-tech-profile/" + self.userId + "/past";
 							}
 						})
 					})
 				})
 			})
-		})
 	}
 
-	getChosenCareerGoalName() {
-		return this.careerGoal && this.careerGoal['name'];
-	}
-
-	getDtimTechprofileComponentController() {
-		return this._functionPromiseService.waitAndGet(this.funcKey, this.funcKey, { });
+	getCtrlForTechprofileUserHistoricalView() {
+		return this._functionPromiseService.waitAndGet(this.ppcFuncKey, this.ppcFuncKey, { });
 	}
 
 	getUserName() {
-		return this.user && this.user["name"];
+		return this.user && this.user['name'];
 	}
-
-	getScore(lineItemId) {
-		let self = this;
-		return self._userTechProfileModel.getScore(lineItemId);
-	}
-
-	onFocus(evt) {
-		this._modelService.setAnswerQualityFilter(evt.target.value);
-	}
-
-	onBlur(evt) {
-
-	}
-
+	
 	onBackBtnClicked() {
 		this._userTechProfileModel.save().then(() => {
 			this._location.back();

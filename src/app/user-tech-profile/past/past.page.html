@@ -1,37 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{getUserName()}} - Tech Profile - PAST View</ion-title>
+    <ion-title>Skills Matrix - Historical View - {{getUserName()}}</ion-title>
   </ion-toolbar>
-	   <ion-list>
-	   		Show Questions Answered: 
-	      <ion-radio-group [(ngModel)]="answerQualityFilter">
-
-	          <ion-label class="aqfLabel">Incorrectly</ion-label>
-	          <ion-radio slot="start" value="incorrect" (ionBlur)="onBlur($event)" (ionFocus)="onFocus($event)"></ion-radio>
-
-	          <ion-label class="aqfLabel">Correctly</ion-label>
-	          <ion-radio slot="start" value="correct" (ionBlur)="onBlur($event)" (ionFocus)="onFocus($event)"></ion-radio>
-
-	          <ion-label class="aqfLabel">Either</ion-label>
-	          <ion-radio slot="start" value="asked" (ionBlur)="onBlur($event)" (ionFocus)="onFocus($event)"></ion-radio>
-
-	      </ion-radio-group>
-	    </ion-list>		
-	<ion-card>
-		<ion-card-content>
-			<ion-card-title>Chosen Career Goal:</ion-card-title>
-			<span> {{ getChosenCareerGoalName() }} </span>
-		</ion-card-content>
-	</ion-card>
 </ion-header>
 
 <ion-content>
-	<ion-card>
-		<ion-card-content>
-			<lib-dtim-techprofile-component [ctrl]="getDtimTechprofileComponentController()"></lib-dtim-techprofile-component>
-		</ion-card-content>
-	</ion-card>
-</ion-content>
-<ion-content class="footerButtonRow">
-	<ion-button class="" (click)="onBackBtnClicked()">Go Back</ion-button>
+	<lib-savvato-techprofile-user-historical-view [ctrl]="getCtrlForTechprofileUserHistoricalView()"></lib-savvato-techprofile-user-historical-view>
 </ion-content>
