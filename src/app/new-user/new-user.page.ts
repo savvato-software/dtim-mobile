@@ -175,7 +175,7 @@ export class NewUserPage implements OnInit {
 			this.query = this.phone;
 		}
 
-		self._userService.getUserByEmailAndPhone(self.query).then((user) => {
+		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
 			console.log("new user submit:", user);
 			if (user) {
 				console.log('returning user:', user);

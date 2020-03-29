@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { AlertService } from '../_services/alert.service';
 import { UserService } from '../_services/user.service';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-returning-user',
@@ -13,8 +14,8 @@ import { UserService } from '../_services/user.service';
 export class ReturningUserPage implements OnInit {
 
 	query = {
-		email: undefined,
-		phone: undefined
+		phone: undefined,
+		email: undefined
 	}
 
     constructor(private _location: Location,
@@ -46,7 +47,7 @@ export class ReturningUserPage implements OnInit {
 	}
 
 	isSearchBtnEnabled() {
-		if (this.query.phone && this.query.email) {
+		if (this.query.email || this.query.phone){
 			return true
 		} else {
 			return false
@@ -55,8 +56,15 @@ export class ReturningUserPage implements OnInit {
 
 	onSearchBtnClicked() {
 		let self = this;
+		let data = undefined;
 
-		self._userService.getUserByEmailAndPhone(self.query).then((user) => {
+		if (self.query.email) {
+			data = self.query.email
+		} else {
+			data = self.query.phone
+		}
+
+		self._userService.getUserByEmailOrPhone(data).then((user) => {
 			
 			if (user) {
 				self._userService.markUserAsAttending(user["id"]).then(() => {
