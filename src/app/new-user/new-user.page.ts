@@ -50,7 +50,6 @@ export class NewUserPage implements OnInit {
 	};
 
   	ngOnInit() {
-		  console.log(this);
 		this.name = '';
 		this.email = undefined;
 		this.phone = undefined;
@@ -89,23 +88,18 @@ export class NewUserPage implements OnInit {
 	getErrorMessages() {
 		// Currently getting an error message if the phone field was partially filled out and then deleted.
 		if((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
-			console.log('valid email and phone')
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.toString().length === 10)) {
-			console.log('valid phone')
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 		} else if ((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value))) {
-			console.log('valid email')
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else if ((this.validations_form.controls.email.status === "VALID" && !(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)))) {
-			console.log('invalid email with valid status');
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else {
-			console.log('case 5');			
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		}
@@ -186,9 +180,7 @@ export class NewUserPage implements OnInit {
 		}
 
 		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
-			console.log("new user submit:", user);
 			if (user) {
-				console.log('returning user:', user);
 				self._userService.markUserAsAttending(user["id"]).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
@@ -204,7 +196,6 @@ export class NewUserPage implements OnInit {
 				})
 			} else {
 				self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
-					console.log("new user:", user);
 					self._userService.markUserAsAttending(user["id"]).then(() => {
 						self._alertService.show({
 							header: 'You\'re in!',
