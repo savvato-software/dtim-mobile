@@ -87,7 +87,7 @@ export class NewUserPage implements OnInit {
 	}
 
 	getErrorMessages() {
-
+		// Currently getting an error message if the phone field was partially filled out and then deleted.
 		if((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
 			console.log('valid email and phone')
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
