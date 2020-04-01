@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 import { AlertService } from '../_services/alert.service';
 import { UserService } from '../_services/user.service';
-import { ThrowStmt } from '@angular/compiler';
 
 import { CountryPhone } from './country-phone.model';
 import { PhoneValidator } from '../validators/phone.validator';
@@ -23,9 +22,9 @@ export class ReturningUserPage implements OnInit {
 		email: undefined
 	}
 
-	countries: Array<CountryPhone>;
 	validations_form: FormGroup;
-  	country_phone_group: FormGroup;
+	country_phone_group: FormGroup;
+	countries: Array<CountryPhone>;
 
     constructor(private _location: Location,
 			    private _router: Router,
