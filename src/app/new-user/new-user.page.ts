@@ -70,9 +70,9 @@ export class NewUserPage implements OnInit {
 		this.validations_form = this.formBuilder.group({
 		  name: new FormControl('', Validators.required),
 		  email: new FormControl('', Validators.compose([
-		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-		  ])),
-		  country_phone: this.country_phone_group
+		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$')
+			])),
+			country_phone: this.country_phone_group
 		},
 		{
 			updateOn: "blur"
@@ -80,20 +80,24 @@ export class NewUserPage implements OnInit {
 		);
 	}
 
+	
 	ionViewWillEnter() {
 		this.ngOnInit();
 	}
 
 	getErrorMessages() {
-		
-		if((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 0) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
+		// Currently getting an error message if the phone field was partially filled out and then deleted.
+		if((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)) && (this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.length === 10)) {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 		} else if ((this.validations_form.controls.country_phone.status === "VALID" && this.validations_form.controls.country_phone.value.phone.toString().length === 10)) {
 			this.validation_messages.email[1] = { type: 'pattern', message: 'You have entered a valid phone number. Please clear this field OR provide a valid email.' };
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
-		} else if ((this.validations_form.controls.email.status === "VALID" && this.validations_form.controls.email.value.length > 3)) {
+		} else if ((this.validations_form.controls.email.status === "VALID" && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value))) {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'You have entered a valid email address. Please clear this field OR provide a 10 digit phone number.' };
+			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
+		} else if ((this.validations_form.controls.email.status === "VALID" && !(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.validations_form.controls.email.value)))) {
+			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
 			this.validation_messages.email[1] = { type: 'pattern', message: 'Please enter a valid email, OR a ten digit phone number.' };
 		} else {
 			this.validation_messages.phone[1] = { type: 'validCountryPhone', message: 'Please enter a ten digit phone number, OR a valid email.' };
@@ -152,7 +156,7 @@ export class NewUserPage implements OnInit {
 
 		if (this.email) {
 
-			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email);
+			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+([\.]{1})([a-zA-Z0-9]{2,3})$/.test(this.email);
 
 
 			if (rtn) {
@@ -176,9 +180,7 @@ export class NewUserPage implements OnInit {
 		}
 
 		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
-			console.log("new user submit:", user);
 			if (user) {
-				console.log('returning user:', user);
 				self._userService.markUserAsAttending(user["id"]).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
@@ -194,7 +196,6 @@ export class NewUserPage implements OnInit {
 				})
 			} else {
 				self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
-					console.log("new user:", user);
 					self._userService.markUserAsAttending(user["id"]).then(() => {
 						self._alertService.show({
 							header: 'You\'re in!',
