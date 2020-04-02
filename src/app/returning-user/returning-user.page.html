@@ -14,13 +14,20 @@
 			In the DTIM, our goal is to help you prepare for your next big tech interview. 
 			<br/><br/>
 
-			<ion-item>
-			  <ion-label position="floating">Phone (only digits, no symbols) or Email</ion-label>
-			  <ion-input data-test="query-input" data-cy='phone-email' (ionChange)="onQueryChange($event)" [value]="getQuery()" required></ion-input>
-			</ion-item>
+			<form [formGroup]="validations_form" (ngSubmit)="onSearchBtnClicked()">
+				<ion-item>
+				<ion-label position="floating">Phone (only digits, no symbols)</ion-label>
+				<ion-input data-test="return-user-phone-input" (ionChange)="onQueryChange($event)" [value]="getQuery('phone')" [id]="'phone'" required></ion-input>
+				</ion-item>
+				
+				<ion-item>
+				<ion-label position="floating">Email</ion-label> 
+				<ion-input data-test="return-user-email-input" (ionChange)="onQueryChange($event)" [value]="getQuery('email')" [id]="'email'" required></ion-input>
+				</ion-item>
 
-			<ion-button class="" [disabled]="!isSearchBtnEnabled()" (click)="onSearchBtnClicked()">Find Me</ion-button>
-			<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+				<ion-button class="" [disabled]="!isSearchBtnEnabled()" type="submit">Find Me</ion-button>
+				<ion-button class="" (click)="onCancelBtnClicked()">Cancel</ion-button>
+			</form>
 	  </ion-card-content>
 	</ion-card>
 </ion-content>
